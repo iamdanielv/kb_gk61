@@ -38,6 +38,9 @@ qmk should generate a new bin file: `skyloong_gk61_iamdanielv_iamdanielv.bin` in
 
 For me it was: `C:\Users\<USER>\qmk_firmware\skyloong_gk61_iamdanielv_iamdanielv.bin`
 
+## Using via
+In order to use via, you may have to upload the json specification, it can be found under the `extras` folder.
+
 ## Conclusion and Next Steps
 
 **That's it!** You now should be able to flash that firmware using qmk toolbox.
