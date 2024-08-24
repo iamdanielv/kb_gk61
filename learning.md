@@ -38,11 +38,13 @@ I kept that feature but extended it.
 - Tap = Right Arrow
 - Hold = acts like Right Ctl 
 
+---
+
 ### Win Alt Layer (Sometimes  called Win_Fn)
 
 This is a momentary layer
 
-**Getting here**: You can ge to this layer by either holding the `caps lock` key or holding the `right alt` key
+**Getting here**: You can ge to this layer from the default layer by either holding the `caps lock` key or holding the `right alt` key
 
 **Getting out**: release the `caps lock` or `right alt` key
 
@@ -85,12 +87,13 @@ This is a momentary layer
 - < = Page Down
 - \> = Page Up
 
+---
 
 ### Number layer and mouse movement
 
-This is a toggled layer
+This is a toggled layer accesible from the Fn Layer
 
-**Getting here**: You can ge to this layer by pushing `FN`, then double tap `Menu` key
+**Getting here**: You can ge to this layer by pushing `FN`, then tap `Menu` key
 
 **Getting out**: Tap the `Menu` key
 
@@ -105,10 +108,11 @@ I had a little bit of extra space on that layer, so I added **mouse movement on 
   - Q W E = LeftMouse MouseUp   RightMouse
   - A S D = MouseLeft MouseDown MouseRight
 
+---
 
 ### Navigation layer
 
-This is a toggled layer
+This is a toggled layer accesible from the Fn Layer
 
 **Getting here**: You can ge to this layer by pushing `FN`, then tap `Right Alt` key
 
@@ -129,9 +133,11 @@ This is a toggled layer
 - C = C(KC_INS) - control ins for copy
 - V = S(KC_INS) - shift ins for paste
 
+---
+
 ### Fn Layer
 
-This is a momentary layer
+This is a momentary layer accessible from all layers
 
 **Getting here**: You can ge to this layer by holding the `Fn` key
 
@@ -149,6 +155,7 @@ The function layer also lets you toggle on the Navigation, Number and Control la
  - Right Menu = Toggle Number layer
  - Right Ctl = Toggle Control layer -- must double tap the key to enable
 
+---
 
 ## Safe keyboard reset and eeprom clear
 
@@ -162,12 +169,16 @@ I extended that to also work for eeprom clear.
 Currently this is in the `Control Layer`, you can get to it by `pushing FN, then double tap on Right CTL.`
 
 To **reset the keyboard**, tap the q key at least 3 times after enabling the control layer.
+
 To **clear the eeprom**, tap the z key at least 3 times after enabling the control layer.
 
+---
 
 ## Things to consider
 
 - [SpaceFn](https://kbd.news/The-SpaceFN-concept-2315.html)
+
+---
 
 ## Links
 
