@@ -185,6 +185,7 @@ To **clear the eeprom**, tap the z key at least 3 times after enabling the contr
 
 - [Thomas Baart](https://thomasbaart.nl/) or [microblog](https://micro.thomasbaart.nl/) 
 - [KBD News](https://kbd.news/)
+- [Pascal Getreuer](https://getreuer.info/index.html) - [keyboards](https://getreuer.info/posts/keyboards/index.html)
 
 ---
 
