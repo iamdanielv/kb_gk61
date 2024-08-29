@@ -24,6 +24,6 @@
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
 #define RGB_MATRIX_DEFAULT_HUE 21
 #define RGB_MATRIX_DEFAULT_SAT 255
-#define RGB_MATRIX_DEFAULT_VAL 255
+#define RGB_MATRIX_DEFAULT_VAL 192
 
 #define g_suspend_state rgb_matrix_get_suspend_state()
