@@ -4,13 +4,17 @@
 #include QMK_KEYBOARD_H
 
 enum layer_names {
-    _WIN_LYR,
-    _WIN_ALT_LYR,
-    _CTL_LYR,
-    _NUM_LYR,
-    _NAV_LYR,
-    _FN_LYR,
+    _WIN_LYR,     // 0
+    _WIN_ALT_LYR, // 1
+    _CTL_LYR,     // 2
+    _NUM_LYR,     // 3
+    _NAV_LYR,     // 4
+    _FN_LYR,      // 5
 };
+
+// ***********************
+// * Keyboard Management *
+// ***********************
 
 // from https://thomasbaart.nl/2018/12/13/qmk-basics-tap-dance/
 void safe_reset(tap_dance_state_t *state, void *user_data) {
@@ -30,19 +34,9 @@ void safe_clear(tap_dance_state_t *state, void *user_data) {
   }
 }
 
-// Define aliases to simplify keymap
-#define FN_W_CAPS LT(_WIN_ALT_LYR,KC_CAPS)
-#define FN_W_RALT LT(_WIN_ALT_LYR,KC_RALT)
-#define FN_LEFT   LT(_FN_LYR, KC_LEFT)
-#define APP_DWN   TD(_DN_MU)
-#define RCTL_RGT  RCTL_T(KC_RIGHT)
-#define RSFT_UP   RSFT_T(KC_UP)
-#define TG_NAV    TG(_NAV_LYR)
-#define TG_NUM    TG(_NUM_LYR)
-#define TG_CTL    TD(TD_CTL_TG)
-#define TD_KB_RST TD(TD_RESET)
-#define TD_KB_CLR TD(TD_CLEAR)
-
+// ************
+// * Tap Hold *
+// ************
 enum tap_hold_keys {
     _DN_MU,   // Tap--KC_DOWN  and  Hold--KC_APP
     TD_RESET, // require 3 taps to reset board
@@ -56,6 +50,7 @@ typedef struct {
     uint16_t chosen;  // key to "release" when finished
                       // the value for it is set in td_tap_hold_finished
 } td_tap_hold_t;
+
 
 void td_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
     td_tap_hold_t *tap_hold = (td_tap_hold_t *)user_data;
@@ -95,6 +90,14 @@ void td_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
 #define ACTION_TAP_DANCE_TAP_HOLD(on_tap, on_hold) \
     { .fn = {NULL, td_tap_hold_finished, td_tap_hold_reset}, .user_data = (void *)&((td_tap_hold_t){on_tap, on_hold, 0}), }
 
+
+// *****************************
+// * Custom processing of keys *
+// *****************************
+enum custom_keycodes {
+    KC_SWP_FN = SAFE_RANGE
+};
+
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
     [_DN_MU]    = ACTION_TAP_DANCE_TAP_HOLD(KC_DOWN, KC_APP),  // on Tap: "DOWN" on Hold:"App"
@@ -103,6 +106,99 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_CTL_TG] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_RCTL, _CTL_LYR)
 };
 // clang-format on
+
+// used to map number keys to Fn keys
+const uint16_t number_to_function[] PROGMEM = {
+    KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    static bool fn_mode = false;
+
+    tap_dance_action_t *action;
+
+    if (keycode == KC_SWP_FN) {
+        if (record->event.pressed) {
+            fn_mode = !fn_mode;
+        }
+        return false;
+    }
+
+    if (fn_mode) {
+        if ( ( keycode >= KC_1 && keycode <= KC_0 ) || keycode == KC_MINS || keycode == KC_EQL ) {
+            uint8_t index = keycode - KC_1;
+
+            // '-' and '=' are not in numerical order aligned with the numbers
+            // they need special handling
+            if (keycode == KC_MINS) { index = 10;}
+            else if (keycode == KC_EQL) { index = 11;}
+
+            if (record->event.pressed) {
+                register_code(pgm_read_word(&number_to_function[index]));
+            } else {
+                unregister_code(pgm_read_word(&number_to_function[index]));
+            }
+            return false;
+        }
+    }
+
+    switch (keycode) {
+#ifdef RGB_MATRIX_ENABLE
+        case RGB_TOG:
+            if (record->event.pressed) {
+                switch (rgb_matrix_get_flags()) {
+                    case LED_FLAG_ALL: {
+                        rgb_matrix_set_flags(LED_FLAG_NONE);
+                        rgb_matrix_set_color_all(0, 0, 0);
+                    } break;
+                    default: {
+                        rgb_matrix_set_flags(LED_FLAG_ALL);
+                    } break;
+                }
+            }
+            return false;
+        case RGB_VAI:
+            rgb_matrix_set_flags(LED_FLAG_ALL);
+            return true;
+#endif
+        case TD(_DN_MU):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed &&
+                action->state.count &&
+                !action->state.finished) {
+                td_tap_hold_t *tap_hold = (td_tap_hold_t *)action->user_data;
+                tap_code16(tap_hold->on_tap);
+            }
+
+        default:
+            return true;
+    }
+}
+
+
+// ******************************
+// * Aliases to simplify keymap *
+// ******************************
+#define FN_W_CAPS LT(_WIN_ALT_LYR,KC_CAPS)
+#define FN_W_RALT LT(_WIN_ALT_LYR,KC_RALT)
+
+#define MY_UNDO   C(KC_Z)
+#define MY_CUT    C(KC_X)
+#define MY_COPY   C(KC_INS)
+#define MY_PASTE  S(KC_INS)
+
+#define FN_LEFT   LT(_FN_LYR, KC_LEFT)
+#define APP_DWN   TD(_DN_MU)
+#define RCTL_RGT  RCTL_T(KC_RIGHT)
+#define RSFT_UP   RSFT_T(KC_UP)
+
+#define TG_NAV    TG(_NAV_LYR)
+#define TG_NUM    TG(_NUM_LYR)
+#define TG_CTL    TG(_CTL_LYR)
+#define TD_TG_CTL TD(TD_CTL_TG)
+#define TD_KB_RST TD(TD_RESET)
+#define TD_KB_CLR TD(TD_CLEAR)
 
 
 /*uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
@@ -189,12 +285,24 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
+    if (IS_LAYER_ON(_WIN_ALT_LYR) ||
+        IS_LAYER_ON(_CTL_LYR) ||
+        IS_LAYER_ON(_NUM_LYR) ||
+        IS_LAYER_ON(_NAV_LYR) ||
+        IS_LAYER_ON(_FN_LYR)) {
+        // we are in a custom layer, clear all background colors
+        // this will make our custom colors stand out more
+        for (int i = led_min; i <= led_max; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
+        }
+    }
+
     if (IS_LAYER_ON(_WIN_ALT_LYR)) {
         const uint8_t led_indexes[33] = {
             CAPS_LOCK_INDEX,     // use the caps lock as indicator
             RIGHT_ALT_KEY_INDEX, // use right alt as indicator
 
-            0,1,2,3,4,5,6,7,8,9,10,11,12,13, // the whole first row is used for Fn keys
+            0,1,2,3,4,5,6,7,8,9,10,11,12,13, // the whole first row is used for Fn keys = 14 keys
 
             //  2nd row similar to NAV Layer
             15, // q = 15 Home
@@ -228,7 +336,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // #define CAPS_LOCK_INDEX 28
         // #define WIN_MOD_INDEX 16
         // #define MAC_MOD_INDEX 17
-        const uint8_t led_indexes[13] = {
+        const uint8_t led_indexes[14] = {
             RIGHT_CTL_KEY_INDEX, // use the right ctl key as indicator
 
             //  KB related
@@ -248,12 +356,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             48, // m = 48 RGB Hue Increase
             49, // , = 49 RGB Decrease Bright
             50, // . = 50 RGB Increase Bright
+            LEFT_CTL_KEY_INDEX // used for Fn Swap
         };
 
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < 14; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
         }
-        // RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KEY_INDEX, 0, 255, 255);
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
@@ -310,136 +418,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KEY_INDEX, 0, 255, 0);
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KEY_INDEX, 0, 0, 255);
 
-        // highlight the Win and Mac Toggle buttons
-        //RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 128, 128, 128);
-        //RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 128, 128, 128);
-
         // highlight the aux buttons on right of keyboard
-        const uint8_t led_indexes[13] = {
-            1,2,3,4,5,6,7,8,9,10,11,12,13, // the whole first row is used for media keys
+        const uint8_t led_indexes[7] = {
+            7, 8,9,10,11,12,13, // first row for media keys
         };
 
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < 7; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
         }
     }
 
-    /*switch (get_highest_layer(layer_state)) {
-       case 2:{
-         RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 255, 255, 255);
-         if (!rgb_matrix_get_flags()) {
-             RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 0, 0);
-          }
-       } break;
-       case 3:{
-         RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 255, 255);
-         if (!rgb_matrix_get_flags()) {
-             RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 0, 0, 0);
-          }
-       } break;
-
-       case 0:{
-        if (L_WIN) {
-             RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 255, 255, 255);
-             if (!rgb_matrix_get_flags()) {
-                RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 0, 0);
-             }
-             }else{
-                 if (!rgb_matrix_get_flags()) {
-                    RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 0, 0, 0);
-                  }
-               }
-          } break;
-
-      case 1:{
-        if (L_WIN_ALT_LYR) {
-             RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 255, 255);
-             if (!rgb_matrix_get_flags()) {
-                RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 0, 0, 0);
-             }
-             }else{
-                 if (!rgb_matrix_get_flags()) {
-                    RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 0, 0);
-                  }
-               }
-          } break;
-
-       default:{
-          if (!rgb_matrix_get_flags()) {
-             RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 0, 0, 0);
-             RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 0, 0);
-          }
-       }
-     }*/
     return true;
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    tap_dance_action_t *action;
-
-    switch (keycode) {
-#ifdef RGB_MATRIX_ENABLE
-        case RGB_TOG:
-            if (record->event.pressed) {
-                switch (rgb_matrix_get_flags()) {
-                    case LED_FLAG_ALL: {
-                        rgb_matrix_set_flags(LED_FLAG_NONE);
-                        rgb_matrix_set_color_all(0, 0, 0);
-                    } break;
-                    default: {
-                        rgb_matrix_set_flags(LED_FLAG_ALL);
-                    } break;
-                }
-            }
-            return false;
-        case RGB_VAI:
-            rgb_matrix_set_flags(LED_FLAG_ALL);
-            return true;
-#endif
-        // case TO(0):
-        //     if (record->event.pressed) {
-        //         L_WIN = 1;
-        //         // set_single_persistent_default_layer(0); // Save default layer 0 to eeprom
-        //     } else {
-        //         L_WIN = 0;
-        //     }
-        //     return true; // continue all further processing of this key
-
-        // case MO(2):
-        //     if (record->event.pressed) {
-        //         FN_WIN = 1;
-        //     } else {
-        //         FN_WIN = 0;
-        //     }
-        //     return true; // continue all further processing of this key
-
-        // case TO(1):
-        //     if (record->event.pressed) {
-        //         L_WIN_ALT_LYR = 1;
-        //         // set_single_persistent_default_layer(1);  //Save default layer 1 to eeprom
-        //     } else {
-        //         L_WIN_ALT_LYR = 0;
-        //     }
-        //     return true; // continue all further processing of this key
-
-        // case MO(3):
-        //     if (record->event.pressed) {
-        //         FN_WIN_ALT_LYR = 1;
-        //     } else {
-        //         FN_WIN_ALT_LYR = 0;
-        //     }
-        //     return true; // continue all further processing of this key
-
-        case TD(_DN_MU):
-            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
-            if (!record->event.pressed &&
-                action->state.count &&
-                !action->state.finished) {
-                td_tap_hold_t *tap_hold = (td_tap_hold_t *)action->user_data;
-                tap_code16(tap_hold->on_tap);
-            }
-
-        default:
-            return true;
-    }
 }
