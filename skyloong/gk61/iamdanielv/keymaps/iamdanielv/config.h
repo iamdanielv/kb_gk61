@@ -4,4 +4,6 @@
 
 #define DYNAMIC_KEYMAP_LAYER_COUNT 6 /* This is 4 by default. */
 
+#define TAPPING_TERM_PER_KEY
+
 #define RGB_MATRIX_SLEEP

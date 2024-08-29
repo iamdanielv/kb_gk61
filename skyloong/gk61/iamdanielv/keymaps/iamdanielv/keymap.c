@@ -196,19 +196,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #define TG_NAV    TG(_NAV_LYR)
 #define TG_NUM    TG(_NUM_LYR)
 #define TG_CTL    TG(_CTL_LYR)
+#define MO_CTL    MO(_CTL_LYR)
 #define TD_TG_CTL TD(TD_CTL_TG)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
 
 
-/*uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    // to use this, make sure to put:
+    //#define TAPPING_TERM_PER_KEY in config.h
     switch (keycode) {
-        case RSFT_T(KC_UP):
-            return TAPPING_TERM - 80; //right shift hold time less than default tapping term 80ms
+        case RSFT_UP:
+            //return TAPPING_TERM - 80; //right shift hold time less than default tapping term 80ms
+            return 115;
         default:
             return TAPPING_TERM;
     }
-}*/
+}
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -236,14 +240,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_GRV,    KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,     KC_F6,     KC_F7,     KC_F8,     KC_F9,     KC_F10,   KC_F11,   KC_F12,   KC_DEL,
        KC_GRV,    KC_HOME,   KC_UP,     KC_END,    C(KC_R),   KC_PGUP,   _______,   _______,   _______,   _______,   KC_PSCR,  KC_SCRL,  KC_PAUS,  _______,
        _______,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  C(KC_F),   KC_PGDN,   _______,   _______,   _______,   _______,   KC_HOME,  KC_END,             _______,
-       _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    _______,   _______,   KC_PGDN,   KC_PGUP,   _______,            _______,
-       _______,   _______,   _______,              _______,   _______,   _______,              _______,   _______,   _______,  _______,            _______
+       _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    _______,   _______,   KC_PGDN,   KC_PGUP,   _______,            KC_UP,
+       _______,   _______,   _______,              _______,   _______,   _______,              _______,   _______,   KC_LEFT,  KC_DOWN,            KC_RGHT
     ),
     [_CTL_LYR] = LAYOUT_all(            // 2
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,
        _______,   TD_KB_RST, _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   RGB_M_P,  RGB_RMOD, RGB_MOD,  RGB_TOG,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   RGB_SPD,  RGB_SPI,            _______,
-       _______,   TD_KB_CLR, _______,   _______,   _______,   _______,   NK_TOGG,   RGB_HUI,   RGB_VAD,   RGB_VAI,   KC_UP,              _______,
+       _______,   TD_KB_CLR, _______,   _______,   _______,   _______,   NK_TOGG,   RGB_HUI,   RGB_VAD,   RGB_VAI,   _______,            _______,
        KC_SWP_FN, _______,   _______,              _______,   _______,   _______,              _______,   _______,   _______,  _______,            TG_CTL
     ),
     [_NUM_LYR] = LAYOUT_all(            // 3
@@ -264,7 +268,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   KC_MPRV,   KC_MPLY,   KC_MNXT,   KC_MUTE,   KC_VOLD, KC_VOLU,  KC_DEL,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,           _______,
-       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,            _______,
+       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,            MO_CTL,
        _______,   _______,   _______,              _______,   _______,   _______,              _______,   TG_NAV,    _______,   TG_NUM,            TD_TG_CTL
     )
 };
