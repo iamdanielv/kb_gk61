@@ -141,7 +141,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GRV,     KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,     KC_F6,     KC_F7,     KC_F8,     KC_F9,    KC_F10,    KC_F11,    KC_F12,    KC_DEL,
         KC_GRV,   KC_HOME,     KC_UP,    KC_END,   C(KC_R),   KC_PGUP,   _______,   _______,   _______,   _______,   KC_PSCR,   KC_SCRL,   KC_PAUS,   _______,
        _______,   KC_LEFT,   KC_DOWN,  KC_RIGHT,   C(KC_F),   KC_PGDN,   _______,   _______,   _______,   _______,   KC_HOME,    KC_END,              _______,
-       _______,   C(KC_Z),   C(KC_X), C(KC_INS), S(KC_INS),    KC_SPC,   _______,   _______,   KC_PGDN,   KC_PGUP,   _______,                         _______,
+       _______,   C(KC_Z),   C(KC_X), C(KC_INS), S(KC_INS),    KC_SPC,   _______,   _______,   KC_PGDN,   KC_PGUP,   _______,              _______,
        _______,   _______,   _______,              _______,   _______,   _______,              _______,   _______,   _______,   _______,              _______
     ),
 
@@ -225,10 +225,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 33; i++) {
-            if(led_indexes[i] >= led_min && led_indexes[i] <= led_max)
-            {
-                RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
-            }
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
         }
     }
 
@@ -259,10 +256,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 13; i++) {
-            if(led_indexes[i] >= led_min && led_indexes[i] <= led_max)
-            {
-                RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
-            }
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
         }
         // RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KEY_INDEX, 0, 255, 255);
     }
@@ -311,14 +305,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 11; i++) {
-            if(led_indexes[i] >= led_min && led_indexes[i] <= led_max)
-            {
-                RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 0, 255);
-            }
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 0, 255);
         }
     }
 
-     if (IS_LAYER_ON(_FN_LYR)) {
+    if (IS_LAYER_ON(_FN_LYR)) {
         //highlight the fn button
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, 128, 128, 128);
 
@@ -337,10 +328,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 13; i++) {
-            if(led_indexes[i] >= led_min && led_indexes[i] <= led_max)
-            {
-                RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
-            }
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
         }
     }
 
