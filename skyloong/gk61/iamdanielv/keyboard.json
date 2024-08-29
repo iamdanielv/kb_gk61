@@ -1,19 +1,13 @@
 {
     "manufacturer": "skyloong",
     "keyboard_name": "gk61 pro 48",
-    "maintainer": "NaturalZh",
+    "maintainer": "iamdanielv",
     "bootloader": "stm32duino",
     "diode_direction": "ROW2COL",
-    "encoder": {
-        "rotary": [
-            {"pin_a": "A2", "pin_b": "A3", "resolution": 2}
-        ]
-    },
     "features": {
         "bootmagic": true,
         "command": true,
         "console": false,
-        "encoder": true,
         "extrakey": true,
         "mousekey": true,
         "nkro": true,

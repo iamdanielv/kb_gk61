@@ -74,16 +74,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-#if defined(ENCODER_MAP_ENABLE)
-const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [_WIN] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-    [_MAC] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
-    [_WIN_INDEX] = { ENCODER_CCW_CW(RGB_HUD, RGB_HUI) },
-    [_MAC_INDEX] = { ENCODER_CCW_CW(RGB_HUD, RGB_HUI) }
-};
-#endif
-
-
 typedef struct {
     uint16_t tap;
     uint16_t hold;

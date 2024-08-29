@@ -270,19 +270,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// clang-format off
-#if defined(ENCODER_MAP_ENABLE)
-const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [_WIN_LYR]       = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-    [_WIN_ALT_LYR]       = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
-    [_CTL_LYR] = { ENCODER_CCW_CW(RGB_HUD, RGB_HUI) },
-    [_NUM_LYR] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
-    [_NAV_LYR] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
-    [_FN_LYR] = { ENCODER_CCW_CW(RGB_HUD, RGB_HUI) },
-};
-#endif
-// clang-format on
-
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(_WIN_ALT_LYR) ||
