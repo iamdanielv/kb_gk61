@@ -20,4 +20,10 @@
 #define RIGHT_MENU_KEY_INDEX 62
 #define RIGHT_CTL_KEY_INDEX 63
 
+// Set defaults for LED matrix
+#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
+#define RGB_MATRIX_DEFAULT_HUE 21
+#define RGB_MATRIX_DEFAULT_SAT 255
+#define RGB_MATRIX_DEFAULT_VAL 255
+
 #define g_suspend_state rgb_matrix_get_suspend_state()
