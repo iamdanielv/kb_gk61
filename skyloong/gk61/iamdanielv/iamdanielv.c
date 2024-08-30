@@ -110,4 +110,8 @@ void suspend_wakeup_init_kb(void) {
 void board_init(void) {
     // JTAG-DP Disabled and SW-DP Disabled
     AFIO->MAPR = (AFIO->MAPR & ~AFIO_MAPR_SWJ_CFG_Msk) | AFIO_MAPR_SWJ_CFG_DISABLE;
+
+    // set LED Enable Pin
+    setPinOutput(IS31FL3743A_SDB_PIN);
+    writePinHigh(IS31FL3743A_SDB_PIN);
 }
