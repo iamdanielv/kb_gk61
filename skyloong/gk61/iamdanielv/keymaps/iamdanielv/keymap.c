@@ -14,6 +14,9 @@ enum layer_names {
     _FN_LYR,      // 5
 };
 
+void blink_arrows(void);
+void blink_NKRO(bool);
+void blink_numbers(bool);
 void highlight_fn_keys(uint8_t led_min, uint8_t led_max);
 
 // ***********************
@@ -125,6 +128,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
             fn_mode = !fn_mode;
+            blink_numbers(fn_mode);
         }
         return false;
     }
@@ -193,22 +197,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RGB_VAI:
             if (record->event.pressed) {
                 rgb_matrix_set_flags_noeeprom(LED_FLAG_ALL);
+                if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
+                    blink_arrows();
+                }
                 rgb_matrix_increase_val_noeeprom();
             }
             return false;
         case RGB_VAD:
             if (record->event.pressed) {
+                if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
+                    blink_arrows();
+                }
                 rgb_matrix_decrease_val_noeeprom();
             }
             return false;
         case RGB_SPI:
             if (record->event.pressed) {
+                if ( rgb_matrix_get_speed() >= (255 - RGB_MATRIX_SPD_STEP)) {
+                    // this update would put us at max
+                    blink_arrows();
+                }
+
                 rgb_matrix_increase_speed_noeeprom();
             }
             return false;
         case RGB_SPD:
             if (record->event.pressed) {
                 if (rgb_matrix_get_speed() <= RGB_MATRIX_SPD_STEP) {
+                    blink_arrows();
                     rgb_matrix_set_speed_noeeprom(RGB_MATRIX_SPD_STEP);
                 }
                 rgb_matrix_decrease_speed_noeeprom();
@@ -518,6 +534,49 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     process_indicator_queue(led_min, led_max);
 
     return true;
+}
+
+void blink_arrows(void){
+    indicator_enqueue(52, 200, 3, RGB_WHITE );  // up
+    indicator_enqueue(61, 200, 3, RGB_WHITE );  // left
+    indicator_enqueue(62, 200, 3, RGB_WHITE );  // down
+    indicator_enqueue(63, 200, 3, RGB_WHITE );  // right
+}
+
+void blink_NKRO(bool isEnabling){
+    if(isEnabling){
+        const uint8_t led_indexes[12] = {
+            45, 46, 47, 48, 49, // V B N M ,
+            33, 34, 35, 36, // G H J K
+            20, 21, 22 // Y U I
+        };
+
+        for (int i = 0; i < 12; i++) {
+            indicator_enqueue(led_indexes[i], 200, 3, RGB_WHITE );
+        }
+    }
+    else {
+        const uint8_t led_indexes[4] = {
+            46, 48, // B M
+            34, 35  // H J
+        };
+
+        for (int i = 0; i < 4; i++) {
+            indicator_enqueue(led_indexes[i], 150, 3, RGB_RED );
+        }
+    }
+}
+
+void blink_numbers(bool isEnabling){
+    for( int i = 1; i <= 12; i++){ // 1(1) to EQL(12)
+        if(isEnabling){
+            // enabling, flash white
+            indicator_enqueue(i, 200, 3, RGB_WHITE);
+        } else {
+            // disabling, flash red
+            indicator_enqueue(i, 150, 4, RGB_RED);
+        }
+    }
 }
 
 void highlight_fn_keys(uint8_t led_min, uint8_t led_max)
