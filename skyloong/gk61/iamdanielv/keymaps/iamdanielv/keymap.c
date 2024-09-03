@@ -12,6 +12,8 @@ enum layer_names {
     _FN_LYR,      // 5
 };
 
+void highlight_fn_keys(uint8_t led_min, uint8_t led_max);
+
 // ***********************
 // * Keyboard Management *
 // ***********************
@@ -112,9 +114,9 @@ const uint16_t number_to_function[] PROGMEM = {
     KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+bool fn_mode = false;
 
-    static bool fn_mode = false;
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     tap_dance_action_t *action;
 
@@ -372,6 +374,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
+    if(fn_mode){
+        highlight_fn_keys(led_min, led_max);
+    }
+
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
         if(!fn_mode){
             // we are not in fn_mode, but this layer also uses fn keys
@@ -508,4 +514,25 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     return true;
+}
+
+void highlight_fn_keys(uint8_t led_min, uint8_t led_max)
+{
+    // get the current hsv value
+    HSV current_hsv = rgb_matrix_get_hsv();
+    // maximize brightness
+    current_hsv.v = 255;
+
+    // convert to RGB and scale downward
+    RGB rgb = hsv_to_rgb(current_hsv);
+    uint8_t new_r = 0xFF - rgb.r;
+    uint8_t new_g = 0xFF - rgb.g;
+    uint8_t new_b = 0xFF - rgb.b;
+    // scale the alternate color to be not as bright
+    if( new_r > 0x80) { new_r = new_r - 0x80;}
+    if( new_g > 0x80) { new_g = new_g - 0x80;}
+    if( new_b > 0x80) { new_b = new_b - 0x80;}
+    for( int i = 1; i <= 12; i++){ // 1 to EQL(12)
+        RGB_MATRIX_INDICATOR_SET_COLOR(i, new_r, new_g, new_b);
+    }
 }
