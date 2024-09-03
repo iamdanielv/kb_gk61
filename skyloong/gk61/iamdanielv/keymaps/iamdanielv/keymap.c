@@ -5,7 +5,7 @@
 
 enum layer_names {
     _WIN_LYR,     // 0
-    _WIN_ALT_LYR, // 1
+    _WIN_FN_LYR,  // 1
     _CTL_LYR,     // 2
     _NUM_LYR,     // 3
     _NAV_LYR,     // 4
@@ -180,8 +180,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-#define FN_W_CAPS LT(_WIN_ALT_LYR,KC_CAPS)
-#define FN_W_RALT LT(_WIN_ALT_LYR,KC_RALT)
+#define FN_W_CAPS LT(_WIN_FN_LYR,KC_CAPS)
+#define FN_W_RALT LT(_WIN_FN_LYR,KC_RALT)
 
 #define MY_UNDO   C(KC_Z)
 #define MY_CUT    C(KC_X)
@@ -236,7 +236,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,      KC_N,      KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,            RSFT_UP,
        KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    FN_W_RALT, FN_LEFT,  APP_DWN,            RCTL_RGT
     ),
-    [_WIN_ALT_LYR] = LAYOUT_all(        // 1
+    [_WIN_FN_LYR] = LAYOUT_all(        // 1
        KC_GRV,    KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,     KC_F6,     KC_F7,     KC_F8,     KC_F9,     KC_F10,   KC_F11,   KC_F12,   KC_DEL,
        KC_GRV,    KC_HOME,   KC_UP,     KC_END,    C(KC_R),   KC_PGUP,   _______,   _______,   _______,   _______,   KC_PSCR,  KC_SCRL,  KC_PAUS,  _______,
        _______,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  C(KC_F),   KC_PGDN,   _______,   _______,   _______,   _______,   KC_HOME,  KC_END,             _______,
@@ -276,7 +276,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
-    if (IS_LAYER_ON(_WIN_ALT_LYR) ||
+    if (IS_LAYER_ON(_WIN_FN_LYR) ||
         IS_LAYER_ON(_CTL_LYR) ||
         IS_LAYER_ON(_NUM_LYR) ||
         IS_LAYER_ON(_NAV_LYR) ||
@@ -288,7 +288,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-    if (IS_LAYER_ON(_WIN_ALT_LYR)) {
+    if (IS_LAYER_ON(_WIN_FN_LYR)) {
         const uint8_t led_indexes[33] = {
             CAPS_LOCK_INDEX,     // use the caps lock as indicator
             RIGHT_ALT_KEY_INDEX, // use right alt as indicator
