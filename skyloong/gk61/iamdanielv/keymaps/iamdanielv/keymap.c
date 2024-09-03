@@ -334,36 +334,26 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_WIN_FN_LYR) ||
-        IS_LAYER_ON(_CTL_LYR) ||
+        //IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
         IS_LAYER_ON(_NUM_LYR) ||
         IS_LAYER_ON(_NAV_LYR) ||
         IS_LAYER_ON(_FN_LYR)) {
         // we are in a custom layer, clear all background colors
         // this will make our custom colors stand out more
-        for (int i = led_min; i <= led_max; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
+        for (int i = led_min; i < led_max; i++) {
+            rgb_matrix_set_color(i, 0, 0, 0);
         }
     }
 
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
-        const uint8_t led_indexes[33] = {
+        if(!fn_mode){
+            // we are not in fn_mode, but this layer also uses fn keys
+            highlight_fn_keys(led_min, led_max);
+        }
+
+        const uint8_t led_indexes[9] = {
             CAPS_LOCK_INDEX,     // use the caps lock as indicator
             RIGHT_ALT_KEY_INDEX, // use right alt as indicator
-
-            0,1,2,3,4,5,6,7,8,9,10,11,12,13, // the whole first row is used for Fn keys = 14 keys
-
-            //  2nd row similar to NAV Layer
-            15, // q = 15 Home
-            16, // w = 16 Up arrow
-            17, // e = 17 End
-            18, // r = 18 Ctrl-R
-            19, // t = 19 PgUp
-            // 3rd row similar to NAV Layer
-            29, // a = 29 Left arrow
-            30, // s = 30 Down arrow
-            31, // d = 31 Right arrow
-            32, // f = 32 Ctrl-F
-            33, // g = 33 PgDn
 
             // right side cluster
             24, // p = 24 PS
@@ -375,7 +365,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             50  // . = 50 PgUp
         };
 
-        for (int i = 0; i < 33; i++) {
+        for (int i = 0; i < 9; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
         }
     }
@@ -384,32 +374,46 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // #define CAPS_LOCK_INDEX 28
         // #define WIN_MOD_INDEX 16
         // #define MAC_MOD_INDEX 17
-        const uint8_t led_indexes[14] = {
+        const uint8_t led_indexes[4] = {
             RIGHT_CTL_KEY_INDEX, // use the right ctl key as indicator
 
-            //  KB related
-            15, // q = 15 QK_BOOT
-            42, // z = EE_CLR
-
             // RGB Control
-            24, // p = 24 Solid Color
-            25, // [ = 25 RGB_RMOD
-            26, // ] = 26 RGB_MOD
-            27, // \ = 27 RGB Toggle
+            24, // p = 24 for persistent color
+            //25, // [ = 25 RGB_RMOD
+            //26, // ] = 26 RGB_MOD
+            //27, // \ = 27 RGB Toggle
 
-            38, // ; = 38 RGB Speed Down
-            39, // ' = 39 RGB Speed Up
+            //38, // ; = 38 RGB Speed Down
+            //39, // ' = 39 RGB Speed Up
 
             47, // n = 47 NKR toggle
-            48, // m = 48 RGB Hue Increase
-            49, // , = 49 RGB Decrease Bright
-            50, // . = 50 RGB Increase Bright
+            //48, // m = 48 RGB Hue Increase
+            //49, // , = 49 RGB Decrease Bright
+            //50, // . = 50 RGB Increase Bright
             LEFT_CTL_KEY_INDEX // used for Fn Swap
         };
 
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 4; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
         }
+
+        const uint8_t led_off_indexes[4] = {
+            // turn off some of the LEDS to make it easier to see our indicators
+            29, // A
+            14, 28, 41, // TAB, CAPS, LSFT
+        };
+        for (int i = 0; i < 4; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
+        }
+
+        // light up the M key in white
+        RGB_MATRIX_INDICATOR_SET_COLOR(48, 0x80, 0x80, 0x80);
+
+        // highlight Q as reset
+        RGB_MATRIX_INDICATOR_SET_COLOR(15, 0xFF, 0x00, 0x00);
+
+        // highlight Z as clear eeprom
+        RGB_MATRIX_INDICATOR_SET_COLOR(42, 0x7A, 0x00, 0xFF);
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
