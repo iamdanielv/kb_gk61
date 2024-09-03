@@ -322,6 +322,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
+    uint8_t current_layer = get_highest_layer(layer_state);
+    if(current_layer == _WIN_LYR)
+    {
+        if (rgb_matrix_get_flags() == LED_FLAG_INDICATOR) {
+            for (int i = led_min; i < led_max; i++) {
+                rgb_matrix_set_color(i, 0, 0, 0);
+            }
+            //rgb_matrix_set_color_all(0, 0, 0);
+        }
+    }
+
     if (IS_LAYER_ON(_WIN_FN_LYR) ||
         IS_LAYER_ON(_CTL_LYR) ||
         IS_LAYER_ON(_NUM_LYR) ||
