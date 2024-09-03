@@ -144,24 +144,51 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-#ifdef RGB_MATRIX_ENABLE
+        case QK_MAGIC_TOGGLE_NKRO:
+            if (record->event.pressed) {
+                clear_keyboard(); // clear first buffer to prevent stuck keys
+                wait_ms(50);
+                keymap_config.nkro = !keymap_config.nkro;
+                blink_NKRO(keymap_config.nkro);
+                wait_ms(50);
+                clear_keyboard(); // clear first buffer to prevent stuck keys
+                wait_ms(50);
+            }
+            return false;
         case RGB_TOG:
             if (record->event.pressed) {
                 switch (rgb_matrix_get_flags()) {
                     case LED_FLAG_ALL: {
-                        rgb_matrix_set_flags(LED_FLAG_NONE);
-                        rgb_matrix_set_color_all(0, 0, 0);
+                        rgb_matrix_set_flags_noeeprom(LED_FLAG_INDICATOR);
+                        //rgb_matrix_set_color_all(0, 0, 0);
                     } break;
                     default: {
-                        rgb_matrix_set_flags(LED_FLAG_ALL);
+                        HSV current_hsv = rgb_matrix_get_hsv();
+                        RGB rgb = hsv_to_rgb(current_hsv);
+                        rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
+                        rgb_matrix_set_flags_noeeprom(LED_FLAG_ALL);
                     } break;
                 }
+            }
+            return false;
+        case RGB_MOD:
+            if (record->event.pressed) {
+                rgb_matrix_step_noeeprom();
+            }
+            return false;
+        case RGB_RMOD:
+            if (record->event.pressed) {
+                rgb_matrix_step_reverse_noeeprom();
+            }
+            return false;
+        case RGB_M_P:
+            if (record->event.pressed) {
+                rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
             }
             return false;
         case RGB_VAI:
             rgb_matrix_set_flags(LED_FLAG_ALL);
             return true;
-#endif
         case TD(_DN_MU):
             action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
             if (!record->event.pressed &&
@@ -180,8 +207,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-#define FN_W_CAPS LT(_WIN_FN_LYR,KC_CAPS)
-#define FN_W_RALT LT(_WIN_FN_LYR,KC_RALT)
+#define FN_W_CAPS LT(_WIN_FN_LYR, KC_CAPS)
+#define FN_W_RALT LT(_WIN_FN_LYR, KC_RALT)
 
 #define MY_UNDO   C(KC_Z)
 #define MY_CUT    C(KC_X)
