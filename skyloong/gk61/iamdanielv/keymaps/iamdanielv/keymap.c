@@ -187,8 +187,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         case RGB_VAI:
-            rgb_matrix_set_flags(LED_FLAG_ALL);
-            return true;
+            if (record->event.pressed) {
+                rgb_matrix_set_flags_noeeprom(LED_FLAG_ALL);
+                rgb_matrix_increase_val_noeeprom();
+            }
+            return false;
+        case RGB_VAD:
+            if (record->event.pressed) {
+                rgb_matrix_decrease_val_noeeprom();
+            }
+            return false;
+        case RGB_SPI:
+            if (record->event.pressed) {
+                rgb_matrix_increase_speed_noeeprom();
+            }
+            return false;
+        case RGB_SPD:
+            if (record->event.pressed) {
+                if (rgb_matrix_get_speed() <= RGB_MATRIX_SPD_STEP) {
+                    rgb_matrix_set_speed_noeeprom(RGB_MATRIX_SPD_STEP);
+                }
+                rgb_matrix_decrease_speed_noeeprom();
+            }
+            return false;
+        case RGB_HUI:
+            if (record->event.pressed) {
+                rgb_matrix_increase_hue_noeeprom();
+            }
+            return false;
+
         case TD(_DN_MU):
             action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
             if (!record->event.pressed &&
