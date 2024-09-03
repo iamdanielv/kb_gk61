@@ -3,6 +3,8 @@
 
 #include QMK_KEYBOARD_H
 
+#include "features/indicator_queue.h"
+
 enum layer_names {
     _WIN_LYR,     // 0
     _WIN_FN_LYR,  // 1
@@ -512,6 +514,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
         }
     }
+
+    process_indicator_queue(led_min, led_max);
 
     return true;
 }
