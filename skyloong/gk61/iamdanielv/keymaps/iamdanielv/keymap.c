@@ -586,16 +586,9 @@ void highlight_fn_keys(uint8_t led_min, uint8_t led_max)
     // maximize brightness
     current_hsv.v = 255;
 
-    // convert to RGB and scale downward
-    RGB rgb = hsv_to_rgb(current_hsv);
-    uint8_t new_r = 0xFF - rgb.r;
-    uint8_t new_g = 0xFF - rgb.g;
-    uint8_t new_b = 0xFF - rgb.b;
-    // scale the alternate color to be not as bright
-    if( new_r > 0x80) { new_r = new_r - 0x80;}
-    if( new_g > 0x80) { new_g = new_g - 0x80;}
-    if( new_b > 0x80) { new_b = new_b - 0x80;}
-    for( int i = 1; i <= 12; i++){ // 1 to EQL(12)
-        RGB_MATRIX_INDICATOR_SET_COLOR(i, new_r, new_g, new_b);
+    rgb_led_t rgb = hsv_to_rgb(current_hsv);
+    rgb_led_t new_rgb = get_complementary_color(rgb, false);
+    for( int i = 55; i >= 44; i--){ // 55 - 44 are the number keys and - =
+        RGB_MATRIX_INDICATOR_SET_COLOR(i, new_rgb.r, new_rgb.g, new_rgb.b);
     }
 }

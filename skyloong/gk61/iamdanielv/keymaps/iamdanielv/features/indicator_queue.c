@@ -1,5 +1,30 @@
 #include "indicator_queue.h"
 
+// this is similar to RGB_MATRIX_INDICATOR_SET_COLOR
+// but takes in a rgb_led_t instead
+#define INDICATOR_Q_MATRIX_SET_COLOR_LED(i, rgb)       \
+   if (i >= led_min && i < led_max) {               \
+       rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);\
+   }
+
+#define INDICATOR_Q_GET_RGB_LED(indicator) \
+   (rgb_led_t) { .r = indicator.r, .g = indicator.g, .b = indicator.b }
+
+rgb_led_t get_complementary_color(rgb_led_t rgb_led, bool darken) {
+    uint8_t new_r = 0xFF - rgb_led.r;
+    uint8_t new_g = 0xFF - rgb_led.g;
+    uint8_t new_b = 0xFF - rgb_led.b;
+
+    if(darken) {
+        // darken the new color by shifting all values down
+        if( new_r > 0x80) { new_r = new_r - 0x80;}
+        if( new_g > 0x80) { new_g = new_g - 0x80;}
+        if( new_b > 0x80) { new_b = new_b - 0x80;}
+    }
+
+    return (rgb_led_t){.r=new_r, .g = new_g, .b = new_b};
+}
+
 void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_flash, uint8_t r, uint8_t g, uint8_t b) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
         if (!indicator_queue[i].active) {
@@ -38,17 +63,12 @@ void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
                 }
             }
 
+            rgb_led_t this_rgb_led =  INDICATOR_Q_GET_RGB_LED(indicator_queue[i]);
             if (indicator_queue[i].times_to_flash % 2) {
-                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].led_index, indicator_queue[i].r, indicator_queue[i].g, indicator_queue[i].b);
+                INDICATOR_Q_MATRIX_SET_COLOR_LED(indicator_queue[i].led_index, this_rgb_led);
             } else {
-                uint8_t r = 0xFF - indicator_queue[i].r;
-                uint8_t g = 0xFF - indicator_queue[i].g;
-                uint8_t b = 0xFF - indicator_queue[i].b;
-                // scale the alternate flash color to be not as bright
-                if( r > 0x80) { r = r - 0x80;}
-                if( g > 0x80) { g = g - 0x80;}
-                if( b > 0x80) { b = b - 0x80;}
-                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].led_index, r,g,b);
+                rgb_led_t alt = get_complementary_color(this_rgb_led, true);
+                INDICATOR_Q_MATRIX_SET_COLOR_LED(indicator_queue[i].led_index, alt);
             }
         }
     }
