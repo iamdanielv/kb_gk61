@@ -4,6 +4,7 @@
 #include QMK_KEYBOARD_H
 
 #include "features/indicator_queue.h"
+#include "features/fn_mode.h"
 
 enum layer_names {
     _WIN_LYR,     // 0
@@ -114,12 +115,7 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 // clang-format on
 
-// used to map number keys to Fn keys
-const uint16_t number_to_function[] PROGMEM = {
-    KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12
-};
-
-bool fn_mode = false;
+bool fn_mode_enabled = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
@@ -127,29 +123,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
-            fn_mode = !fn_mode;
-            blink_numbers(fn_mode);
+            fn_mode_enabled = !fn_mode_enabled;
+            blink_numbers(fn_mode_enabled);
         }
         return false;
     }
 
-    if (fn_mode) {
-        if ( ( keycode >= KC_1 && keycode <= KC_0 ) || keycode == KC_MINS || keycode == KC_EQL ) {
-            uint8_t index = keycode - KC_1;
-
-            // '-' and '=' are not in numerical order aligned with the numbers
-            // they need special handling
-            if (keycode == KC_MINS) { index = 10;}
-            else if (keycode == KC_EQL) { index = 11;}
-
-            if (record->event.pressed) {
-                register_code(pgm_read_word(&number_to_function[index]));
-            } else {
-                unregister_code(pgm_read_word(&number_to_function[index]));
-            }
-            return false;
-        }
-    }
+    if (!process_fn_mode(keycode, record)) { return false; }
 
     switch (keycode) {
         case QK_MAGIC_TOGGLE_NKRO:
@@ -248,6 +228,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         default:
             return true;
     }
+
+    return true;
 }
 
 
@@ -392,12 +374,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-    if(fn_mode){
+    if(fn_mode_enabled){
         highlight_fn_keys(led_min, led_max);
     }
 
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
-        if(!fn_mode){
+        if(!fn_mode_enabled){
             // we are not in fn_mode, but this layer also uses fn keys
             highlight_fn_keys(led_min, led_max);
         }
