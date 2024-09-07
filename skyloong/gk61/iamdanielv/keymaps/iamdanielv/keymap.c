@@ -550,7 +550,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             //50, // . = 50 RGB Increase Bright
             LEFT_CTL_KEY_INDEX // used for Fn Swap
         };
-
         for (int i = 0; i < 4; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
         }
@@ -563,9 +562,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         for (int i = 0; i < 4; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
         }
-
-        // light up the M key in white
-        RGB_MATRIX_INDICATOR_SET_COLOR(48, 0x80, 0x80, 0x80);
 
         // highlight Q as reset
         RGB_MATRIX_INDICATOR_SET_COLOR(15, 0xFF, 0x00, 0x00);
