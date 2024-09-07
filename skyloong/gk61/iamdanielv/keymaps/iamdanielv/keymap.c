@@ -212,7 +212,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_HUI:
             if (record->event.pressed) {
+                if ( rgb_matrix_get_hue() >= (255 - RGB_MATRIX_HUE_STEP)) {
+                    // this update would put us at max
+                    indicator_enqueue(23, 200, 4, INDICATOR_RGB_DARK_RED ); // O - HUI
+                    indicator_enqueue(22, 200, 2, RGB_BLACK );              // I - HUD
+                    indicator_enqueue(57, 200, 3, RGB_WHITE );              // blink space too
+                }
                 rgb_matrix_increase_hue_noeeprom();
+            }
+            return false;
+        case RGB_HUD:
+            if (record->event.pressed) {
+                if ( rgb_matrix_get_hue() <= RGB_MATRIX_HUE_STEP ) {
+                    // this update would put us at min
+                    indicator_enqueue(23, 200, 2, RGB_BLACK );              // O - HUI
+                    indicator_enqueue(22, 200, 4, INDICATOR_RGB_DARK_RED ); // I - HUD
+                    indicator_enqueue(57, 200, 3, RGB_WHITE );              // blink space too
+                }
+                rgb_matrix_decrease_hue_noeeprom();
             }
             return false;
         case RGB_SAI:
