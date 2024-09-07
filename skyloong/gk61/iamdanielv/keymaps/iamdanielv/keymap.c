@@ -152,12 +152,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     case LED_FLAG_ALL: {
                         rgb_matrix_set_flags_noeeprom(LED_FLAG_INDICATOR);
                         //rgb_matrix_set_color_all(0, 0, 0);
+                        indicator_enqueue(57, 200, 3, INDICATOR_RGB_DARK_RED );  // blink space too
+                        indicator_enqueue(55, 200, 3, INDICATOR_RGB_DARK_RED );  // blink left alt
+                        indicator_enqueue(60, 200, 3, INDICATOR_RGB_DARK_RED );  // blink right alt
                     } break;
                     default: {
                         HSV current_hsv = rgb_matrix_get_hsv();
                         RGB rgb = hsv_to_rgb(current_hsv);
                         rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
                         rgb_matrix_set_flags_noeeprom(LED_FLAG_ALL);
+                        indicator_enqueue(57, 200, 3, RGB_WHITE );  // blink space too
+                        indicator_enqueue(55, 200,  3, RGB_WHITE ); // blink left alt
+                        indicator_enqueue(60, 200, 3, RGB_WHITE );  // blink right alt
                     } break;
                 }
             }
