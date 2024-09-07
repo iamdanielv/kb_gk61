@@ -172,23 +172,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RGB_M_P:
             if (record->event.pressed) {
                 rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-            }
-            return false;
-        case RGB_VAI:
-            if (record->event.pressed) {
-                rgb_matrix_set_flags_noeeprom(LED_FLAG_ALL);
-                if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
-                    blink_arrows();
-                }
-                rgb_matrix_increase_val_noeeprom();
-            }
-            return false;
-        case RGB_VAD:
-            if (record->event.pressed) {
-                if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
-                    blink_arrows();
-                }
-                rgb_matrix_decrease_val_noeeprom();
+                indicator_enqueue(57, 200, 3, RGB_WHITE );  // blink space too
+                indicator_enqueue(55, 200, 3, RGB_WHITE );  // blink left alt
+                indicator_enqueue(60, 200, 3, RGB_WHITE );  // blink right alt
             }
             return false;
         case RGB_SPI:
