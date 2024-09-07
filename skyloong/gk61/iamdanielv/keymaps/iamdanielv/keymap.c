@@ -215,6 +215,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 rgb_matrix_increase_hue_noeeprom();
             }
             return false;
+        case RGB_SAI:
+            if (record->event.pressed) {
+                if ( rgb_matrix_get_sat() >= (255 - RGB_MATRIX_SAT_STEP)) {
+                    // this update would put us at max
+                    indicator_enqueue(37, 200, 4, INDICATOR_RGB_DARK_RED ); // L - SAI
+                    indicator_enqueue(36, 200, 2, RGB_BLACK );              // K - SAD
+                    indicator_enqueue(57, 200, 3, RGB_WHITE );              // blink space too
+                }
+                rgb_matrix_increase_sat_noeeprom();
+            }
+            return false;
+        case RGB_SAD:
+            if (record->event.pressed) {
+                if ( rgb_matrix_get_sat() <= RGB_MATRIX_SAT_STEP ) {
+                    // this update would put us at min
+                    indicator_enqueue(37, 200, 2, RGB_BLACK );              // L - SAI
+                    indicator_enqueue(36, 200, 4, INDICATOR_RGB_DARK_RED ); // K - SAD
+                    indicator_enqueue(57, 200, 3, RGB_WHITE );              // blink space too
+                }
+                rgb_matrix_decrease_sat_noeeprom();
+            }
+            return false;
         case RGB_VAI:
             if (record->event.pressed) {
                 if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
