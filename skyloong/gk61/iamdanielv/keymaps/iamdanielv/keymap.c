@@ -330,7 +330,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-
+// clang-format off
 /* LED Matrix
 * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
 * │Esc│ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │ 0 │ - │ = │Bsp│
@@ -349,6 +349,68 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 * │53 │54 │55 │   │56 │57 │58 │   │59 │60 │ 61│62 │   │63 │
 * └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 */
+// clang-format on
+
+/******************
+ * RGB Indicators *
+ ******************/
+void blink_numbers(bool isEnabling){
+    for( int i = 1; i <= 12; i++){ // 1(1) to EQL(12)
+        if(isEnabling){
+            // enabling, flash white
+            indicator_enqueue(i, 200, 3, RGB_WHITE);
+        } else {
+            // disabling, flash red
+            indicator_enqueue(i, 150, 4, RGB_RED);
+        }
+    }
+}
+
+void blink_arrows(void){
+    indicator_enqueue(61, 200, 3, RGB_WHITE );  // left
+    indicator_enqueue(62, 200, 3, RGB_WHITE );  // down
+    indicator_enqueue(52, 200, 3, RGB_WHITE );  // up
+    indicator_enqueue(63, 200, 3, RGB_WHITE );  // right
+}
+
+void blink_NKRO(bool isEnabling){
+    if(isEnabling){
+        const uint8_t led_indexes[12] = {
+            45, 46, 47, 48, 49, // V B N M ,
+            33, 34, 35, 36, // G H J K
+            20, 21, 22 // Y U I
+        };
+
+        for (int i = 0; i < 12; i++) {
+            indicator_enqueue(led_indexes[i], 200, 3, RGB_WHITE );
+        }
+    }
+    else {
+        const uint8_t led_indexes[4] = {
+            46, 48, // B M
+            34, 35  // H J
+        };
+
+        for (int i = 0; i < 4; i++) {
+            indicator_enqueue(led_indexes[i], 150, 3, RGB_RED );
+        }
+    }
+}
+
+void highlight_fn_keys(uint8_t led_min, uint8_t led_max)
+{
+    // get the current hsv value
+    HSV current_hsv = rgb_matrix_get_hsv();
+    // maximize brightness
+    current_hsv.v = 255;
+
+    rgb_led_t rgb = hsv_to_rgb(current_hsv);
+    rgb_led_t new_rgb = get_complementary_color(rgb, false);
+    for( int i = 1; i <= 12; i++){ // 1 to EQL(12)
+        RGB_MATRIX_INDICATOR_SET_COLOR(i, new_rgb.r, new_rgb.g, new_rgb.b);
+    }
+}
+
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     uint8_t current_layer = get_highest_layer(layer_state);
@@ -363,14 +425,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_WIN_FN_LYR) ||
-        //IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
+        // IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
         IS_LAYER_ON(_NUM_LYR) ||
         IS_LAYER_ON(_NAV_LYR) ||
         IS_LAYER_ON(_FN_LYR)) {
         // we are in a custom layer, clear all background colors
         // this will make our custom colors stand out more
-        for (int i = led_min; i < led_max; i++) {
-            rgb_matrix_set_color(i, 0, 0, 0);
+        for (int i = led_min; i <= led_max; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
         }
     }
 
@@ -401,6 +463,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         for (int i = 0; i < 9; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
         }
+
+        // highlight right shift as moving to ctl layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(52, 0, 255, 255);
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
@@ -518,59 +583,3 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     return true;
 }
 
-void blink_arrows(void){
-    indicator_enqueue(52, 200, 3, RGB_WHITE );  // up
-    indicator_enqueue(61, 200, 3, RGB_WHITE );  // left
-    indicator_enqueue(62, 200, 3, RGB_WHITE );  // down
-    indicator_enqueue(63, 200, 3, RGB_WHITE );  // right
-}
-
-void blink_NKRO(bool isEnabling){
-    if(isEnabling){
-        const uint8_t led_indexes[12] = {
-            45, 46, 47, 48, 49, // V B N M ,
-            33, 34, 35, 36, // G H J K
-            20, 21, 22 // Y U I
-        };
-
-        for (int i = 0; i < 12; i++) {
-            indicator_enqueue(led_indexes[i], 200, 3, RGB_WHITE );
-        }
-    }
-    else {
-        const uint8_t led_indexes[4] = {
-            46, 48, // B M
-            34, 35  // H J
-        };
-
-        for (int i = 0; i < 4; i++) {
-            indicator_enqueue(led_indexes[i], 150, 3, RGB_RED );
-        }
-    }
-}
-
-void blink_numbers(bool isEnabling){
-    for( int i = 1; i <= 12; i++){ // 1(1) to EQL(12)
-        if(isEnabling){
-            // enabling, flash white
-            indicator_enqueue(i, 200, 3, RGB_WHITE);
-        } else {
-            // disabling, flash red
-            indicator_enqueue(i, 150, 4, RGB_RED);
-        }
-    }
-}
-
-void highlight_fn_keys(uint8_t led_min, uint8_t led_max)
-{
-    // get the current hsv value
-    HSV current_hsv = rgb_matrix_get_hsv();
-    // maximize brightness
-    current_hsv.v = 255;
-
-    rgb_led_t rgb = hsv_to_rgb(current_hsv);
-    rgb_led_t new_rgb = get_complementary_color(rgb, false);
-    for( int i = 55; i >= 44; i--){ // 55 - 44 are the number keys and - =
-        RGB_MATRIX_INDICATOR_SET_COLOR(i, new_rgb.r, new_rgb.g, new_rgb.b);
-    }
-}
