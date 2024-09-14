@@ -1,4 +1,4 @@
-# Custom firmware for skyloong GK61
+# Skyloong GK61 - 🚧 Custom QMK firmware
 
 I bought this keyboard from amazon:
 [skyloong New GK61](https://www.amazon.ca/dp/B0CQD2YL32?ref=ppx_yo2ov_dt_b_product_details&th=1)
@@ -6,6 +6,16 @@ I bought this keyboard from amazon:
 but when I tried to write a custom firmware I wasn't able to get the provided source to work on my keyboard.
 
 Turns out mine is not exactly a [pro 48](https://github.com/NaturalZh/qmk_firmware07072023/tree/gk61_pro_48_v202/keyboards/skyloong/gk61/pro_48) or a [pro_ds](http://github.com/NaturalZh/qmk_firmware07072023/tree/gk61_pro_ds/keyboards/skyloong/gk61/pro_ds) but something in the middle.
+
+## ⚠️ Disclaimer
+> [!CAUTION]
+> This is a custom firmware that could break your keyboard.
+>
+> 🛑 **Use at your own risk!** 🛑
+> 
+> I have tried my best to make sure everything works, but I may miss something.
+>
+> It works for my keyboard, but there may be revisions in the future that are not compatible. Use at your own risk!
 
 ## Smushing
 
