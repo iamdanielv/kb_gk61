@@ -28,13 +28,13 @@ called `iamdanielv` that can be added to the repo without breaking anything.
 
 Copy the folder structure from `skyloong\gk61\iamdanielv` into the qmk repo `keyboard` directory.
 
-## New Keymap
+## ⌨️ New Keymap
 
 I left the `default` and `via` keymaps, just updated a little bit to match my keyboard.
 
 I created a **new keymap** `iamdanielv` that enables via, function keys, navigation, a num pad and layer for RGB / Keyboard management.
 
-## Compiling
+## 🖥️ Compiling
 
 You can now use QMK builder with the following command:
 
@@ -48,10 +48,11 @@ qmk should generate a new bin file: `skyloong_gk61_iamdanielv_iamdanielv.bin` in
 
 For me it was: `C:\Users\<USER>\qmk_firmware\skyloong_gk61_iamdanielv_iamdanielv.bin`
 
-## Using via
+## 🌐 Using via
+
 In order to use via, you may have to upload the json specification, it can be found under the `extras` folder.
 
-## Conclusion and Next Steps
+## 🎉 Conclusion and Next Steps
 
 **That's it!** You now should be able to flash that firmware using qmk toolbox.
 
