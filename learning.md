@@ -1,6 +1,6 @@
 # Things I have learned and interesting links
 
-## Layers
+## ⌨️ Layers
 
 I mostly use Linux and Windows for development and since I had a limited number of layers,
 I removed the Mac layers in favor of adding other layers to better suit my needs.
@@ -157,7 +157,7 @@ The function layer also lets you toggle on the Navigation, Number and Control la
 
 ---
 
-## Safe keyboard reset and eeprom clear
+## 🥾 Safe keyboard reset and eeprom clear
 
 I wanted to have the Keyboard reset for flashing from a key press,
 but didn't want to accidentally trigger it.
@@ -174,14 +174,15 @@ To **clear the eeprom**, tap the z key at least 3 times after enabling the contr
 
 ---
 
-## Things to consider
+## 🤔 Things to consider
 
 - [SpaceFn](https://kbd.news/The-SpaceFN-concept-2315.html)
 - [Changing Tap and Hold - re-using LT(0,KC_)](https://docs.qmk.fm/mod_tap#changing-both-tap-and-hold)
+- [Ergonomic Mods - Extend](https://colemakmods.github.io/ergonomic-mods/extend.html)
 
 ---
 
-## Links
+## 🔗 Links
 
 - [Thomas Baart](https://thomasbaart.nl/) or [microblog](https://micro.thomasbaart.nl/) 
 - [KBD News](https://kbd.news/)
