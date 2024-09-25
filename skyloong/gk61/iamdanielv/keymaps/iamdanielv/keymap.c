@@ -505,35 +505,22 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
-	// this layerr has many functions, so just change the whole color 
+	    // this layer has many functions, so just change the whole color
         for (int i = led_min; i <= led_max; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(i, 0xFF, 0x80, 0x00);
         }
 
-        if(!fn_mode_enabled){
-            // we are not in fn_mode, but this layer also uses fn keys
-            highlight_fn_keys(led_min, led_max);
-        }
-
-        /* removed for now since we are just changing the entire color of the layer
-	    const uint8_t led_indexes[2] = {
-            CAPS_LOCK_INDEX,     // use the caps lock as indicator
-            RIGHT_ALT_KEY_INDEX, // use right alt as indicator
-        };
-
-        for (int i = 0; i < 2; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
-        }
-        */
+        // no matter what, this layer also uses fn keys
+        highlight_fn_keys(led_min, led_max);
 
         // highlight right shift as moving to ctl layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(52, 0, 255, 255);
+        RGB_MATRIX_INDICATOR_SET_COLOR(52, 0x7A, 0x00, 0xFF);
 
         //highlight the fn button
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, 128, 128, 128);
 
         // highlight the toggle buttons
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, 0, 255, 255);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, 0x7A, 0x00, 0xFF);
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KEY_INDEX, 0, 255, 0);
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KEY_INDEX, 0, 0, 255);
 
@@ -562,7 +549,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             LEFT_CTL_KEY_INDEX // used for Fn Swap
         };
         for (int i = 0; i < 4; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0x7A, 0x00, 0xFF);
         }
 
         const uint8_t led_off_indexes[4] = {
@@ -631,7 +618,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, 128, 128, 128);
 
         // highlight the toggle buttons
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, 0, 255, 255);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, 0x7A, 0x00, 0xFF);
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KEY_INDEX, 0, 255, 0);
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KEY_INDEX, 0, 0, 255);
 
