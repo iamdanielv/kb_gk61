@@ -505,7 +505,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
-	    // this layer has many functions, so just change the whole color
+        // this layer has many functions, so just change the whole color
         for (int i = led_min; i <= led_max; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(i, 0xFF, 0x80, 0x00);
         }
@@ -616,6 +616,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (IS_LAYER_ON(_FN_LYR)) {
         //highlight the fn button
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, 128, 128, 128);
+
+        // highlight right shift as moving to ctl layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(52, 0x7A, 0x00, 0xFF);
 
         // highlight the toggle buttons
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, 0x7A, 0x00, 0xFF);
