@@ -505,31 +505,38 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
+	// this layerr has many functions, so just change the whole color 
+        for (int i = led_min; i <= led_max; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0xFF, 0x80, 0x00);
+        }
+
         if(!fn_mode_enabled){
             // we are not in fn_mode, but this layer also uses fn keys
             highlight_fn_keys(led_min, led_max);
         }
 
-        const uint8_t led_indexes[9] = {
+        /* removed for now since we are just changing the entire color of the layer
+	    const uint8_t led_indexes[2] = {
             CAPS_LOCK_INDEX,     // use the caps lock as indicator
             RIGHT_ALT_KEY_INDEX, // use right alt as indicator
-
-            // right side cluster
-            24, // p = 24 PS
-            25, // [ = 25 SL
-            26, // ] = 26 PA
-            38, // ; = 38 HM
-            39, // ' = 39 END
-            49, // , = 49 PgDn
-            50  // . = 50 PgUp
         };
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 2; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
         }
+        */
 
         // highlight right shift as moving to ctl layer
         RGB_MATRIX_INDICATOR_SET_COLOR(52, 0, 255, 255);
+
+        //highlight the fn button
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, 128, 128, 128);
+
+        // highlight the toggle buttons
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, 0, 255, 255);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KEY_INDEX, 0, 255, 0);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KEY_INDEX, 0, 0, 255);
+
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
