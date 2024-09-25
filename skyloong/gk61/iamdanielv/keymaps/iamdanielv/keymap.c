@@ -569,23 +569,18 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
-        const uint8_t led_indexes[9] = {
+        const uint8_t led_indexes[20] = {
             RIGHT_MENU_KEY_INDEX, // use the Right Menu key as indicator
 
-            //  Light up around the numpad to make it easier to see
-            //  left side
+            //  Light up the numpad to make it easier to see
             6,  // 6 = 6 is used as numlock and starts the numpad
-            20, // y = 20 is first key to left, acting as border
-            34, // h = 34
-            47, // n = 47
-            // right side
-            10, // 0 = 10
-            24, // p = 24
-            38, // ; = 38
-            51  // / = 51
+            7,  8,  9,  10, 11, 12, // 7, 8, 9, 0 = 7, 8, 9, Asterisk, minus, equals
+            21, 22, 23, 24, // U, I, O, P = 4, 5, 6, Plus
+            35, 36, 37, 38, // J, K, L, ; = 1, 2, 3, Enter
+            48, 49, 50, 51  // N, M, ,, . = 0, dot, dot, slash
         };
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 20; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 0);
         }
     }
