@@ -303,6 +303,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #define MY_CUT    C(KC_X)
 #define MY_COPY   C(KC_INS)
 #define MY_PASTE  S(KC_INS)
+#define MY_TASK   LCTL(LSFT(KC_ESC))
+#define MY_CONS   LCTL(LSFT(KC_GRV))
+#define MY_BACK   A(KC_LEFT)
+#define MY_FWD    A(KC_RIGHT)
 
 #define FN_LEFT   LT(_FN_LYR, KC_LEFT)
 #define APP_DWN   TD(_DN_MU)
@@ -354,10 +358,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_WIN_FN_LYR] = LAYOUT_all(        // 1
        KC_GRV,    KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,     KC_F6,     KC_F7,     KC_F8,     KC_F9,     KC_F10,   KC_F11,   KC_F12,   KC_DEL,
-       KC_GRV,    KC_HOME,   KC_UP,     KC_END,    C(KC_R),   KC_PGUP,   _______,   _______,   _______,   _______,   KC_PSCR,  KC_SCRL,  KC_PAUS,  _______,
-       _______,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  C(KC_F),   KC_PGDN,   _______,   _______,   _______,   _______,   KC_HOME,  KC_END,             _______,
-       _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    _______,   _______,   KC_PGDN,   KC_PGUP,   _______,            KC_UP,
-       _______,   _______,   _______,              _______,   _______,   _______,              _______,   _______,   KC_LEFT,  KC_DOWN,            KC_RGHT
+       KC_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   _______,   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_PSCR,  KC_SCRL,  KC_PAUS,  KC_INS,
+       _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   _______,   KC_PGDN,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  KC_HOME,  KC_END,             _______,
+       _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    _______,   _______,   MY_BACK,   MY_FWD,    _______,            MO_CTL,
+       _______,   _______,   _______,              _______,   _______,   _______,              _______,   TG_NAV,    _______,  TG_NUM,             TD_TG_CTL
     ),
     [_CTL_LYR] = LAYOUT_all(            // 2
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,
