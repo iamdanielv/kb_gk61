@@ -20,6 +20,40 @@ void blink_NKRO(bool);
 void blink_numbers(bool);
 void highlight_fn_keys(uint8_t led_min, uint8_t led_max);
 
+
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+const key_override_t vol_up_override = ko_make_with_layers_negmods_and_options(MOD_MASK_GUI, KC_PGUP,
+											KC_VOLU, ~0,
+                                             MOD_MASK_SA, ko_option_no_reregister_trigger);
+
+const key_override_t vol_down_override = ko_make_with_layers_negmods_and_options(MOD_MASK_GUI, KC_PGDN,
+											KC_VOLD, ~0,
+                                             MOD_MASK_SA, ko_option_no_reregister_trigger);
+
+const key_override_t vol_up_override2 = ko_make_with_layers_negmods_and_options(MOD_MASK_GUI, KC_F12,
+											KC_VOLU, ~0,
+                                             MOD_MASK_SA, ko_option_no_reregister_trigger);
+
+const key_override_t vol_down_override2 = ko_make_with_layers_negmods_and_options(MOD_MASK_GUI, KC_F11,
+											KC_VOLD, ~0,
+                                             MOD_MASK_SA, ko_option_no_reregister_trigger);
+
+const key_override_t vol_mute_override = ko_make_with_layers_negmods_and_options(MOD_MASK_GUI, KC_F10,
+											KC_MUTE, ~0,
+                                             MOD_MASK_SA, ko_option_no_reregister_trigger);
+
+// This globally defines all key overrides to be used
+const key_override_t *key_overrides[] = {
+	&delete_key_override,
+    &vol_up_override,
+    &vol_down_override,
+    &vol_up_override2,
+    &vol_down_override2,
+    &vol_mute_override
+};
+
+
+
 // ***********************
 // * Keyboard Management *
 // ***********************
