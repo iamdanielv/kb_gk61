@@ -139,6 +139,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     if(record->tap.count == 1){
                         register_code16(KC_GRV);
                     } else if(record->tap.count == 2) {
+                        // this is the 2nd tap,
+                        // but we already did something on the 1st tap
+                        // delete the previous key
+                        tap_code(KC_BSPC);
                         register_code16(KC_TILD);
                     }
                 } else {
