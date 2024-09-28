@@ -182,7 +182,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             7,  8,  9,  10, 11, 12, // 7, 8, 9, 0 = 7, 8, 9, Asterisk, minus, equals
             21, 22, 23, 24, // U, I, O, P = 4, 5, 6, Plus
             35, 36, 37, 38, // J, K, L, ; = 1, 2, 3, Enter
-            48, 49, 50, 51  // N, M, ,, . = 0, dot, dot, slash
+            48, 49, 50, 51  // M, ,, ., / = 0, dot, dot, slash
         };
 
         for (int i = 0; i < 20; i++) {
