@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
+// imports from QMK
+#include "process_tap_dance.h"
+#include "color.h"
+#include "quantum.h"
 
 #include "features/indicator_queue.h"
 #include "features/fn_mode.h"
