@@ -14,13 +14,10 @@
 #include "features/indicators.h"
 #include "features/rgb_keys.h"
 
-
 // *****************************
 // * Custom processing of keys *
 // *****************************
-enum custom_keycodes {
-    KC_SWP_FN = SAFE_RANGE
-};
+enum custom_keycodes { KC_SWP_FN = SAFE_RANGE };
 
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
@@ -94,16 +91,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
     tap_dance_action_t *action;
 
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
             blink_numbers(fn_mode_enabled);
-            indicator_enqueue(57, 200, 3, RGB_WHITE );  // blink space too
-            indicator_enqueue(55, 200, 3, RGB_BLACK );  // blink left alt
-            indicator_enqueue(60, 200, 3, RGB_BLACK );  // blink right alt
+            indicator_enqueue(57, 200, 3, RGB_WHITE); // blink space too
+            indicator_enqueue(55, 200, 3, RGB_BLACK); // blink left alt
+            indicator_enqueue(60, 200, 3, RGB_BLACK); // blink right alt
         }
         return false;
     }
@@ -133,12 +129,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case MY_GRV:
-            if (record->tap.count > 0) {    // Key is being tapped.
+            if (record->tap.count > 0) { // Key is being tapped
                 if (record->event.pressed) {
                     // Handle tap press event...
-                    if(record->tap.count == 1){
+                    if (record->tap.count == 1) {
                         register_code16(KC_GRV);
-                    } else if(record->tap.count == 2) {
+                    } else if (record->tap.count == 2) {
                         // this is the 2nd tap,
                         // but we already did something on the 1st tap
                         // delete the previous key
@@ -147,13 +143,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     }
                 } else {
                     // Handle tap release event...
-                    if(record->tap.count == 1){
+                    if (record->tap.count == 1) {
                         unregister_code16(KC_GRV);
-                    } else if(record->tap.count == 2) {
+                    } else if (record->tap.count == 2) {
                         unregister_code16(KC_TILD);
                     }
                 }
-            } else {                        // Key is being held.
+            } else { // Key is being held
                 if (record->event.pressed) {
                     // Handle hold press event...
                     // send backticks to start a code block
@@ -162,11 +158,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code(KC_LEFT);
                     tap_code(KC_LEFT);
                     tap_code(KC_LEFT);
-                } //else {
-                    // Handle hold release event...
-                //}
+                }
             }
-            return false;  // we handled all cases, stop further processing
+            return false; // we handled all cases, stop further processing
         default:
             return true;
     }
@@ -176,13 +170,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     // to use this, make sure to put:
-    //#define TAPPING_TERM_PER_KEY in config.h
+    // #define TAPPING_TERM_PER_KEY in config.h
     switch (keycode) {
         case RSFT_UP:
-            //return TAPPING_TERM - 80; //right shift hold time less than default tapping term 80ms
+            // return TAPPING_TERM - 80; //right shift hold time less than default tapping term 80ms
             return 115;
         default:
             return TAPPING_TERM;
     }
 }
-

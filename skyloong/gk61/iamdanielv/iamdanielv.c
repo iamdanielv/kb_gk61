@@ -95,7 +95,6 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
     return false;
 }
 
-
 void suspend_power_down_kb(void) {
     gpio_write_pin_low(IS31FL3743A_SDB_PIN);
     suspend_power_down_user();

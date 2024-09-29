@@ -5,7 +5,6 @@
 #define ACTION_TAP_DANCE_TAP_HOLD(on_tap, on_hold) \
     { .fn = {NULL, td_tap_hold_finished, td_tap_hold_reset}, .user_data = (void *)&((td_tap_hold_t){on_tap, on_hold, 0}), }
 
-
 enum tap_hold_keys {
     _DN_MU,   // Tap--KC_DOWN  and  Hold--KC_APP
     TD_RESET, // require 3 taps to reset board
@@ -19,7 +18,6 @@ typedef struct {
     uint16_t chosen;  // key to "release" when finished
                       // the value for it is set in td_tap_hold_finished
 } td_tap_hold_t;
-
 
 void td_tap_hold_finished(tap_dance_state_t *state, void *user_data);
 
