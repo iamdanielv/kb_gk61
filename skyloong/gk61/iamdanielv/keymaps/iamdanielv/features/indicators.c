@@ -24,9 +24,9 @@
 */
 // clang-format on
 
-void blink_numbers(bool isEnabling){
-    for( int i = 1; i <= 12; i++){ // 1(1) to EQL(12)
-        if(isEnabling){
+void blink_numbers(bool isEnabling) {
+    for (int i = 1; i <= 12; i++) { // 1(1) to EQL(12)
+        if (isEnabling) {
             // enabling, flash white
             indicator_enqueue(i, 200, 3, RGB_WHITE);
         } else {
@@ -36,38 +36,37 @@ void blink_numbers(bool isEnabling){
     }
 }
 
-void blink_arrows(void){
-    indicator_enqueue(61, 200, 3, RGB_WHITE );  // left
-    indicator_enqueue(62, 200, 3, RGB_WHITE );  // down
-    indicator_enqueue(52, 200, 3, RGB_WHITE );  // up
-    indicator_enqueue(63, 200, 3, RGB_WHITE );  // right
+void blink_arrows(void) {
+    indicator_enqueue(61, 200, 3, RGB_WHITE); // left
+    indicator_enqueue(62, 200, 3, RGB_WHITE); // down
+    indicator_enqueue(52, 200, 3, RGB_WHITE); // up
+    indicator_enqueue(63, 200, 3, RGB_WHITE); // right
 }
 
-void blink_NKRO(bool isEnabling){
-    if(isEnabling){
+void blink_NKRO(bool isEnabling) {
+    if (isEnabling) {
         const uint8_t led_indexes[12] = {
             45, 46, 47, 48, 49, // V B N M ,
-            33, 34, 35, 36, // G H J K
-            20, 21, 22 // Y U I
+            33, 34, 35, 36,     // G H J K
+            20, 21, 22          // Y U I
         };
 
         for (int i = 0; i < 12; i++) {
-            indicator_enqueue(led_indexes[i], 200, 3, RGB_WHITE );
+            indicator_enqueue(led_indexes[i], 200, 3, RGB_WHITE);
         }
-    }
-    else {
+    } else {
         const uint8_t led_indexes[4] = {
             46, 48, // B M
             34, 35  // H J
         };
 
         for (int i = 0; i < 4; i++) {
-            indicator_enqueue(led_indexes[i], 150, 3, RGB_RED );
+            indicator_enqueue(led_indexes[i], 150, 3, RGB_RED);
         }
     }
 }
 
-void highlight_fn_keys(uint8_t led_min, uint8_t led_max){
+void highlight_fn_keys(uint8_t led_min, uint8_t led_max) {
     // get the current hsv value
     HSV current_hsv = rgb_matrix_get_hsv();
     // maximize brightness
@@ -75,21 +74,19 @@ void highlight_fn_keys(uint8_t led_min, uint8_t led_max){
 
     rgb_led_t rgb = hsv_to_rgb(current_hsv);
     rgb_led_t new_rgb = get_complementary_color(rgb, false);
-    for( int i = 1; i <= 12; i++){ // 1 to EQL(12)
+    for (int i = 1; i <= 12; i++) { // 1 to EQL(12)
         RGB_MATRIX_INDICATOR_SET_COLOR(i, new_rgb.r, new_rgb.g, new_rgb.b);
     }
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-
     uint8_t current_layer = get_highest_layer(layer_state);
-    if(current_layer == _WIN_LYR)
-    {
+    if (current_layer == _WIN_LYR) {
         if (rgb_matrix_get_flags() == LED_FLAG_INDICATOR) {
             for (int i = led_min; i < led_max; i++) {
                 rgb_matrix_set_color(i, 0, 0, 0);
             }
-            //rgb_matrix_set_color_all(0, 0, 0);
+            // rgb_matrix_set_color_all(0, 0, 0);
         }
     }
 
@@ -105,7 +102,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-    if(fn_mode_enabled){
+    if (fn_mode_enabled) {
         highlight_fn_keys(led_min, led_max);
     }
 
@@ -121,14 +118,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // highlight right shift as moving to ctl layer
         RGB_MATRIX_INDICATOR_SET_COLOR(52, 0x7A, 0x00, 0xFF);
 
-        //highlight the fn button
+        // highlight the fn button
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, 128, 128, 128);
 
         // highlight the toggle buttons
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, 0x7A, 0x00, 0xFF);
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KEY_INDEX, 0, 255, 0);
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KEY_INDEX, 0, 0, 255);
-
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
@@ -140,17 +136,17 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
             // RGB Control
             24, // p = 24 for persistent color
-            //25, // [ = 25 RGB_RMOD
-            //26, // ] = 26 RGB_MOD
-            //27, // \ = 27 RGB Toggle
+            // 25, // [ = 25 RGB_RMOD
+            // 26, // ] = 26 RGB_MOD
+            // 27, // \ = 27 RGB Toggle
 
-            //38, // ; = 38 RGB Speed Down
-            //39, // ' = 39 RGB Speed Up
+            // 38, // ; = 38 RGB Speed Down
+            // 39, // ' = 39 RGB Speed Up
 
             47, // n = 47 NKR toggle
-            //48, // m = 48 RGB Hue Increase
-            //49, // , = 49 RGB Decrease Bright
-            //50, // . = 50 RGB Increase Bright
+            // 48, // m = 48 RGB Hue Increase
+            // 49, // , = 49 RGB Decrease Bright
+            // 50, // . = 50 RGB Increase Bright
             LEFT_CTL_KEY_INDEX // used for Fn Swap
         };
         for (int i = 0; i < 4; i++) {
@@ -159,7 +155,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         const uint8_t led_off_indexes[4] = {
             // turn off some of the LEDS to make it easier to see our indicators
-            29, // A
+            29,         // A
             14, 28, 41, // TAB, CAPS, LSFT
         };
         for (int i = 0; i < 4; i++) {
@@ -178,11 +174,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RIGHT_MENU_KEY_INDEX, // use the Right Menu key as indicator
 
             //  Light up the numpad to make it easier to see
-            6,  // 6 = 6 is used as numlock and starts the numpad
+            6,                      // 6 = 6 is used as numlock and starts the numpad
             7,  8,  9,  10, 11, 12, // 7, 8, 9, 0 = 7, 8, 9, Asterisk, minus, equals
-            21, 22, 23, 24, // U, I, O, P = 4, 5, 6, Plus
-            35, 36, 37, 38, // J, K, L, ; = 1, 2, 3, Enter
-            48, 49, 50, 51  // M, ,, ., / = 0, dot, dot, slash
+            21, 22, 23, 24,         // U, I, O, P = 4, 5, 6, Plus
+            35, 36, 37, 38,         // J, K, L, ; = 1, 2, 3, Enter
+            48, 49, 50, 51          // M, ,, ., / = 0, dot, dot, slash
         };
 
         for (int i = 0; i < 20; i++) {
@@ -214,7 +210,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_FN_LYR)) {
-        //highlight the fn button
+        // highlight the fn button
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, 128, 128, 128);
 
         // highlight right shift as moving to ctl layer
@@ -227,7 +223,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // highlight the aux buttons on right of keyboard
         const uint8_t led_indexes[7] = {
-            7, 8,9,10,11,12,13, // first row for media keys
+            7, 8, 9, 10, 11, 12, 13, // first row for media keys
         };
 
         for (int i = 0; i < 7; i++) {
