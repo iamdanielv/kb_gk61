@@ -56,4 +56,4 @@ In order to use via, you may have to upload the json specification, it can be fo
 
 **That's it!** You now should be able to flash that firmware using qmk toolbox.
 
-Let me know if you have any questions. I can be reached at [@IAmDanielV](https://twitter.com/IAmDanielV).
+Let me know if you have any questions. I can be reached at [@IAmDanielV](https://twitter.com/IAmDanielV) or [@iamdanielv.bsky.social](https://bsky.app/profile/iamdanielv.bsky.social).
