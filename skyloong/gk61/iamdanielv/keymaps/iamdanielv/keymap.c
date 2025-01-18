@@ -57,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        MY_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   _______,   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_PSCR,  KC_SCRL,  KC_PAUS,  KC_INS,
        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   _______,   KC_PGDN,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  KC_HOME,  KC_END,             _______,
        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    _______,   _______,   MY_BACK,   MY_FWD,    _______,            MO_CTL,
-       _______,   _______,   _______,              _______,   _______,   _______,              _______,   TG_NAV,    _______,  TG_NUM,             TD_TG_CTL
+       _______,   QK_LLCK,   _______,              _______,   _______,   _______,              _______,   TG_NAV,    _______,  TG_NUM,             TD_TG_CTL
     ),
     [_CTL_LYR] = LAYOUT_all(            // 2
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,
