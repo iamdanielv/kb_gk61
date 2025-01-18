@@ -190,14 +190,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    // to use this, make sure to put:
-    // #define TAPPING_TERM_PER_KEY in config.h
-    switch (keycode) {
-        case RSFT_UP:
-            // return TAPPING_TERM - 80; //right shift hold time less than default tapping term 80ms
-            return 115;
-        default:
-            return TAPPING_TERM;
-    }
-}

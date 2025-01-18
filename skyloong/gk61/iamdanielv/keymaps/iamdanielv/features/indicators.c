@@ -125,7 +125,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             for (int i = led_min; i < led_max; i++) {
                 rgb_matrix_set_color(i, 0, 0, 0);
             }
-            // rgb_matrix_set_color_all(0, 0, 0);
         }
     }
 
@@ -185,9 +184,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
-        // #define CAPS_LOCK_INDEX 28
-        // #define WIN_MOD_INDEX 16
-        // #define MAC_MOD_INDEX 17
         const uint8_t led_indexes[4] = {
             RIGHT_CTL_KEY_INDEX, // use the right ctl key as indicator
 
