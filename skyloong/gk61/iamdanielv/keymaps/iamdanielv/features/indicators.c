@@ -24,6 +24,44 @@
 */
 // clang-format on
 
+rgb_t get_complementary_color(rgb_t rgb_led, bool darken) {
+    uint8_t new_r = 0xFF - rgb_led.r;
+    uint8_t new_g = 0xFF - rgb_led.g;
+    uint8_t new_b = 0xFF - rgb_led.b;
+
+    if (darken) {
+        // darken the new color by shifting all values down
+        if( new_r > 0x80) { new_r = new_r - 0x80;}
+        if( new_g > 0x80) { new_g = new_g - 0x80;}
+        if( new_b > 0x80) { new_b = new_b - 0x80;}
+    }
+
+    return (rgb_t){.r = new_r, .g = new_g, .b = new_b};
+}
+
+hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
+        // get the current base hsv value
+        hsv_t current_hsv = rgb_matrix_get_hsv();
+
+        // maximize brightness
+        current_hsv.v = 255;
+        // offset hue by a quarter
+        if(clockwise){
+            if(current_hsv.h > 64){
+                current_hsv.h = current_hsv.h - 64;
+            } else {
+                current_hsv.h = 255 - current_hsv.h;
+            }
+        } else {
+            if(current_hsv.h < 191){
+                current_hsv.h = current_hsv.h + 64;
+            } else {
+                current_hsv.h = current_hsv.h - 191;
+            }
+        }
+        return current_hsv;
+}
+
 void blink_numbers(bool isEnabling) {
     for (int i = 1; i <= 12; i++) { // 1(1) to EQL(12)
         if (isEnabling) {

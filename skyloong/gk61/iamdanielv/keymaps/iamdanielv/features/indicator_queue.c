@@ -1,19 +1,5 @@
 #include "indicator_queue.h"
-
-rgb_t get_complementary_color(rgb_t rgb_led, bool darken) {
-    uint8_t new_r = 0xFF - rgb_led.r;
-    uint8_t new_g = 0xFF - rgb_led.g;
-    uint8_t new_b = 0xFF - rgb_led.b;
-
-    if (darken) {
-        // darken the new color by shifting all values down
-        if( new_r > 0x80) { new_r = new_r - 0x80;}
-        if( new_g > 0x80) { new_g = new_g - 0x80;}
-        if( new_b > 0x80) { new_b = new_b - 0x80;}
-    }
-
-    return (rgb_t){.r = new_r, .g = new_g, .b = new_b};
-}
+#include "indicators.h"
 
 void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_flash, uint8_t r, uint8_t g, uint8_t b) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
