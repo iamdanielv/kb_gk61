@@ -91,11 +91,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
+    // clear out all the colors
     if (IS_LAYER_ON(_WIN_FN_LYR) ||
         // IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
         IS_LAYER_ON(_NUM_LYR) ||
-        IS_LAYER_ON(_NAV_LYR) ||
-        IS_LAYER_ON(_FN_LYR)) {
+        IS_LAYER_ON(_NAV_LYR)
+        //|| IS_LAYER_ON(_FN_LYR)) //ignore the fn layer
+    ){
         // we are in a custom layer, clear all background colors
         // this will make our custom colors stand out more
         for (int i = led_min; i <= led_max; i++) {
@@ -119,8 +121,24 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // highlight right shift as moving to ctl layer
         RGB_MATRIX_INDICATOR_SET_COLOR(52, 0x7A, 0x00, 0xFF);
 
-        // highlight the fn button
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, 128, 128, 128);
+        // find a contrasting color to highlight features of this layer
+        hsv_t current_hsv = rgb_matrix_get_hsv();
+        // maximize brightness
+        current_hsv.v = 255;
+        rgb_t new_rgb = hsv_to_rgb(current_hsv);
+
+        //highlight the arrow keys
+        RGB_MATRIX_INDICATOR_SET_COLOR(22, new_rgb.r, new_rgb.g, new_rgb.b); // up - I
+        RGB_MATRIX_INDICATOR_SET_COLOR(35, new_rgb.r, new_rgb.g, new_rgb.b); // left - J
+        RGB_MATRIX_INDICATOR_SET_COLOR(36, new_rgb.r, new_rgb.g, new_rgb.b); // down - K
+        RGB_MATRIX_INDICATOR_SET_COLOR(37, new_rgb.r, new_rgb.g, new_rgb.b); // right - L
+
+        // higlight the f key to show home row
+        RGB_MATRIX_INDICATOR_SET_COLOR(32, new_rgb.r, new_rgb.g, new_rgb.b); // f key
+
+        // layer lock key
+        //RGB_MATRIX_INDICATOR_SET_COLOR(41, 0xFF,0x00, 0x00); //left shift
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KEY_INDEX, 0xFF,0x00, 0x00); // left GUI/win
 
         // highlight the toggle buttons
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, 0x7A, 0x00, 0xFF);
