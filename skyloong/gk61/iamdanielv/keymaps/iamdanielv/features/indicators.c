@@ -63,26 +63,26 @@ hsv_t get_base_hsv_color_shifted(bool clockwise) {
 }
 
 hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
-        // get the current base hsv value
-        hsv_t current_hsv = rgb_matrix_get_hsv();
+    // get the current base hsv value
+    hsv_t base_color = rgb_matrix_get_hsv();
 
-        // maximize brightness
-        current_hsv.v = 255;
-        // offset hue by a quarter
-        if(clockwise){
-            if(current_hsv.h > 64){
-                current_hsv.h = current_hsv.h - 64;
-            } else {
-                current_hsv.h = 255 - current_hsv.h;
-            }
+    // maximize brightness
+    base_color.v = 255;
+    //offset hue by a quarter
+    if(clockwise){
+        if(base_color.h > 64){
+            base_color.h = base_color.h - 64;
         } else {
-            if(current_hsv.h < 191){
-                current_hsv.h = current_hsv.h + 64;
-            } else {
-                current_hsv.h = current_hsv.h - 191;
-            }
+            base_color.h = 255 - base_color.h;
         }
-        return current_hsv;
+    } else {
+        if(base_color.h < 191){
+            base_color.h = base_color.h + 64;
+        } else {
+            base_color.h = base_color.h - 191;
+        }
+    }
+    return base_color;
 }
 
 void blink_numbers(bool isEnabling) {
