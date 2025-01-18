@@ -68,12 +68,13 @@ void blink_NKRO(bool isEnabling) {
 
 void highlight_fn_keys(uint8_t led_min, uint8_t led_max) {
     // get the current hsv value
-    HSV current_hsv = rgb_matrix_get_hsv();
+    hsv_t current_hsv = rgb_matrix_get_hsv();
+
     // maximize brightness
     current_hsv.v = 255;
 
-    rgb_led_t rgb = hsv_to_rgb(current_hsv);
-    rgb_led_t new_rgb = get_complementary_color(rgb, false);
+    rgb_t rgb = hsv_to_rgb(current_hsv);
+    rgb_t new_rgb = get_complementary_color(rgb, );
     for (int i = 1; i <= 12; i++) { // 1 to EQL(12)
         RGB_MATRIX_INDICATOR_SET_COLOR(i, new_rgb.r, new_rgb.g, new_rgb.b);
     }
