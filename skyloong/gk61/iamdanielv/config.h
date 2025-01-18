@@ -15,8 +15,8 @@
 
 // Set defaults for LED matrix
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
-#define RGB_MATRIX_DEFAULT_HUE 134
+#define RGB_MATRIX_DEFAULT_HUE 148
 #define RGB_MATRIX_DEFAULT_SAT 255
-#define RGB_MATRIX_DEFAULT_VAL 192
+#define RGB_MATRIX_DEFAULT_VAL 255
 
 #define g_suspend_state rgb_matrix_get_suspend_state()
