@@ -42,6 +42,26 @@ rgb_t get_complementary_color(rgb_t rgb_led, bool darken) {
     return (rgb_t){.r = new_r, .g = new_g, .b = new_b};
 }
 
+hsv_t get_base_hsv_color_shifted(bool clockwise) {
+    // get the current base hsv value
+    hsv_t base_color = rgb_matrix_get_hsv();
+    base_color.v = 255;
+    if(clockwise){
+        if(base_color.h > 21){
+            base_color.h = base_color.h - 21;
+        } else {
+            base_color.h = 255 - base_color.h;
+        }
+    } else {
+        if(base_color.h < 234){
+            base_color.h = base_color.h + 21;
+        } else {
+            base_color.h = base_color.h - 234;
+        }
+    }
+    return base_color;
+}
+
 hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
         // get the current base hsv value
         hsv_t current_hsv = rgb_matrix_get_hsv();
