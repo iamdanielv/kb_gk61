@@ -2,6 +2,9 @@
 #include "indicators.h"
 #include "indicator_queue.h"
 #include "fn_mode.h"
+#include "color.h"
+#include "quantum.h"
+#include "rgb_matrix.h"
 
 // clang-format off
 /* LED Matrix
