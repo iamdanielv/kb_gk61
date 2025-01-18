@@ -120,6 +120,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         case TD(_DN_MU):
+            // this is needed to process the key before the timeout
             action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
             if (!record->event.pressed &&
                 action->state.count &&
