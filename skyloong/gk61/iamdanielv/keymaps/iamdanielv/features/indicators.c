@@ -229,25 +229,32 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_FN_LYR)) {
-        // highlight the fn button
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, 128, 128, 128);
+        // get the current hsv value
+        hsv_t current_hsv = rgb_matrix_get_hsv();
 
-        // highlight right shift as moving to ctl layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(52, 0x7A, 0x00, 0xFF);
-
-        // highlight the toggle buttons
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, 0x7A, 0x00, 0xFF);
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KEY_INDEX, 0, 255, 0);
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KEY_INDEX, 0, 0, 255);
-
-        // highlight the aux buttons on right of keyboard
-        const uint8_t led_indexes[7] = {
-            7, 8, 9, 10, 11, 12, 13, // first row for media keys
-        };
-
-        for (int i = 0; i < 7; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
+        // maximize brightness
+        current_hsv.v = 255;
+        // offset hue
+        if(current_hsv.h > 64){
+            current_hsv.h = current_hsv.h - 64;
+        } else {
+            current_hsv.h = 191;
         }
+
+        rgb_t new_rgb = hsv_to_rgb(current_hsv);
+
+        // highlight the arrow keys
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, new_rgb.r, new_rgb.g, new_rgb.b); //left
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KEY_INDEX, new_rgb.r, new_rgb.g, new_rgb.b); // down
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, new_rgb.r, new_rgb.g, new_rgb.b); // right
+        RGB_MATRIX_INDICATOR_SET_COLOR(52, new_rgb.r, new_rgb.g, new_rgb.b); // up (right shift)
+
+        // layer lock key
+        RGB_MATRIX_INDICATOR_SET_COLOR(27, 0xFF, 0x00, 0x00); // back slash
+
+        // volume up and down
+        RGB_MATRIX_INDICATOR_SET_COLOR(11, new_rgb.r, new_rgb.g, new_rgb.b); // volume down
+        RGB_MATRIX_INDICATOR_SET_COLOR(12, new_rgb.r, new_rgb.g, new_rgb.b); // volume up
     }
 
     process_indicator_queue(led_min, led_max);
