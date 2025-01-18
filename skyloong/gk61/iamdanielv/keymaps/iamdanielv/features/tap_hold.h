@@ -8,8 +8,7 @@
 enum tap_hold_keys {
     _DN_MU,   // Tap--KC_DOWN  and  Hold--KC_APP
     TD_RESET, // require 3 taps to reset board
-    TD_CLEAR, // require 3 taps to clear eeprom
-    TD_CTL_TG // require double tap to enable ctl layer
+    TD_CLEAR  // require 3 taps to clear eeprom
 };
 
 typedef struct {
