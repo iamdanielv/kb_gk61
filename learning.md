@@ -16,24 +16,21 @@ The keyboard already came with a clever trick for re-using the
 Fn, Shift, Menu, RightCtl keys as arrows on tap and the modifiers on hold.
 I kept that feature but extended it. I was having problems with the shift key
 not registering properly when typing fast. I added a new arrow layer to mitigate this.
+I kept the left, down, right on the default layer on those keys since I tend to use them the most. 
 
-#### Getting to layers:
+#### On Default layer:
 
 **Cap Lock** I don't use Caps Lock key too much, so I re-purposed it to be a temp layer switch
 - Tap = Acts like Cap Lock 
 - Hold = Momentarily switches to the Win Alt Layer (Sometimes called Win_Fn)
 
-**Right Shift**
-- Tap = Up Arrow
-- Hold = Acts like shift key
-
 **Right Alt**
 - Tap = Acts like Right Alt
-- Hold = Momentarily switches to the Win Alt Layer (Sometimes  called Win_Fn)
+- Hold = Momentarily enables the arrow layer, turning RSFT, FN, Menu, RCTL to arrow keys
 
 **Fn Key**
 - Tap = Left Arrow
-- Hold = Momentarily switches to the Fn Layer
+- Hold = Momentarily switches to the Control Layer
 
 **Right Ctl**
 - Tap = Right Arrow
@@ -43,56 +40,76 @@ not registering properly when typing fast. I added a new arrow layer to mitigate
 
 ### Win Alt Layer (Sometimes  called Win_Fn)
 
-This is a momentary layer
+This is a momentary layer but can be locked by entering this layer and pressing the `left win` key
 
-**Getting here**: You can ge to this layer from the default layer by either holding the `caps lock` key or holding the `right alt` key
+**Getting here**: You can ge to this layer from the default layer by holding the `caps lock` key
 
-**Getting out**: release the `caps lock` or `right alt` key
+**Locking this layer**: `left win` will lock this layer, pressing it again will unlock
+
+**Getting out**: release the `caps lock` key or press the `left win` key if layer locked
 
 **Keys available here**:
-- ESC = \`
-- Tab = \` // this makes it easier to tap the \` key while holding cap lock
 
-**Function Keys**: The function keys are available here
+**1st Row**: GRV, function keys and Del are available here:
+- ESC = \`
 - 1 = F1
 - 2 = F2
-- ..
+- ...
 - 9 = F9
 - 0 = F10
 - \- = F11
 - = = F12
-
 - Backspace = Del
-- Q = KC_HOME
-- W = KC_UP
-- E = KC_END
-- R = C(KC_R) - control-r for refresh
-- T = KC_PGUP
-- A = KC_LEFT
-- S = KC_DOWN
-- D = KC_RIGHT
-- F = C(KC_F) - control-f for find
-- G = KC_PGDN
-- Z = C(KC_Z) - control-z for undo
-- X = C(KC_X) - control-x for cut
-- C = C(KC_INS) - control ins for copy
-- V = S(KC_INS) - shift ins for paste
-
+  
+**2nd Row **: Inspired by the [Extend](https://colemakmods.github.io/ergonomic-mods/extend.html) layer but with some tweaks
+- Tab = \` on tap, ~ on double tap, and `````` (code block) on hold
+- Q = MY_CONS - pushes Left Ctl, Left Shift, and Esc (show console on VS Code) 
+- W = MY_TASK - pushes Left Ctl, Left Shift, and GRV (show Task Manager on Windows)
+- E = Ctl + F - find in most programs
+- R = Ctl + R - refresh in most programs
+- T = nothing for now
+- Y = KC_PGUP
+- U = KC_HOME
+- I = KC_UP
+- O = KC_END
 - P = Print Screen
 - [ = Scroll lock
 - ] = Pause
+- \ = KC_INS
 
-- ; = Home
-- ' = End
+**3rd Row **: Inspired by the [Extend](https://colemakmods.github.io/ergonomic-mods/extend.html) layer but with some tweaks
+- A = LALT
+- S = KC_LGUI
+- D = KC_LSFT
+- F = KV_LCTL
+- G = nothing for now
+- H = KC_PGDN
+- J = KC_LEFT
+- K = KC_DOWN
+- L = KC_RIGHT
+- ; = KC_HOME
+- ' = KC_END
 
-- < = Page Down
-- \> = Page Up
+**4th Row **: Inspired by the [Extend](https://colemakmods.github.io/ergonomic-mods/extend.html) layer but with some tweaks
+- Z = C(KC_Z) - Ctl+z for undo
+- X = C(KC_X) - Ctl+x for cut
+- C = C(KC_INS) - Ctl+ins for copy
+- V = S(KC_INS) - shift+ins for paste
+- B = KC_SPC
+- N = KC_BSPC
+- M = KC_DEL
+- , = Browser Back
+- . = Browser Forward
+- / = nothing for now
+
+**5th Row **: Mostly transparent, but has Layer Lock
+- KC_LGUI (Left Win) - Layer Lock
 
 ---
 
 ### Number layer and mouse movement
 
-This is a toggled layer accesible from the Fn Layer
+This is a layer accesible from the CTL Layer
 
 **Getting here**: You can ge to this layer by pushing `FN`, then tap `Menu` key
 
@@ -111,51 +128,60 @@ I had a little bit of extra space on that layer, so I added **mouse movement on 
 
 ---
 
-### Navigation layer
+### ARROW Layer
 
-This is a toggled layer accesible from the Fn Layer
+This is a layer accesible from the CTL Layer and by holding down `right alt` on the base layer.
 
-**Getting here**: You can ge to this layer by pushing `FN`, then tap `Right Alt` key
+**Getting here**:
+- Momentarily by holding the `right alt` key on the base layer.
+- Toggle from the CTL layer and pushing `right alt`
+- Can be layer locked while in this layer with the `\` key
 
-**Getting out**: Tap the `Right Alt` key
+**Getting out**:
+- if here momentarily, release the `right alt` key 
+- if layer locked, press the `\` key
 
-- Q = KC_HOME
-- W = KC_UP
-- E = KC_END
-- R = C(KC_R) - control-r for refresh
-- T = KC_PGUP
-- A = KC_LEFT
-- S = KC_DOWN
-- D = KC_RIGHT
-- F = C(KC_F) - control-f for find
-- G = KC_PGDN
-- Z = C(KC_Z) - control-z for undo
-- X = C(KC_X) - control-x for cut
-- C = C(KC_INS) - control ins for copy
-- V = S(KC_INS) - shift ins for paste
+**Keys available here**:
+- - = Volume Down 
+- = = Volume Up
+- Right Shift - KC_UP
+- Right FN - KC_LEFT
+- Menu - KC_DOWN
+- Right Ctl - KC_RIGHT
 
 ---
 
-### Fn Layer
+### CTL Layer
 
-This is a momentary layer accessible from all layers
+This is a momentary layer but can be locked by entering this layer and pressing the `right ctl` key
 
-**Getting here**: You can ge to this layer by holding the `Fn` key
+**Getting here**: You can ge to this layer from the default layer by holding the `Fn` key
 
-**Getting out**: release the `Fn` key
-- 7 = Previous track
-- 8 = Play/Pause
-- 9 = Next track 
-- 0 = Mute
-- - = Volume Down 
-- = = Volume Up
-- Backspace = Del
+**Toggle this layer**: `right ctl` will lock this layer, pressing it again will unlock
 
-The function layer also lets you toggle on the Navigation, Number and Control layers.
- - Right_Alt = Toggle navigation layer
- - Right Menu = Toggle Number layer
- - Right Ctl = Toggle Control layer -- must double tap the key to enable
+**Getting out**: release the `Fn` key or press the `right ctl` key if layer locked
 
+**Keys available here**:
+
+While on the Control Layer, you have the following available:
+
+- `Q` - triple tap to `enter bootloader mode`
+- `Z` - triple tap to `clear eeprom`
+
+- `LCTL` - Swap Number row for Fn Keys (1 is F1 ... + is F12)
+- `N` - Toggle NKRO
+- `I` - Change Background Color HUE Down
+- `O` - Change Background Color HUE Up
+- `K` - Change Background Color SAT Down
+- `L` - Change Background Color SAT Up
+- `,` - Change Background Color VAL Down - RGB_VAD
+- `.` - Change Background Color VAL Up - RGB_VAI
+- `;` - RGB_SPD
+- `'` - RGB_SPI
+- `P` - RGB Matrix solid color
+- `[` - RGB_RMOD
+- `]` - RGB_RMD
+- `\` - RGB_TOG -- this will turn off the colors, but still enable indicators
 ---
 
 ## 🥾 Safe keyboard reset and eeprom clear
@@ -167,7 +193,7 @@ but didn't want to accidentally trigger it.
 
 I extended that to also work for eeprom clear.
 
-Currently this is in the `Control Layer`, you can get to it by `pushing FN, then double tap on Right CTL.`
+Currently this is in the `Control Layer`, you can get to it by `holding FN`
 
 To **reset the keyboard**, tap the q key at least 3 times after enabling the control layer.
 
