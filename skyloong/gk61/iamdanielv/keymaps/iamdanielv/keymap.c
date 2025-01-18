@@ -129,6 +129,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code16(tap_hold->on_tap);
             }
             break;
+        case QK_LLCK:
+            // when we lock a layer, flash the space bar area
+            indicator_enqueue(SPACE_KEY_INDEX, 200, 3, RGB_WHITE); // blink space too
+            //indicator_enqueue(LEFT_ALT_KEY_INDEX, 200, 3, RGB_BLACK); // blink left alt
+            //indicator_enqueue(RIGHT_ALT_KEY_INDEX, 200, 3, RGB_BLACK); // blink right alt
+
+            if (IS_LAYER_ON(_WIN_FN_LYR)) {
+                indicator_enqueue(LEFT_WIN_KEY_INDEX, 200, 3, RGB_RED); // blink left win
+
+                //blink the new arrow keys
+                indicator_enqueue(22, 150, 3, RGB_RED); // up - I
+                indicator_enqueue(35, 150, 3, RGB_RED); // left - J
+                indicator_enqueue(36, 150, 3, RGB_RED); // down - K
+                indicator_enqueue(37, 150, 3, RGB_RED); // right - L
+            }else if (IS_LAYER_ON(_FN_LYR)) {
+                indicator_enqueue(RIGHT_FN_KEY_INDEX, 200, 3, RGB_RED); // blink left
+                indicator_enqueue(RIGHT_MENU_KEY_INDEX, 200, 3, RGB_RED); // blink down
+                indicator_enqueue(RIGHT_CTL_KEY_INDEX, 200, 3, RGB_RED); // blink right
+                indicator_enqueue(52, 200, 3, RGB_RED); // blink up (right shift)
+            }
+            return true;
         case MY_GRV:
             if (record->tap.count > 0) { // Key is being tapped
                 if (record->event.pressed) {
