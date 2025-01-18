@@ -9,6 +9,7 @@
 #define RGB_MATRIX_SLEEP
 
 // Key Indexes
+#define RIGHT_SFT_KEY_INDEX 52
 #define LEFT_CTL_KEY_INDEX 53
 #define LEFT_WIN_KEY_INDEX 54
 #define LEFT_ALT_KEY_INDEX 55

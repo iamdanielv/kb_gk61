@@ -75,10 +75,10 @@ void blink_numbers(bool isEnabling) {
 }
 
 void blink_arrows(void) {
-    indicator_enqueue(61, 200, 3, RGB_WHITE); // left
-    indicator_enqueue(62, 200, 3, RGB_WHITE); // down
-    indicator_enqueue(52, 200, 3, RGB_WHITE); // up
-    indicator_enqueue(63, 200, 3, RGB_WHITE); // right
+    indicator_enqueue(RIGHT_FN_KEY_INDEX, 200, 3, RGB_WHITE); // left
+    indicator_enqueue(RIGHT_MENU_KEY_INDEX, 200, 3, RGB_WHITE); // down
+    indicator_enqueue(RIGHT_SFT_KEY_INDEX, 200, 3, RGB_WHITE); // up
+    indicator_enqueue(RIGHT_CTL_KEY_INDEX, 200, 3, RGB_WHITE); // right
 }
 
 void blink_NKRO(bool isEnabling) {
