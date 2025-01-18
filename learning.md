@@ -14,7 +14,8 @@ I have made the following choices:
 
 The keyboard already came with a clever trick for re-using the
 Fn, Shift, Menu, RightCtl keys as arrows on tap and the modifiers on hold.
-I kept that feature but extended it.
+I kept that feature but extended it. I was having problems with the shift key
+not registering properly when typing fast. I added a new arrow layer to mitigate this.
 
 #### Getting to layers:
 
