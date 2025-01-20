@@ -89,9 +89,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
             blink_numbers(fn_mode_enabled);
-            indicator_enqueue(SPACE_KEY_INDEX, 200, 3, RGB_WHITE); // blink space too
-            indicator_enqueue(LEFT_ALT_KEY_INDEX, 200, 3, RGB_BLACK); // blink left alt
-            indicator_enqueue(RIGHT_ALT_KEY_INDEX, 200, 3, RGB_BLACK); // blink right alt
+            indicator_enqueue(SPACE_KI, 200, 3, RGB_WHITE); // blink space too
+            indicator_enqueue(LEFT_ALT_KI, 200, 3, RGB_BLACK); // blink left alt
+            indicator_enqueue(RIGHT_ALT_KI, 200, 3, RGB_BLACK); // blink right alt
         }
         return false;
     }
@@ -123,10 +123,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case QK_LLCK:
             // when we lock a layer, flash the space bar area
-            indicator_enqueue(SPACE_KEY_INDEX, 200, 3, RGB_WHITE); // blink space
-            
+            indicator_enqueue(SPACE_KI, 200, 3, RGB_WHITE); // blink space
+
             if (IS_LAYER_ON(_WIN_FN_LYR)) {
-                indicator_enqueue(LEFT_WIN_KEY_INDEX, 200, 3, RGB_RED); // blink left win
+                indicator_enqueue(LEFT_WIN_KI, 200, 3, RGB_RED); // blink left win
 
                 //blink the new arrow keys
                 indicator_enqueue(22, 150, 2, RGB_RED); // up - I
@@ -134,9 +134,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 indicator_enqueue(36, 150, 2, RGB_RED); // down - K
                 indicator_enqueue(37, 150, 2, RGB_RED); // right - L
             }else if (IS_LAYER_ON(_ARROW_LYR)) {
-                indicator_enqueue(RIGHT_FN_KEY_INDEX, 200, 2, RGB_RED); // left - Right Fn
-                indicator_enqueue(RIGHT_MENU_KEY_INDEX, 200, 2, RGB_RED); // down - Right Menu
-                indicator_enqueue(RIGHT_CTL_KEY_INDEX, 200, 2, RGB_RED); // right - Right Ctl
+                indicator_enqueue(FN_KI, 200, 2, RGB_RED); // left - Right Fn
+                indicator_enqueue(RIGHT_MENU_KI, 200, 2, RGB_RED); // down - Right Menu
+                indicator_enqueue(RIGHT_CTL_KI, 200, 2, RGB_RED); // right - Right Ctl
                 indicator_enqueue(52, 200, 2, RGB_RED); // up - right shift
             }
             return true;

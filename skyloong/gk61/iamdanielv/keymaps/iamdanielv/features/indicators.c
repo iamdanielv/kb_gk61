@@ -98,10 +98,10 @@ void blink_numbers(bool isEnabling) {
 }
 
 void blink_arrows(void) {
-    indicator_enqueue(RIGHT_FN_KEY_INDEX, 200, 3, RGB_WHITE); // left
-    indicator_enqueue(RIGHT_MENU_KEY_INDEX, 200, 3, RGB_WHITE); // down
-    indicator_enqueue(RIGHT_SFT_KEY_INDEX, 200, 3, RGB_WHITE); // up
-    indicator_enqueue(RIGHT_CTL_KEY_INDEX, 200, 3, RGB_WHITE); // right
+    indicator_enqueue(FN_KI, 200, 3, RGB_WHITE); // left
+    indicator_enqueue(RIGHT_MENU_KI, 200, 3, RGB_WHITE); // down
+    indicator_enqueue(RIGHT_SFT_KI, 200, 3, RGB_WHITE); // up
+    indicator_enqueue(RIGHT_CTL_KI, 200, 3, RGB_WHITE); // right
 }
 
 void blink_NKRO(bool isEnabling) {
@@ -199,12 +199,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(32, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // f key
 
         // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KEY_INDEX, 0xFF,0x00, 0x00); // left GUI/win
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF,0x00, 0x00); // left GUI/win
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
         const uint8_t led_indexes[4] = {
-            RIGHT_CTL_KEY_INDEX, // use the right ctl key as indicator
+            RIGHT_CTL_KI, // use the right ctl key as indicator
 
             // RGB Control
             24, // p = 24 for persistent color
@@ -219,7 +219,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             // 48, // m = 48 RGB Hue Increase
             // 49, // , = 49 RGB Decrease Bright
             // 50, // . = 50 RGB Increase Bright
-            LEFT_CTL_KEY_INDEX // used for Fn Swap
+            LEFT_CTL_KI // used for Fn Swap
         };
         for (int i = 0; i < 4; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0xFF, 0xFF, 0xFF);
@@ -235,10 +235,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
 
         // highlight number layer toggle
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KEY_INDEX, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
 
         // highlight arrow layer toggle
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KEY_INDEX, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
 
         // highlight Q as reset
         RGB_MATRIX_INDICATOR_SET_COLOR(15, 0xFF, 0x00, 0x00);
@@ -249,7 +249,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(_NUM_LYR)) {
         const uint8_t led_indexes[24] = {
-            RIGHT_MENU_KEY_INDEX, // use the Right Menu key as indicator
+            RIGHT_MENU_KI, // use the Right Menu key as indicator
 
             //  Light up the numpad to make it easier to see
             6,                      // 6 = 6 is used as numlock and starts the numpad
@@ -267,10 +267,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(_ARROW_LYR)) {
         // highlight the arrow keys
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KEY_INDEX, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // up (right shift)
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_FN_KEY_INDEX, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); //left
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KEY_INDEX, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // down
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KEY_INDEX, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // right
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // up (right shift)
+        RGB_MATRIX_INDICATOR_SET_COLOR(FN_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); //left
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // down
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // right
 
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(27, 0xFF, 0x00, 0x00); // back slash
