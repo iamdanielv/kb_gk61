@@ -18,6 +18,18 @@ void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_fl
     }
 }
 
+void indicator_dequeue(uint8_t led_index){
+    for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
+        if (indicator_queue[i].active &&
+            indicator_queue[i].led_index == led_index) {
+                // we found a match, deactivate it
+                indicator_queue[i].active = false;
+                indicator_queue[i].last_update = 0x00;
+                // break; // we could break out here, but check all of them in case we have duplicates
+        }
+    }
+}
+
 void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
         if (indicator_queue[i].active) {
