@@ -117,6 +117,7 @@ enum layer_names {
 
 //toggles
 #define TG_NUM    TG(_NUM_LYR)
+#define TG_W_FN   TG(_WIN_FN_LYR)
 #define TG_ARWS   TG(_ARROW_LYR)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
