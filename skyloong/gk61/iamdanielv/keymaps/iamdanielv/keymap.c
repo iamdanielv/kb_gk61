@@ -129,15 +129,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 indicator_enqueue(LEFT_WIN_KI, 200, 3, RGB_RED); // blink left win
 
                 //blink the new arrow keys
-                indicator_enqueue(22, 150, 2, RGB_RED); // up - I
-                indicator_enqueue(35, 150, 2, RGB_RED); // left - J
-                indicator_enqueue(36, 150, 2, RGB_RED); // down - K
-                indicator_enqueue(37, 150, 2, RGB_RED); // right - L
+                indicator_enqueue(I_KI, 150, 2, RGB_RED); // up - I
+                indicator_enqueue(J_KI, 150, 2, RGB_RED); // left - J
+                indicator_enqueue(K_KI, 150, 2, RGB_RED); // down - K
+                indicator_enqueue(L_KI, 150, 2, RGB_RED); // right - L
             }else if (IS_LAYER_ON(_ARROW_LYR)) {
                 indicator_enqueue(FN_KI, 200, 2, RGB_RED); // left - Right Fn
                 indicator_enqueue(RIGHT_MENU_KI, 200, 2, RGB_RED); // down - Right Menu
                 indicator_enqueue(RIGHT_CTL_KI, 200, 2, RGB_RED); // right - Right Ctl
-                indicator_enqueue(52, 200, 2, RGB_RED); // up - right shift
+                indicator_enqueue(RIGHT_SFT_KI, 200, 2, RGB_RED); // up - right shift
             }
             return true;
         case MY_GRV:

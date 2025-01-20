@@ -11,36 +11,96 @@ enum layer_names {
     _ARROW_LYR,  // 4
 };
 
+// clang-format off
+/* LED Matrix
+* ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+* │Esc│ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │ 0 │ - │ = │Bsp│
+* │ 0 │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │10 │11 │12 │13 │
+* ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+* │Tab│ Q │ W │ E | R │ T │ Y │ U │ I │ O │ P │ [ │ ] │ \ │
+* │14 │15 │16 │17 │18 │19 │20 │21 │22 │23 │24 │25 │26 │27 │
+* ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+* │Cap│ A │ S │ D │ F │ G │ H │ J │ K │ L │ ; │ ' │   |Ent│
+* │28 │29 │30 │31 │32 │33 │34 │35 │36 │37 │38 │39 │   │40 │
+* ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+* │Sft│ Z │ X │ C │ V │ B │ N │ M │ , │ . │ / │   |Sft|   │
+* │41 │42 |43 │44 │45 │46 │47 │48 │49 │50 │51 │   │52 │   │
+* ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+* │Ctl│GUI│Alt│   │Spc│Spc│Mut│   |Spc|Alt│ Fn│App│   │Ctl|
+* │53 │54 │55 │   │56 │57 │58 │   │59 │60 │ 61│62 │   │63 │
+* └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+*/
+// clang-format on
+
 // ***************
 // * Key Indexes *
 // ***************
+
+// Modifiers
 #define TAB_KI 14
 #define CAPS_KI 28
-#define Q_KI 15
-#define Z_KI 42
 #define LEFT_SFT_KI 41
 #define LEFT_CTL_KI 53
 #define LEFT_WIN_KI 54
 #define LEFT_ALT_KI 55
 #define SPACE_KI 57
-#define RIGHT_ALT_KI 60
 #define FN_KI 61
+#define RIGHT_ALT_KI 60
 #define RIGHT_MENU_KI 62
 #define RIGHT_CTL_KI 63
 #define RIGHT_SFT_KI 52
 #define ENTER_KI 40
 
+// Letter Keys
+#define A_KI 29
+#define B_KI 46
+#define C_KI 44
+#define D_KI 31
+#define E_KI 17
 #define F_KI 32
-
+#define G_KI 33
+#define H_KI 34
 #define I_KI 22
 #define J_KI 35
 #define K_KI 36
 #define L_KI 37
-
-#define W_KI 16
-#define A_KI 29
+#define M_KI 48
+#define N_KI 47
+#define O_KI 23
+#define P_KI 24
+#define Q_KI 15
+#define R_KI 18
 #define S_KI 30
-#define D_KI 31
+#define T_KI 19
+#define U_KI 21
+#define V_KI 45
+#define W_KI 16
+#define X_KI 43
+#define Y_KI 20
+#define Z_KI 42
+
+//number keys
+#define N1_KI 1
+#define N2_KI 2
+#define N3_KI 3
+#define N4_KI 4
+#define N5_KI 5
+#define N6_KI 6
+#define N7_KI 7
+#define N8_KI 8
+#define N9_KI 9
+#define N0_KI 10
+
+//symbols
+#define COMM_KI 49 // ,
+#define DOT_KI 50  // .
+#define BSLS_KI 27
+#define SLSH_KI 51 // /
+#define SCLN_KI 38 // ;
+#define QUOT_KI 39 // '
+#define MINS_KI 11 // -
+#define EQL_KI 12  // =
+
 
 // ******************************
 // * Aliases to simplify keymap *
