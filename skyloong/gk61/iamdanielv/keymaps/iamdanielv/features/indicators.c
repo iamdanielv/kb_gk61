@@ -181,6 +181,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF,0x00, 0x00); // left GUI/win
     }
 
+    // FN Key mode is done after the base win layer and the win fn layer
+    // because they can both modify the state of the FN keys
+    if (fn_mode_enabled) {
+        highlight_fn_keys(fn_swp_rgb, led_min, led_max);
+    }
+
     if (IS_LAYER_ON(_CTL_LYR)) {
         const uint8_t led_indexes[4] = {
             RIGHT_CTL_KI, // use the right ctl key as indicator
