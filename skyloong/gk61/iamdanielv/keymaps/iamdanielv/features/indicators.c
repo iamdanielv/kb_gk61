@@ -46,7 +46,6 @@ hsv_t get_base_hsv_color_inverse(void) {
 }
 
 hsv_t get_base_hsv_color_shifted(bool clockwise) {
-    // get the current base hsv value
     hsv_t base_color = rgb_matrix_get_hsv();
 
     return get_hsv_color_shifted(base_color, 21, clockwise);
@@ -172,23 +171,27 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
-        const uint8_t led_indexes[4] = {
-            RIGHT_CTL_KI, // use the right ctl key as indicator
+        const uint8_t led_indexes[2] = {
             P_KI, // p for persistent color
-            N_KI, // n for NKR toggle
-            LEFT_CTL_KI // used for Fn Swap
+            N_KI // n for NKR toggle
         };
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0xFF, 0xFF, 0xFF);
         }
 
-        const uint8_t led_off_indexes[4] = {
+        const uint8_t led_off_indexes[5] = {
             // turn off some of the LEDS to make it easier to see our indicators
-            A_KI,TAB_KI, CAPS_KI, LEFT_SFT_KI
+            A_KI,TAB_KI, CAPS_KI, LEFT_SFT_KI, LEFT_WIN_KI
         };
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
         }
+
+        // swap FN key
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, fn_swp_rgb.r, fn_swp_rgb.g, fn_swp_rgb.b);
+
+        // highlight right shift as toggle Win Fn Layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, wfn_lyr_rgb.r, wfn_lyr_rgb.g, wfn_lyr_rgb.b);
 
         // highlight number layer toggle
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
@@ -201,6 +204,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // highlight Z as clear eeprom
         RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x7A, 0x00, 0xFF);
+
+        // layer lock key
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI,0xFF, 0x00, 0x00);
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
