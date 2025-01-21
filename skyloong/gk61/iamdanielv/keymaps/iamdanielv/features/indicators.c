@@ -210,9 +210,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
-        const uint8_t led_indexes[24] = {
-            RIGHT_MENU_KI, // use the Right Menu key as indicator
+        // clear out all the leds so we only light up the ones we care about
+        // this will make our custom colors stand out more
+        for (int i = led_min; i <= led_max; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
+        }
 
+        const uint8_t led_indexes[23] = {
             //  Light up the numpad to make it easier to see
             N6_KI, // 6 = 6 is used as numlock indicator and starts the numpad
             N7_KI,  N8_KI,  N9_KI,  N0_KI, MINS_KI, EQL_KI, // 7, 8, 9, 0 = 7, 8, 9, Asterisk, minus, equals
