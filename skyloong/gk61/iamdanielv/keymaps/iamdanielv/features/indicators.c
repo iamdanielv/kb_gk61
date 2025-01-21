@@ -222,9 +222,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             W_KI, A_KI, S_KI, D_KI // w, a, s, d used to move the mouse
         };
 
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 23; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
         }
+
+        // layer toggle
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, 0xFF, 0x00, 0x00);
     }
 
     if (IS_LAYER_ON(_ARROW_LYR)) {
@@ -234,12 +237,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // down
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // right
 
-        // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(BSLS_KI, 0xFF, 0x00, 0x00); // back slash
-
         // volume up and down
         RGB_MATRIX_INDICATOR_SET_COLOR(EQL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // volume up - +
         RGB_MATRIX_INDICATOR_SET_COLOR(MINS_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // volume down - -
+
+        // layer toggle
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 0xFF, 0x00, 0x00);
     }
 
     process_indicator_queue(led_min, led_max);
