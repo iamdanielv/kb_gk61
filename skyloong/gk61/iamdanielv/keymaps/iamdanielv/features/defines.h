@@ -132,6 +132,8 @@ enum layer_names {
 #define MY_CONS   LCTL(LSFT(KC_GRV))
 #define MY_BACK   A(KC_LEFT)
 #define MY_FWD    A(KC_RIGHT)
+#define MSW_UP    KC_MS_WH_UP
+#define MSW_DN    KC_MS_WH_DOWN
 
 // placeholder, this is handled in process_record_user
 #define MY_GRV    LT(0, KC_GRV)
