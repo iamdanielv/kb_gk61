@@ -94,8 +94,8 @@ enum layer_names {
 //symbols
 #define COMM_KI 49 // ,
 #define DOT_KI 50  // .
-#define BSLS_KI 27
-#define SLSH_KI 51 // /
+#define BSLS_KI 27 // \ backslash
+#define SLSH_KI 51 // / forwardslash
 #define SCLN_KI 38 // ;
 #define QUOT_KI 39 // '
 #define MINS_KI 11 // -

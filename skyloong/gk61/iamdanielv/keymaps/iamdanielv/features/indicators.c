@@ -48,7 +48,7 @@ hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
     // get the current base hsv value
     hsv_t base_color = rgb_matrix_get_hsv();
 
-    //offset hue by a quarter
+    // offset hue by a quarter
     return get_hsv_color_shifted(base_color, 64, clockwise);
 }
 
@@ -66,10 +66,10 @@ void blink_numbers(bool isEnabling) {
 }
 
 void blink_arrows(void) {
-    indicator_enqueue(FN_KI, 200, 3, RGB_WHITE); // left
+    indicator_enqueue(FN_KI, 200, 3, RGB_WHITE);         // left
     indicator_enqueue(RIGHT_MENU_KI, 200, 3, RGB_WHITE); // down
-    indicator_enqueue(RIGHT_SFT_KI, 200, 3, RGB_WHITE); // up
-    indicator_enqueue(RIGHT_CTL_KI, 200, 3, RGB_WHITE); // right
+    indicator_enqueue(RIGHT_SFT_KI, 200, 3, RGB_WHITE);  // up
+    indicator_enqueue(RIGHT_CTL_KI, 200, 3, RGB_WHITE);  // right
 }
 
 void blink_space(bool extended) {
@@ -121,24 +121,24 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     // determine the colors to use for each of the layers
-    hsv_t base_hsv_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
-    hsv_t base_hsv_offset_qrt_cw = get_base_hsv_color_shifted_quarter(true);
-    hsv_t base_hsv_offset = get_base_hsv_color_shifted(false);
-    hsv_t base_hsv_inverse = get_base_hsv_color_inverse();
+    // hsv_t base_hsv_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
+    hsv_t base_hsv_offset_qrt_cw   = get_base_hsv_color_shifted_quarter(true);
+    hsv_t base_hsv_offset          = get_base_hsv_color_shifted(false);
+    hsv_t base_hsv_inverse         = get_base_hsv_color_inverse();
+    hsv_t base_hsv_inverse_shifted = get_hsv_color_shifted(base_hsv_inverse, 31, false);
 
-    rgb_t wfn_lyr_rgb = hsv_to_rgb(base_hsv_offset);
-    rgb_t accent_lyr_rgb = hsv_to_rgb(base_hsv_offset_qrt_cw);
-    rgb_t num_lyr_rgb = hsv_to_rgb(base_hsv_offset_qrt_ccw);
-    rgb_t fn_swp_rgb = hsv_to_rgb(base_hsv_inverse);
+    rgb_t wfn_lyr_rgb    = hsv_to_rgb(base_hsv_offset);
+    rgb_t accent_lyr_rgb = hsv_to_rgb(base_hsv_inverse_shifted);
+    rgb_t num_lyr_rgb    = hsv_to_rgb(base_hsv_offset_qrt_cw);
+    rgb_t fn_swp_rgb     = hsv_to_rgb(base_hsv_inverse);
 
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
-
         // this layer has many functions, so just change the whole color
         for (int i = led_min; i <= led_max; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(i, wfn_lyr_rgb.r, wfn_lyr_rgb.g, wfn_lyr_rgb.b);
         }
 
-        //highlight the arrow keys
+        // highlight the arrow keys
         RGB_MATRIX_INDICATOR_SET_COLOR(I_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // up - I
         RGB_MATRIX_INDICATOR_SET_COLOR(J_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // left - J
         RGB_MATRIX_INDICATOR_SET_COLOR(K_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // down - K
@@ -151,10 +151,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, fn_swp_rgb.r, fn_swp_rgb.g, fn_swp_rgb.b);
 
         // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF,0x00, 0x00); // left GUI/win
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF, 0x00, 0x00); // left GUI/win
 
         // turn off the left alt key led to make left win stand out more
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_ALT_KI, 0x00,0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_ALT_KI, 0x00, 0x00, 0x00);
     }
 
     // FN Key mode is done after the base win layer and the win fn layer
@@ -166,16 +166,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (IS_LAYER_ON(_CTL_LYR)) {
         const uint8_t led_indexes[2] = {
             P_KI, // p for persistent color
-            N_KI // n for NKR toggle
+            N_KI  // n for NKR toggle
         };
         for (int i = 0; i < 2; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0xFF, 0xFF, 0xFF);
         }
 
-        const uint8_t led_off_indexes[5] = {
-            // turn off some of the LEDS to make it easier to see our indicators
-            A_KI,TAB_KI, CAPS_KI, LEFT_SFT_KI, LEFT_WIN_KI
-        };
+        const uint8_t led_off_indexes[5] = {// turn off some of the LEDS to make it easier to see our indicators
+                                            A_KI, TAB_KI, CAPS_KI, LEFT_SFT_KI, LEFT_WIN_KI};
         for (int i = 0; i < 5; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
         }
@@ -199,7 +197,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x7A, 0x00, 0xFF);
 
         // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI,0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, 0xFF, 0x00, 0x00);
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
@@ -211,12 +209,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         const uint8_t led_indexes[23] = {
             //  Light up the numpad to make it easier to see
-            N6_KI, // 6 = 6 is used as numlock indicator and starts the numpad
-            N7_KI,  N8_KI,  N9_KI,  N0_KI, MINS_KI, EQL_KI, // 7, 8, 9, 0 = 7, 8, 9, Asterisk, minus, equals
-            U_KI, I_KI, O_KI, P_KI,                         // U, I, O, P = 4, 5, 6, Plus
-            J_KI, K_KI, L_KI, SCLN_KI,                      // J, K, L, ; = 1, 2, 3, Enter
-            M_KI, COMM_KI, DOT_KI, SLSH_KI,                 // M, ,, ., / = 0, dot, dot, slash
-            W_KI, A_KI, S_KI, D_KI // w, a, s, d used to move the mouse
+            N6_KI,                                            // 6 = 6 is used as numlock indicator and starts the numpad
+            N7_KI, N8_KI,   N9_KI,  N0_KI,   MINS_KI, EQL_KI, // 7, 8, 9, 0 = 7, 8, 9, Asterisk, minus, equals
+            U_KI,  I_KI,    O_KI,   P_KI,                     // U, I, O, P = 4, 5, 6, Plus
+            J_KI,  K_KI,    L_KI,   SCLN_KI,                  // J, K, L, ; = 1, 2, 3, Enter
+            M_KI,  COMM_KI, DOT_KI, SLSH_KI,                  // M, ,, ., / = 0, dot, dot, slash
+            W_KI,  A_KI,    S_KI,   D_KI                      // w, a, s, d used to move the mouse
         };
 
         for (int i = 0; i < 23; i++) {
@@ -229,10 +227,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(_ARROW_LYR)) {
         // highlight the arrow keys
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // up (right shift)
-        RGB_MATRIX_INDICATOR_SET_COLOR(FN_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); //left
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);  // up (right shift)
+        RGB_MATRIX_INDICATOR_SET_COLOR(FN_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);         // left
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // down
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // right
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);  // right
 
         // volume up and down
         RGB_MATRIX_INDICATOR_SET_COLOR(EQL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // volume up - +
