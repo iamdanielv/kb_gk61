@@ -21,19 +21,12 @@ rgb_t get_complementary_rgb(rgb_t rgb_led, bool darken) {
     return (rgb_t){.r = new_r, .g = new_g, .b = new_b};
 }
 
-hsv_t get_hsv_color_shifted(hsv_t color, uint8_t offset,  bool clockwise){
-    if(clockwise){
-        if(color.h > offset){
-            color.h = color.h - offset;
-        } else {
-            color.h = 255 - color.h;
-        }
+hsv_t get_hsv_color_shifted(hsv_t color, uint8_t offset, bool clockwise) {
+    // it's ok if it overflows, the byte will handle it
+    if (clockwise) {
+        color.h = color.h - offset;
     } else {
-        if(color.h < (255-offset)){
-            color.h = color.h + offset;
-        } else {
-            color.h = color.h - (255-offset);
-        }
+        color.h = color.h + offset;
     }
     return color;
 }
