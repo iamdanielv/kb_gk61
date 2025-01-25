@@ -233,8 +233,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);  // right
 
         // volume up and down
-        RGB_MATRIX_INDICATOR_SET_COLOR(EQL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // volume up - +
-        RGB_MATRIX_INDICATOR_SET_COLOR(MINS_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // volume down - -
+        RGB_MATRIX_INDICATOR_SET_COLOR(EQL_KI, 0xCC, 0xCC, 0xCC);  // volume up - +
+        RGB_MATRIX_INDICATOR_SET_COLOR(MINS_KI, 0xCC, 0xCC, 0xCC); // volume down - -
 
         // layer toggle
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 0xFF, 0x00, 0x00);
