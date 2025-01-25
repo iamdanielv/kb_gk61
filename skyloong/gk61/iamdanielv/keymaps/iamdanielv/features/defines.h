@@ -123,6 +123,7 @@ enum layer_names {
 #define TD_KB_CLR TD(TD_CLEAR)
 
 // shortcuts
+#define MY_ENT    RSFT_T(KC_ENT)
 #define MY_UNDO   C(KC_Z)
 #define MY_CUT    C(KC_X)
 #define MY_COPY   C(KC_INS)
