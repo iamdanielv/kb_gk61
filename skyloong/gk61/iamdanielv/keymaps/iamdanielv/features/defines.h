@@ -79,7 +79,7 @@ enum layer_names {
 #define Y_KI 20
 #define Z_KI 42
 
-//number keys
+// number keys
 #define N1_KI 1
 #define N2_KI 2
 #define N3_KI 3
@@ -91,7 +91,7 @@ enum layer_names {
 #define N9_KI 9
 #define N0_KI 10
 
-//symbols
+// symbols
 #define COMM_KI 49 // ,
 #define DOT_KI 50  // .
 #define BSLS_KI 27 // \ backslash
@@ -101,17 +101,17 @@ enum layer_names {
 #define MINS_KI 11 // -
 #define EQL_KI 12  // =
 
-
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-// Win_FN layer on hold, caps lock on tap
-#define FN_W_CAPS LT(_WIN_FN_LYR, KC_CAPS)
+#define CAPS_MO TD(TD_CAPS_MO)
+#define DN_APP TD(TD_DN_APP)
+#define MY_GRV TD(TD_GRV)
+
 // Arrows layer on hold, ralt on tap
 #define ARWS_RALT LT(_ARROW_LYR, KC_RALT)
 
 #define FN_LEFT   LT(_CTL_LYR, KC_LEFT)
-#define APP_DWN   TD(_DN_MU)
 #define RCTL_RGT  RCTL_T(KC_RIGHT)
 #define RSFT_UP   RSFT_T(KC_UP)
 
@@ -135,5 +135,3 @@ enum layer_names {
 #define MSW_UP    KC_MS_WH_UP
 #define MSW_DN    KC_MS_WH_DOWN
 
-// placeholder, this is handled in process_record_user
-#define MY_GRV    LT(0, KC_GRV)

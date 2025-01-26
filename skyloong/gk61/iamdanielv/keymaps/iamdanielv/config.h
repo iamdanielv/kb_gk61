@@ -6,3 +6,4 @@
 
 #define RGB_MATRIX_SLEEP
 
+#define TAPPING_TERM_PER_KEY

@@ -8,10 +8,10 @@
 #include "quantum.h"
 
 #include "features/defines.h"
-#include "features/indicator_queue.h"
 #include "features/fn_mode.h"
-#include "features/tap_hold.h"
+#include "features/indicator_queue.h"
 #include "features/indicators.h"
+#include "features/tap_hold.h"
 #include "features/rgb_keys.h"
 
 // *****************************
@@ -21,11 +21,27 @@ enum custom_keycodes { KC_SWP_FN = SAFE_RANGE };
 
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
-    [_DN_MU]    = ACTION_TAP_DANCE_TAP_HOLD(KC_DOWN, KC_APP),  // on Tap: "DOWN" on Hold:"App"
+
     [TD_RESET]  = ACTION_TAP_DANCE_FN(safe_reset),
-    [TD_CLEAR]  = ACTION_TAP_DANCE_FN(safe_clear)
+    [TD_CLEAR]  = ACTION_TAP_DANCE_FN(safe_clear),
+
+    // on Tap: "DOWN" on Hold:"App"
+    [TD_DN_APP]    = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dn_app_finished, dn_app_reset),
+    // on Tap: caps lock; on Hold: MO(_WIN_FN_LYR); on Double Tap Hold: MO(_NUM_LYR)
+    [TD_CAPS_MO]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, caps_mo_finished, caps_mo_reset),
+    // on Tap: `; on Double Tap: ~; on Hold: ``````
+    [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset)
 };
 // clang-format on
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case DN_APP:
+            return 150;
+        default:
+            return TAPPING_TERM;
+    }
+}
 
 bool fn_mode_enabled = false;
 
@@ -47,9 +63,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_WIN_LYR] = LAYOUT_all(            // 0
        KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,      KC_5,      KC_6,      KC_7,      KC_8,      KC_9,      KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
        KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,      KC_Y,      KC_U,      KC_I,      KC_O,      KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
-       FN_W_CAPS, KC_A,      KC_S,      KC_D,      KC_F,      KC_G,      KC_H,      KC_J,      KC_K,      KC_L,      KC_SCLN,  KC_QUOT,            MY_ENT,
+       CAPS_MO, KC_A,      KC_S,      KC_D,      KC_F,      KC_G,      KC_H,      KC_J,      KC_K,      KC_L,      KC_SCLN,  KC_QUOT,            MY_ENT,
        KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,      KC_N,      KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,            KC_RSFT,
-       KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    ARWS_RALT, FN_LEFT,  APP_DWN,            RCTL_RGT
+       KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    ARWS_RALT, FN_LEFT,  DN_APP,            RCTL_RGT
     ),
     [_WIN_FN_LYR] = LAYOUT_all(         // 1
        KC_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  KC_DEL,
@@ -83,14 +99,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    tap_dance_action_t *action;
-
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
             blink_numbers(fn_mode_enabled);
-            indicator_enqueue(SPACE_KI, 200, 3, RGB_WHITE); // blink space too
-            indicator_enqueue(LEFT_ALT_KI, 200, 3, RGB_BLACK); // blink left alt
+            indicator_enqueue(SPACE_KI, 200, 3, RGB_WHITE);     // blink space too
+            indicator_enqueue(LEFT_ALT_KI, 200, 3, RGB_BLACK);  // blink left alt
             indicator_enqueue(RIGHT_ALT_KI, 200, 3, RGB_BLACK); // blink right alt
         }
         return false;
@@ -111,16 +125,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 wait_ms(50);
             }
             return false;
-        case TD(_DN_MU):
-            // this is needed to process the key before the timeout
-            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
-            if (!record->event.pressed &&
-                action->state.count &&
-                !action->state.finished) {
-                td_tap_hold_t *tap_hold = (td_tap_hold_t *)action->user_data;
-                tap_code16(tap_hold->on_tap);
-            }
-            break;
         case QK_LLCK:
             // when we lock a layer, flash the space bar area
             indicator_enqueue(SPACE_KI, 200, 3, RGB_WHITE); // blink space
@@ -128,55 +132,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (IS_LAYER_ON(_WIN_FN_LYR)) {
                 indicator_enqueue(LEFT_WIN_KI, 200, 3, RGB_RED); // blink left win
 
-                //blink the new arrow keys
+                // blink the new arrow keys
                 indicator_enqueue(I_KI, 150, 2, RGB_RED); // up - I
                 indicator_enqueue(J_KI, 150, 2, RGB_RED); // left - J
                 indicator_enqueue(K_KI, 150, 2, RGB_RED); // down - K
                 indicator_enqueue(L_KI, 150, 2, RGB_RED); // right - L
-            }else if (IS_LAYER_ON(_ARROW_LYR)) {
-                indicator_enqueue(FN_KI, 200, 2, RGB_RED); // left - Right Fn
+            } else if (IS_LAYER_ON(_ARROW_LYR)) {
+                indicator_enqueue(FN_KI, 200, 2, RGB_RED);         // left - Right Fn
                 indicator_enqueue(RIGHT_MENU_KI, 200, 2, RGB_RED); // down - Right Menu
-                indicator_enqueue(RIGHT_CTL_KI, 200, 2, RGB_RED); // right - Right Ctl
-                indicator_enqueue(RIGHT_SFT_KI, 200, 2, RGB_RED); // up - right shift
+                indicator_enqueue(RIGHT_CTL_KI, 200, 2, RGB_RED);  // right - Right Ctl
+                indicator_enqueue(RIGHT_SFT_KI, 200, 2, RGB_RED);  // up - right shift
             }
             return true;
-        case MY_GRV:
-            if (record->tap.count > 0) { // Key is being tapped
-                if (record->event.pressed) {
-                    // Handle tap press event...
-                    if (record->tap.count == 1) {
-                        register_code16(KC_GRV);
-                    } else if (record->tap.count == 2) {
-                        // this is the 2nd tap,
-                        // but we already did something on the 1st tap
-                        // delete the previous key
-                        tap_code(KC_BSPC);
-                        register_code16(KC_TILD);
-                    }
-                } else {
-                    // Handle tap release event...
-                    if (record->tap.count == 1) {
-                        unregister_code16(KC_GRV);
-                    } else if (record->tap.count == 2) {
-                        unregister_code16(KC_TILD);
-                    }
-                }
-            } else { // Key is being held
-                if (record->event.pressed) {
-                    // Handle hold press event...
-                    // send backticks to start a code block
-                    SEND_STRING("``````");
-                    // move cursor to the middle of the code block
-                    tap_code(KC_LEFT);
-                    tap_code(KC_LEFT);
-                    tap_code(KC_LEFT);
-                }
-            }
-            return false; // we handled all cases, stop further processing
         default:
             return true;
     }
 
     return true;
 }
-
