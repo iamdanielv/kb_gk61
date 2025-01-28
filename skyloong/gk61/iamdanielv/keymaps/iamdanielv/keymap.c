@@ -25,8 +25,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_RESET]  = ACTION_TAP_DANCE_FN(safe_reset),
     [TD_CLEAR]  = ACTION_TAP_DANCE_FN(safe_clear),
 
-    // on Tap: "DOWN" on Hold:"App"
-    [TD_DN_APP]    = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dn_app_finished, dn_app_reset),
     // on Tap: caps lock; on Hold: MO(_WIN_FN_LYR); on Double Tap Hold: MO(_NUM_LYR)
     [TD_CAPS_MO]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, caps_mo_finished, caps_mo_reset),
     // on Tap: `; on Double Tap: ~; on Hold: ``````
@@ -64,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,      KC_5,      KC_6,      KC_7,      KC_8,      KC_9,      KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
        KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,      KC_Y,      KC_U,      KC_I,      KC_O,      KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
        CAPS_MO,   KC_A,      KC_S,      KC_D,      KC_F,      KC_G,      KC_H,      KC_J,      KC_K,      KC_L,      KC_SCLN,  KC_QUOT,            MY_ENT,
-       KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,      KC_N,      KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,            KC_RSFT,
+       KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,      KC_N,      KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,            UP_RSFT,
        KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    ARWS_RALT, FN_LEFT,  DN_APP,             RCTL_RGT
     ),
     [_WIN_FN_LYR] = LAYOUT_all(         // 1
@@ -114,6 +112,46 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_rgb_keys(keycode, record)) { return false; }
 
     switch (keycode) {
+        case UP_RSFT:
+            // By doing it this way, we can react immediately on key press
+            if (record->event.pressed) {
+                // we are registering a key
+                if (record->tap.count > 1) {
+                    // require at least 2 taps in order to start pushing up arrow
+                    // this will prevent accidental arrow push on shift
+                    // this also handles a double tap and hold which causes the up key to auto repeat
+                    register_code16(KC_UP);
+                } else {
+                    register_code16(KC_RSFT);
+                }
+            } else {
+                // we are releasing a key
+                if (record->tap.count > 1) {
+                    unregister_code16(KC_UP);
+                } else {
+                    unregister_code16(KC_RSFT);
+                }
+            }
+            return false;
+        case DN_APP:
+            // By doing it this way, we can react immediately on key press
+            if (record->event.pressed) {
+                // we are registering a key
+                if (record->tap.count) {
+                    // this also handles a double tap and hold which causes the down key to auto repeat
+                    register_code16(KC_DOWN);
+                } else {
+                    register_code16(KC_APP);
+                }
+            } else {
+                // we are releasing a key
+                if (record->tap.count) {
+                    unregister_code16(KC_DOWN);
+                } else {
+                    unregister_code16(KC_APP);
+                }
+            }
+            return false;
         case QK_MAGIC_TOGGLE_NKRO:
             if (record->event.pressed) {
                 clear_keyboard(); // clear first buffer to prevent stuck keys

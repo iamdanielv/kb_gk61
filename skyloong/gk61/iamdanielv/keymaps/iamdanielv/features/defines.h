@@ -105,10 +105,17 @@ enum layer_names {
 // * Aliases to simplify keymap *
 // ******************************
 #define CAPS_MO TD(TD_CAPS_MO)
-#define DN_APP TD(TD_DN_APP)
+// Tap: KC_DOWN; Hold: KC_APP
+#define DN_APP LT(0,KC_APP)
 #define MY_GRV TD(TD_GRV)
 
-// Arrows layer on hold, ralt on tap
+// Custom right Shift key:
+// require at least 2 taps in order to start pushing up arrow
+// this will prevent accidental arrow push on shift
+// this also handles a double tap and hold which causes the up key to auto repeat
+#define UP_RSFT LT(0,KC_RSFT)
+
+// Tap: ralt; Hold: enable Arrows layer
 #define ARWS_RALT LT(_ARROW_LYR, KC_RALT)
 
 #define FN_LEFT   LT(_CTL_LYR, KC_LEFT)

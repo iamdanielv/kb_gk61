@@ -26,7 +26,6 @@ void safe_clear(tap_dance_state_t *state, void *user_data) {
 static td_state_t td_state[] = {
     [TD_RESET]   = TD_NONE,
     [TD_CLEAR]   = TD_NONE,
-    [TD_DN_APP]  = TD_NONE,
     [TD_CAPS_MO] = TD_NONE,
     [TD_GRV]     = TD_NONE
 };
@@ -125,52 +124,6 @@ void caps_mo_reset(tap_dance_state_t *state, void *user_data) {
             break;
     }
     td_state[TD_CAPS_MO] = TD_NONE;
-}
-
-void dn_app_finished(tap_dance_state_t *state, void *user_data) {
-    td_state[TD_DN_APP] = cur_dance(state);
-    switch (td_state[TD_DN_APP]) {
-        case TD_DOUBLE_SINGLE_TAP:
-            // the tap dance was interrupted,
-            // handle it the same as if it was a double tap
-        case TD_DOUBLE_TAP:
-            tap_code16_delay(KC_DOWN, 100);
-            wait_ms(100);
-            // fall through to single tap
-        case TD_DOUBLE_HOLD:
-            // use a double hold as a repeating function for a tap
-        case TD_SINGLE_TAP:
-            register_code16(KC_DOWN);
-            break;
-        case TD_SINGLE_HOLD:
-            register_code16(KC_APP);
-            break;
-        default:
-            break;
-    }
-}
-
-void dn_app_reset(tap_dance_state_t *state, void *user_data) {
-    switch (td_state[TD_DN_APP]) {
-        case TD_DOUBLE_SINGLE_TAP:
-            // the tap dance was interrupted,
-            // handle it the same as if it was a double tap
-        case TD_DOUBLE_TAP:
-            // fall through to single tap
-        case TD_DOUBLE_HOLD:
-             // use a double hold as a repeating function for a tap
-        case TD_SINGLE_TAP:
-            wait_ms(100);
-            unregister_code16(KC_DOWN);
-            break;
-        case TD_SINGLE_HOLD:
-            wait_ms(100);
-            unregister_code16(KC_APP);
-            break;
-        default:
-            break;
-    }
-    td_state[TD_DN_APP] = TD_NONE;
 }
 
 void grv_finished(tap_dance_state_t *state, void *user_data) {
