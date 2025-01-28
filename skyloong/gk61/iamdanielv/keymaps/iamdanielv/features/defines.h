@@ -4,11 +4,12 @@
 #pragma once
 
 enum layer_names {
-    _WIN_LYR,    // 0
-    _WIN_FN_LYR, // 1
-    _CTL_LYR,    // 2
-    _NUM_LYR,    // 3
-    _ARROW_LYR,  // 4
+    BASE_LYR,  // 0
+    EXT_LYR,   // 1
+    KBCTL_LYR, // 2
+    NUM_LYR,   // 3
+    ARROW_LYR, // 4
+    SPARE      // 5
 };
 
 // clang-format off
@@ -106,39 +107,38 @@ enum layer_names {
 // ******************************
 #define CAPS_MO TD(TD_CAPS_MO)
 // Tap: KC_DOWN; Hold: KC_APP
-#define DN_APP LT(0,KC_APP)
+#define DN_APP LT(0, KC_APP)
 #define MY_GRV TD(TD_GRV)
 
 // Custom right Shift key:
 // require at least 2 taps in order to start pushing up arrow
 // this will prevent accidental arrow push on shift
 // this also handles a double tap and hold which causes the up key to auto repeat
-#define UP_RSFT LT(0,KC_RSFT)
+#define UP_RSFT LT(0, KC_RSFT)
 
 // Tap: ralt; Hold: enable Arrows layer
-#define ARWS_RALT LT(_ARROW_LYR, KC_RALT)
+#define ARWS_RALT LT(ARROW_LYR, KC_RALT)
 
-#define FN_LEFT   LT(_CTL_LYR, KC_LEFT)
-#define RCTL_RGT  RCTL_T(KC_RIGHT)
-#define RSFT_UP   RSFT_T(KC_UP)
+#define FN_LEFT LT(KBCTL_LYR, KC_LEFT)
+#define RCTL_RGT RCTL_T(KC_RIGHT)
+#define RSFT_UP RSFT_T(KC_UP)
 
-//toggles
-#define TG_NUM    TG(_NUM_LYR)
-#define TG_W_FN   TG(_WIN_FN_LYR)
-#define TG_ARWS   TG(_ARROW_LYR)
+// toggles
+#define TG_NUM TG(NUM_LYR)
+#define TG_W_FN TG(EXT_LYR)
+#define TG_ARWS TG(ARROW_LYR)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
 
 // shortcuts
-#define MY_ENT    RSFT_T(KC_ENT)
-#define MY_UNDO   C(KC_Z)
-#define MY_CUT    C(KC_X)
-#define MY_COPY   C(KC_INS)
-#define MY_PASTE  S(KC_INS)
-#define MY_TASK   LCTL(LSFT(KC_ESC))
-#define MY_CONS   LCTL(LSFT(KC_GRV))
-#define MY_BACK   A(KC_LEFT)
-#define MY_FWD    A(KC_RIGHT)
-#define MSW_UP    KC_MS_WH_UP
-#define MSW_DN    KC_MS_WH_DOWN
-
+#define MY_ENT RSFT_T(KC_ENT)
+#define MY_UNDO C(KC_Z)
+#define MY_CUT C(KC_X)
+#define MY_COPY C(KC_INS)
+#define MY_PASTE S(KC_INS)
+#define MY_TASK LCTL(LSFT(KC_ESC))
+#define MY_CONS LCTL(LSFT(KC_GRV))
+#define MY_BACK A(KC_LEFT)
+#define MY_FWD A(KC_RIGHT)
+#define MSW_UP KC_MS_WH_UP
+#define MSW_DN KC_MS_WH_DOWN

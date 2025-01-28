@@ -87,10 +87,10 @@ void caps_mo_finished(tap_dance_state_t *state, void *user_data) {
     td_state[TD_CAPS_MO] = cur_dance(state);
     switch (td_state[TD_CAPS_MO]) {
         case TD_SINGLE_HOLD:
-            layer_on(_WIN_FN_LYR);
+            layer_on(EXT_LYR);
             break;
         case TD_DOUBLE_HOLD:
-            layer_on(_NUM_LYR);
+            layer_on(NUM_LYR);
             break;
         // the default case for the caps lock key should be caps lock
         // we only really modify single and double hold
@@ -107,10 +107,10 @@ void caps_mo_finished(tap_dance_state_t *state, void *user_data) {
 void caps_mo_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state[TD_CAPS_MO]) {
         case TD_SINGLE_HOLD:
-            layer_off(_WIN_FN_LYR);
+            layer_off(EXT_LYR);
             break;
         case TD_DOUBLE_HOLD:
-            layer_off(_NUM_LYR);
+            layer_off(NUM_LYR);
             break;
         // the default case for the caps lock key should be caps lock
         // we only really modify single and double hold

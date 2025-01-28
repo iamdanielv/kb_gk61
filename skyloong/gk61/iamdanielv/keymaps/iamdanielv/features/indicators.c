@@ -112,7 +112,7 @@ void highlight_fn_keys(rgb_t color, uint8_t led_min, uint8_t led_max) {
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t current_layer = get_highest_layer(layer_state);
-    if (current_layer == _WIN_LYR) {
+    if (current_layer == BASE_LYR) {
         if (rgb_matrix_get_flags() == LED_FLAG_INDICATOR) {
             for (int i = led_min; i < led_max; i++) {
                 rgb_matrix_set_color(i, 0, 0, 0);
@@ -132,7 +132,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     rgb_t num_lyr_rgb    = hsv_to_rgb(base_hsv_offset_qrt_cw);
     rgb_t fn_swp_rgb     = hsv_to_rgb(base_hsv_inverse);
 
-    if (IS_LAYER_ON(_WIN_FN_LYR)) {
+    if (IS_LAYER_ON(EXT_LYR)) {
         // this layer has many functions, so just change the whole color
         for (int i = led_min; i <= led_max; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(i, wfn_lyr_rgb.r, wfn_lyr_rgb.g, wfn_lyr_rgb.b);
@@ -163,7 +163,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         highlight_fn_keys(fn_swp_rgb, led_min, led_max);
     }
 
-    if (IS_LAYER_ON(_CTL_LYR)) {
+    if (IS_LAYER_ON(KBCTL_LYR)) {
         const uint8_t led_indexes[2] = {
             P_KI, // p for persistent color
             N_KI  // n for NKR toggle
@@ -200,7 +200,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, 0xFF, 0x00, 0x00);
     }
 
-    if (IS_LAYER_ON(_NUM_LYR)) {
+    if (IS_LAYER_ON(NUM_LYR)) {
         // clear out all the leds so we only light up the ones we care about
         // this will make our custom colors stand out more
         for (int i = led_min; i <= led_max; i++) {
@@ -225,7 +225,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, 0xFF, 0x00, 0x00);
     }
 
-    if (IS_LAYER_ON(_ARROW_LYR)) {
+    if (IS_LAYER_ON(ARROW_LYR)) {
         // highlight the arrow keys
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);  // up (right shift)
         RGB_MATRIX_INDICATOR_SET_COLOR(FN_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);         // left

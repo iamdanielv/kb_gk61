@@ -6,7 +6,7 @@
 enum tap_hold_keys {
     TD_RESET,   // require >= 3 taps to reset board
     TD_CLEAR,   // require >= 3 taps to clear eeprom
-    TD_CAPS_MO, // Tap: caps lock; Hold: MO(_WIN_FN_LYR); Double Tap Hold: MO(_NUM_LYR)
+    TD_CAPS_MO, // Tap: caps lock; Hold: MO(EXT_LYR); Double Tap Hold: MO(NUM_LYR)
     TD_GRV      // Tap: `; Double Tap: ~; Hold: ``````
 };
 

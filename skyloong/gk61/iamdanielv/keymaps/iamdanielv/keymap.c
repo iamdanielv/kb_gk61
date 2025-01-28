@@ -25,7 +25,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_RESET]  = ACTION_TAP_DANCE_FN(safe_reset),
     [TD_CLEAR]  = ACTION_TAP_DANCE_FN(safe_clear),
 
-    // on Tap: caps lock; on Hold: MO(_WIN_FN_LYR); on Double Tap Hold: MO(_NUM_LYR)
+    // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap Hold: MO(NUM_LYR)
     [TD_CAPS_MO]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, caps_mo_finished, caps_mo_reset),
     // on Tap: `; on Double Tap: ~; on Hold: ``````
     [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset)
@@ -58,40 +58,47 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * │Ctl│GUI│Alt│   │Spc│Spc│Mut│   |Spc|Alt│ Fn│App│   │Ctl|
      * └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
      */
-    [_WIN_LYR] = LAYOUT_all(            // 0
+    [BASE_LYR] = LAYOUT_all(
        KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,      KC_5,      KC_6,      KC_7,      KC_8,      KC_9,      KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
        KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,      KC_Y,      KC_U,      KC_I,      KC_O,      KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
        CAPS_MO,   KC_A,      KC_S,      KC_D,      KC_F,      KC_G,      KC_H,      KC_J,      KC_K,      KC_L,      KC_SCLN,  KC_QUOT,            MY_ENT,
        KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,      KC_N,      KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,            UP_RSFT,
        KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    ARWS_RALT, FN_LEFT,  DN_APP,             RCTL_RGT
     ),
-    [_WIN_FN_LYR] = LAYOUT_all(         // 1
+    [EXT_LYR] = LAYOUT_all(
        KC_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  KC_DEL,
        MY_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_PSCR,  KC_SCRL,  KC_PAUS,  KC_INS,
        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   C(KC_G),   KC_PGDN,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  KC_HOME,  KC_END,             _______,
        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    KC_BSPC,   KC_DEL,    MY_BACK,   MY_FWD,    _______,            _______,
        KC_SWP_FN, QK_LLCK,   _______,              _______,   _______,   _______,              _______,   _______,   _______,  _______,            _______
     ),
-    [_CTL_LYR] = LAYOUT_all(            // 2
+    [KBCTL_LYR] = LAYOUT_all(
        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
        XXXXXXX,   TD_KB_RST, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   RM_HUED,   RM_HUEU,   RGB_M_P,  RM_PREV,  RM_NEXT,  RM_TOGG,
        XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   RM_SATD,   RM_SATU,   RM_SPDD,  RM_SPDU,            _______,
        XXXXXXX,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   NK_TOGG,   XXXXXXX,   RM_VALD,   RM_VALU,   _______,            TG_W_FN,
        KC_SWP_FN, XXXXXXX,   XXXXXXX,              XXXXXXX,   XXXXXXX,   XXXXXXX,              XXXXXXX,   TG_ARWS,   _______,  TG_NUM,             QK_LLCK
     ),
-    [_NUM_LYR] = LAYOUT_all(            // 3
+    [NUM_LYR] = LAYOUT_all(
        _______,   _______,   _______,   _______,   _______,   _______,   KC_NUM,    KC_P7,     KC_P8,     KC_P9,     KC_PAST,   _______, _______,  _______,
        XXXXXXX,   KC_BTN1,   KC_MS_U,   KC_BTN2,   MSW_UP,    XXXXXXX,   XXXXXXX,   KC_P4,     KC_P5,     KC_P6,     KC_PPLS,   _______, _______,  _______,
        XXXXXXX,   KC_MS_L,   KC_MS_D,   KC_MS_R,   MSW_DN,    XXXXXXX,   XXXXXXX,   KC_P1,     KC_P2,     KC_P3,     KC_PENT,   _______,           _______,
        XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   KC_SPC,    XXXXXXX,   KC_P0,     KC_PDOT,   KC_PDOT,   KC_PSLS,            _______,
        XXXXXXX,   XXXXXXX,   XXXXXXX,              _______,   KC_SPC,    _______,              _______,   _______,   _______,   TG_NUM,            _______
     ),
-    [_ARROW_LYR] =  LAYOUT_all(         // 4
+    [ARROW_LYR] =  LAYOUT_all(
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   KC_VOLD, KC_VOLU,  _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,           _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,            KC_UP,
        _______,   _______,   _______,              _______,   _______,   _______,              _______,   TG_ARWS,   KC_LEFT,   KC_DOWN,           KC_RIGHT
+    ),
+    [SPARE] =  LAYOUT_all(
+       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
+       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
+       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,           _______,
+       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,            _______,
+       _______,   _______,   _______,              _______,   _______,   _______,              _______,   _______,   _______,   _______,           _______
     )
 };
 // clang-format on
@@ -167,7 +174,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // when we lock a layer, flash the space bar area
             indicator_enqueue(SPACE_KI, 200, 3, RGB_WHITE); // blink space
 
-            if (IS_LAYER_ON(_WIN_FN_LYR)) {
+            if (IS_LAYER_ON(EXT_LYR)) {
                 indicator_enqueue(LEFT_WIN_KI, 200, 3, RGB_RED); // blink left win
 
                 // blink the new arrow keys
@@ -175,7 +182,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 indicator_enqueue(J_KI, 150, 2, RGB_RED); // left - J
                 indicator_enqueue(K_KI, 150, 2, RGB_RED); // down - K
                 indicator_enqueue(L_KI, 150, 2, RGB_RED); // right - L
-            } else if (IS_LAYER_ON(_ARROW_LYR)) {
+            } else if (IS_LAYER_ON(ARROW_LYR)) {
                 indicator_enqueue(FN_KI, 200, 2, RGB_RED);         // left - Right Fn
                 indicator_enqueue(RIGHT_MENU_KI, 200, 2, RGB_RED); // down - Right Menu
                 indicator_enqueue(RIGHT_CTL_KI, 200, 2, RGB_RED);  // right - Right Ctl
