@@ -18,14 +18,13 @@ void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_fl
     }
 }
 
-void indicator_dequeue(uint8_t led_index){
+void indicator_dequeue(uint8_t led_index) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
-        if (indicator_queue[i].active &&
-            indicator_queue[i].led_index == led_index) {
-                // we found a match, deactivate it
-                indicator_queue[i].active = false;
-                indicator_queue[i].last_update = 0x00;
-                // break; // we could break out here, but check all of them in case we have duplicates
+        if (indicator_queue[i].active && indicator_queue[i].led_index == led_index) {
+            // we found a match, deactivate it
+            indicator_queue[i].active      = false;
+            indicator_queue[i].last_update = 0x00;
+            // break; // we could break out here, but check all of them in case we have duplicates
         }
     }
 }
@@ -46,7 +45,7 @@ void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
                 if (indicator_queue[i].times_to_flash <= 0) {
                     // we have flashed as many times as requested
                     // clear this queue spot
-                    indicator_queue[i].active = false;
+                    indicator_queue[i].active      = false;
                     indicator_queue[i].last_update = 0x00;
                 }
             }
@@ -55,7 +54,7 @@ void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
                 INDICATOR_Q_MATRIX_SET_COLOR(indicator_queue[i]);
             } else {
                 rgb_t this_rgb_led = INDICATOR_Q_GET_RGB_LED(indicator_queue[i]);
-                rgb_t alt = get_complementary_rgb(this_rgb_led, false);
+                rgb_t alt          = get_complementary_rgb(this_rgb_led, false);
                 INDICATOR_Q_MATRIX_SET_COLOR_CUSTOM(indicator_queue[i], alt.r, alt.g, alt.b);
             }
         }
