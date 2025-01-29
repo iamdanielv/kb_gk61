@@ -119,7 +119,8 @@ enum layer_names {
 // Tap: ralt; Hold: enable Arrows layer
 #define ARWS_RALT LT(ARROW_LYR, KC_RALT)
 
-#define FN_LEFT LT(KBCTL_LYR, KC_LEFT)
+#define KBCTL_SPC LT(KBCTL_LYR, KC_SPC)
+#define KBCTL_LEFT LT(KBCTL_LYR, KC_LEFT)
 #define RCTL_RGT RCTL_T(KC_RIGHT)
 #define RSFT_UP RSFT_T(KC_UP)
 
