@@ -9,7 +9,6 @@ enum layer_names {
     KBCTL_LYR, // 2
     NUM_LYR,   // 3
     ARROW_LYR, // 4
-    SPARE      // 5
 };
 
 // clang-format off
