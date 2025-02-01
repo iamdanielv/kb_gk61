@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    ARWS_RALT, KBCTL_LEFT,DN_APP,            RCTL_RGT
     ),
     [EXT_LYR] = LAYOUT_all(
-       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  KC_DEL,
+       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,
        MY_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_PSCR,  KC_SCRL,  KC_PAUS,  KC_INS,
        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   C(KC_G),   KC_PGDN,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  KC_HOME,  KC_END,             _______,
        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    KC_BSPC,   KC_DEL,    MY_BACK,   MY_FWD,    _______,            _______,
@@ -112,6 +112,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_rgb_keys(keycode, record)) { return false; }
 
     switch (keycode) {
+        case KC_BSPC: {
+            // based on: https://getreuer.info/posts/keyboards/macros3/index.html
+            // shift + backspace is delete
+            // both shift held is shift + delete
+            static uint16_t registered_key = KC_NO;
+            if (record->event.pressed) {  // On key press.
+                const uint8_t mods = get_mods();
+                #ifndef NO_ACTION_ONESHOT
+                uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
+                #else
+                        uint8_t shift_mods = mods & MOD_MASK_SHIFT;
+                #endif  // NO_ACTION_ONESHOT
+                if (shift_mods) {  // At least one shift key is held.
+                    registered_key = KC_DEL;
+                    // If one shift is held, clear it from the mods. But if both
+                    // shifts are held, leave as is to send Shift + Del.
+                    if (shift_mods != MOD_MASK_SHIFT) {
+                    #ifndef NO_ACTION_ONESHOT
+                        del_oneshot_mods(MOD_MASK_SHIFT);
+                    #endif  // NO_ACTION_ONESHOT
+                        unregister_mods(MOD_MASK_SHIFT);
+                    }
+                } else {
+                    registered_key = KC_BSPC;
+                }
+
+                register_code(registered_key);
+                set_mods(mods);
+            } else {  // On key release.
+                wait_ms(50); // wait a little bit, so programs don't filter the press
+                unregister_code(registered_key);
+            }
+        }
+        return false;
+
         case MY_ENT:
             // By doing it this way, we can react immediately on key press
             if (record->event.pressed) {
