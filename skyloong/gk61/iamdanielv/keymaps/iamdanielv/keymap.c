@@ -112,6 +112,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_rgb_keys(keycode, record)) { return false; }
 
     switch (keycode) {
+        case MY_ENT:
+            // By doing it this way, we can react immediately on key press
+            if (record->event.pressed) {
+                // we are registering a key
+                if (record->tap.count) {
+                    register_code16(KC_ENT);
+                } else {
+                    register_code16(KC_RSFT);
+                }
+            } else {
+                // we are releasing a key
+                if (record->tap.count) {
+                    wait_ms(50); // wait a little bit, so programs don't filter the press
+                    unregister_code16(KC_ENT);
+                } else {
+                    unregister_code16(KC_RSFT);
+                }
+            }
+            return false;
         case UP_RSFT:
             // By doing it this way, we can react immediately on key press
             if (record->event.pressed) {
@@ -141,14 +160,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     // this also handles a double tap and hold which causes the down key to auto repeat
                     register_code16(KC_DOWN);
                 } else {
-                    register_code16(KC_APP);
+                    tap_code16(KC_APP);
                 }
             } else {
                 // we are releasing a key
                 if (record->tap.count) {
+                    wait_ms(50); // wait a little bit, so programs don't filter the press
                     unregister_code16(KC_DOWN);
                 } else {
-                    unregister_code16(KC_APP);
+                    // we switched to a tap code on press to react immediately,
+                    // no need to unregister since the tap will handle it above
+                    // unregister_code16(KC_APP);
                 }
             }
             return false;

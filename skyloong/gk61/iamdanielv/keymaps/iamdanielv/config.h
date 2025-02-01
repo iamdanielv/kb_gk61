@@ -7,3 +7,4 @@
 #define RGB_MATRIX_SLEEP
 
 #define TAPPING_TERM_PER_KEY
+#define TAP_CODE_DELAY 25
