@@ -70,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        MY_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_PSCR,  KC_SCRL,  KC_PAUS,  KC_INS,
        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   C(KC_G),   KC_PGDN,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  KC_HOME,  KC_END,             _______,
        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    KC_BSPC,   KC_DEL,    MY_BACK,   MY_FWD,    _______,            _______,
-       KC_SWP_FN, QK_LLCK,   _______,              _______,   _______,   _______,              _______,   _______,   _______,  _______,            _______
+       KC_SWP_FN, QK_LLCK,   _______,              _______,   KBCTL_SPC, _______,              _______,   _______,   _______,  _______,            _______
     ),
     [KBCTL_LYR] = LAYOUT_all(
        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
@@ -87,11 +87,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        XXXXXXX,   XXXXXXX,   XXXXXXX,              _______,   KBCTL_SPC, _______,              _______,   _______,   _______,   TG_NUM,            _______
     ),
     [ARROW_LYR] =  LAYOUT_all(
-       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   KC_VOLD, KC_VOLU,  _______,
+       _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   KC_VOLD, KC_VOLU,  KBCTL_BSPC,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,           _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,            KC_UP,
-       _______,   _______,   _______,              _______,   KBCTL_SPC, _______,              _______,   TG_ARWS,   KC_LEFT,   KC_DOWN,           KC_RIGHT
+       _______,   _______,   _______,              _______,   _______,   _______,              _______,   TG_ARWS,   KC_LEFT,   KC_DOWN,           KC_RIGHT
     )
 };
 // clang-format on
