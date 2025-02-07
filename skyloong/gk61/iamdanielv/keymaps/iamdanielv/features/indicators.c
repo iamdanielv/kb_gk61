@@ -203,24 +203,22 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
         }
 
-        const uint8_t led_indexes[23] = {
+        const uint8_t numpad_keys[19] = {
             //  Light up the numpad to make it easier to see
             N6_KI,                                            // 6 = 6 is used as numlock indicator and starts the numpad
             N7_KI, N8_KI,   N9_KI,  N0_KI,   MINS_KI, EQL_KI, // 7, 8, 9, 0 = 7, 8, 9, Asterisk, minus, equals
             U_KI,  I_KI,    O_KI,   P_KI,                     // U, I, O, P = 4, 5, 6, Plus
             J_KI,  K_KI,    L_KI,   SCLN_KI,                  // J, K, L, ; = 1, 2, 3, Enter
-            M_KI,  COMM_KI, DOT_KI, SLSH_KI,                  // M, ,, ., / = 0, dot, dot, slash
-            W_KI,  A_KI,    S_KI,   D_KI                      // w, a, s, d used to move the mouse
+            M_KI,  COMM_KI, DOT_KI, SLSH_KI                   // M, ,, ., / = 0, dot, dot, slash
         };
-
-        for (int i = 0; i < 23; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
+        for (int i = 0; i < 19; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(numpad_keys[i], num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
         }
 
         // check for num lock
         if (host_keyboard_led_state().num_lock) {
             // we can use the LED Indicator for NUM_LOCK as well
-            RGB_MATRIX_INDICATOR_SET_COLOR(N6_KI, 128, 128, 128);
+            RGB_MATRIX_INDICATOR_SET_COLOR(N6_KI, 0xFF, 0xFF, 0xFF);
         }
 
         // highlight the mouse keys
@@ -241,8 +239,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);  // right
 
         // volume up and down
-        RGB_MATRIX_INDICATOR_SET_COLOR(EQL_KI, 0xCC, 0xCC, 0xCC);  // volume up - +
-        RGB_MATRIX_INDICATOR_SET_COLOR(MINS_KI, 0xCC, 0xCC, 0xCC); // volume down - -
+        RGB_MATRIX_INDICATOR_SET_COLOR(EQL_KI, 0xFF, 0xFF, 0xFF);  // volume up - +
+        RGB_MATRIX_INDICATOR_SET_COLOR(MINS_KI, 0xFF, 0xFF, 0xFF); // volume down - -
 
         // layer toggle
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 0xFF, 0x00, 0x00);
