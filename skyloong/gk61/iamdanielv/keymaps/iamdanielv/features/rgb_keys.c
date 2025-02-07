@@ -108,7 +108,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (rgb_matrix_get_sat() <= RGB_MATRIX_SAT_STEP) {
                     // this update would put us at min
-                    indicator_enqueue(L_KI, 200, 2, RGB_BLACK); // L - UP
+                    indicator_enqueue(L_KI, 200, 2, RGB_BLACK);              // L - UP
                     indicator_enqueue(K_KI, 200, 4, INDICATOR_RGB_DARK_RED); // K - DOWN
                     blink_space(false);
                 } else {
@@ -132,8 +132,8 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
         case RM_VALD:
             if (record->event.pressed) {
                 if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
-                    indicator_enqueue(DOT_KI, 200, 2, RGB_BLACK); // . - UP
-                    indicator_enqueue(COMM_KI, 200, 4, RGB_RED); // , - DOWN
+                    indicator_enqueue(DOT_KI, 200, 2, RGB_BLACK);               // . - UP
+                    indicator_enqueue(COMM_KI, 200, 4, INDICATOR_RGB_DARK_RED); // , - DOWN
                     blink_space(false);
                 } else {
                     indicator_enqueue(COMM_KI, 150, 1, RGB_WHITE); // , - DOWN
