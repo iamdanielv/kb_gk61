@@ -101,9 +101,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
             blink_numbers(fn_mode_enabled);
-            indicator_enqueue(SPACE_KI, 200, 3, RGB_WHITE);     // blink space too
-            indicator_enqueue(LEFT_ALT_KI, 200, 3, RGB_BLACK);  // blink left alt
-            indicator_enqueue(RIGHT_ALT_KI, 200, 3, RGB_BLACK); // blink right alt
+            blink_space(true);
         }
         return false;
     }
@@ -148,6 +146,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
 
         case MY_ENT:
+            // act as enter on tap, Shift on hold
+            // this is needed because we lose the shift key when
+            // enabling the arrow layer
             // By doing it this way, we can react immediately on key press
             if (record->event.pressed) {
                 // we are registering a key
@@ -167,6 +168,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         case UP_RSFT:
+            // when using the default base layer, have the right shift act
+            // act as a regular shift key, except if it is double tapped
+            // on double tap and above, start acting like an up arrow key
             // By doing it this way, we can react immediately on key press
             if (record->event.pressed) {
                 // we are registering a key
@@ -188,6 +192,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         case DN_APP:
+            // act as down arrow on tap, KC_APP on hold
             // By doing it this way, we can react immediately on key press
             if (record->event.pressed) {
                 // we are registering a key
@@ -222,21 +227,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case QK_LLCK:
             // when we lock a layer, flash the space bar area
-            indicator_enqueue(SPACE_KI, 200, 3, RGB_WHITE); // blink space
+            blink_space(false);
 
             if (IS_LAYER_ON(EXT_LYR)) {
-                indicator_enqueue(LEFT_WIN_KI, 200, 3, RGB_RED); // blink left win
+                indicator_enqueue(LEFT_WIN_KI, 200, 2, INDICATOR_RGB_DARK_RED); // blink left win
 
                 // blink the new arrow keys
-                indicator_enqueue(I_KI, 150, 2, RGB_RED); // up - I
-                indicator_enqueue(J_KI, 150, 2, RGB_RED); // left - J
-                indicator_enqueue(K_KI, 150, 2, RGB_RED); // down - K
-                indicator_enqueue(L_KI, 150, 2, RGB_RED); // right - L
+                indicator_enqueue(I_KI, 150, 2, INDICATOR_RGB_DARK_RED); // up - I
+                indicator_enqueue(J_KI, 150, 2, INDICATOR_RGB_DARK_RED); // left - J
+                indicator_enqueue(K_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - K
+                indicator_enqueue(L_KI, 150, 2, INDICATOR_RGB_DARK_RED); // right - L
             } else if (IS_LAYER_ON(ARROW_LYR)) {
-                indicator_enqueue(FN_KI, 200, 2, RGB_RED);         // left - Right Fn
-                indicator_enqueue(RIGHT_MENU_KI, 200, 2, RGB_RED); // down - Right Menu
-                indicator_enqueue(RIGHT_CTL_KI, 200, 2, RGB_RED);  // right - Right Ctl
-                indicator_enqueue(RIGHT_SFT_KI, 200, 2, RGB_RED);  // up - right shift
+                indicator_enqueue(FN_KI, 150, 2, INDICATOR_RGB_DARK_RED);         // left - Right Fn
+                indicator_enqueue(RIGHT_MENU_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - Right Menu
+                indicator_enqueue(RIGHT_CTL_KI, 150, 2, INDICATOR_RGB_DARK_RED);  // right - Right Ctl
+                indicator_enqueue(RIGHT_SFT_KI, 150, 2, INDICATOR_RGB_DARK_RED);  // up - right shift
             }
             return true;
         default:
