@@ -104,7 +104,7 @@ enum layer_names {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-#define CAPS_MO TD(TD_CAPS_MO)
+#define MO_CAPS   TD(TD_MO_CAPS)
 // Tap: KC_DOWN; Hold: KC_APP
 #define DN_APP LT(0, KC_APP)
 #define MY_GRV TD(TD_GRV)
