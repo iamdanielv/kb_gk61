@@ -6,3 +6,4 @@ SRC += features/fn_mode.c
 SRC += features/tap_hold.c
 SRC += features/indicators.c
 SRC += features/rgb_keys.c
+RGB_MATRIX_CUSTOM_USER = yes
