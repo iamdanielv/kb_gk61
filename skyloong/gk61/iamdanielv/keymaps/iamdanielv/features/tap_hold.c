@@ -107,9 +107,15 @@ void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
 void mo_caps_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state[TD_MO_CAPS]) {
         case TD_SINGLE_HOLD:
-            layer_off(EXT_LYR);
+            if(!is_layer_locked(EXT_LYR)) {
+                // only turn off the layer if it hasn't been locked
+                layer_off(EXT_LYR);
+            }
             break;
         case TD_DOUBLE_HOLD:
+            // the NUM_LYR is not lockable
+            // is is only used with a toggle
+            // so it's ok to turn it off on release
             layer_off(NUM_LYR);
             break;
         // the default case for the caps lock key should be caps lock
