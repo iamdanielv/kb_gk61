@@ -52,24 +52,25 @@ hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
     return get_hsv_color_shifted(base_color, 64, clockwise);
 }
 
+const uint8_t numbers_keys[] = {N1_KI, N2_KI, N3_KI, N4_KI, N5_KI, N6_KI, N7_KI, N8_KI, N9_KI, N0_KI, MINS_KI, EQL_KI};
+
 void blink_numbers(bool isEnabling) {
-    // NOTE: The LEDs may not always be in order
-    for (int i = N1_KI; i <= EQL_KI; i++) { // 1(1) to EQL(12) the LED Numbers are in order
+    for (int num = 0; num < 12; num++) {
         if (isEnabling) {
             // enabling, flash white
-            indicator_enqueue(i, 200, 2, RGB_WHITE);
+            indicator_enqueue(numbers_keys[num], 200, 2, RGB_WHITE);
         } else {
             // disabling, flash red
-            indicator_enqueue(i, 150, 2, RGB_RED);
+            indicator_enqueue(numbers_keys[num], 150, 2, RGB_RED);
         }
     }
 }
 
 void blink_arrows(void) {
-    indicator_enqueue(FN_KI, 200, 3, RGB_WHITE);         // left
-    indicator_enqueue(RIGHT_MENU_KI, 200, 3, RGB_WHITE); // down
-    indicator_enqueue(RIGHT_SFT_KI, 200, 3, RGB_WHITE);  // up
-    indicator_enqueue(RIGHT_CTL_KI, 200, 3, RGB_WHITE);  // right
+    indicator_enqueue(FN_KI, 200, 2, RGB_WHITE);         // left
+    indicator_enqueue(RIGHT_MENU_KI, 200, 2, RGB_WHITE); // down
+    indicator_enqueue(RIGHT_SFT_KI, 200, 2, RGB_WHITE);  // up
+    indicator_enqueue(RIGHT_CTL_KI, 200, 2, RGB_WHITE);  // right
 }
 
 void blink_space(bool extended) {
@@ -104,9 +105,8 @@ void blink_NKRO(bool isEnabling) {
 }
 
 void highlight_fn_keys(rgb_t color, uint8_t led_min, uint8_t led_max) {
-    // NOTE: The LEDs may not always be in order
-    for (int i = N1_KI; i <= EQL_KI; i++) { // 1 to EQL(12), the LED Numbers are in order
-        RGB_MATRIX_INDICATOR_SET_COLOR(i, color.r, color.g, color.b);
+    for (int num = 0; num < 12; num++) {
+        RGB_MATRIX_INDICATOR_SET_COLOR(numbers_keys[num], color.r, color.g, color.b);
     }
 }
 
@@ -164,13 +164,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(KBCTL_LYR)) {
-        const uint8_t led_indexes[2] = {
-            P_KI, // p for persistent color
-            N_KI  // n for NKR toggle
-        };
-        for (int i = 0; i < 2; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0xFF, 0xFF, 0xFF);
-        }
+        // keys specific to this layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(P_KI, 0xFF, 0xFF, 0xFF);  // P for persistent color
+        RGB_MATRIX_INDICATOR_SET_COLOR(N_KI, 0xFF, 0xFF, 0xFF);  // N for NKRO
 
         const uint8_t led_off_indexes[5] = {// turn off some of the LEDS to make it easier to see our indicators
                                             A_KI, TAB_KI, CAPS_KI, LEFT_SFT_KI, LEFT_WIN_KI};
