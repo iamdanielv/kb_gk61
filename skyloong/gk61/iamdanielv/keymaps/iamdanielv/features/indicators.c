@@ -221,6 +221,18 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
         }
 
+        // check for num lock
+        if (host_keyboard_led_state().num_lock) {
+            // we can use the LED Indicator for NUM_LOCK as well
+            RGB_MATRIX_INDICATOR_SET_COLOR(N6_KI, 128, 128, 128);
+        }
+
+        // highlight the mouse keys
+        RGB_MATRIX_INDICATOR_SET_COLOR(W_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // up - W
+        RGB_MATRIX_INDICATOR_SET_COLOR(A_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // left - A
+        RGB_MATRIX_INDICATOR_SET_COLOR(S_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // down - S
+        RGB_MATRIX_INDICATOR_SET_COLOR(D_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // right - D
+
         // layer toggle
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, 0xFF, 0x00, 0x00);
     }
