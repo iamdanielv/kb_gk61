@@ -133,7 +133,7 @@ void grv_finished(tap_dance_state_t *state, void *user_data) {
             // the tap dance was interrupted,
             // handle it the same as if it was a double tap
         case TD_DOUBLE_TAP:
-            register_code16(KC_TILD);
+            register_code16(KC_ESC);
             break;
         case TD_SINGLE_TAP:
             register_code16(KC_GRV);
@@ -158,11 +158,11 @@ void grv_reset(tap_dance_state_t *state, void *user_data) {
             // the tap dance was interrupted,
             // handle it the same as if it was a double tap
         case TD_DOUBLE_TAP:
-            wait_ms(100);
-            unregister_code16(KC_TILD);
+            wait_ms(50);
+            unregister_code16(KC_ESC);
             break;
         case TD_SINGLE_TAP:
-            wait_ms(100);
+            wait_ms(50);
             unregister_code16(KC_GRV);
             break;
         // case TD_DOUBLE_HOLD:
