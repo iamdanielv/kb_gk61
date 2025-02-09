@@ -4,11 +4,12 @@
 #pragma once
 
 enum layer_names {
-    BASE_LYR,  // 0
-    EXT_LYR,   // 1
-    KBCTL_LYR, // 2
-    NUM_LYR,   // 3
-    ARROW_LYR, // 4
+    BASE_LYR,       // 0 - regular qwerty
+    HMM_BASE_LYR,   // 1 - home row mods qwerty
+    EXT_LYR,        // 2 - similar to extend
+    KBCTL_LYR,      // 3 - keyboard control layer
+    NUM_LYR,        // 4 - numpad
+    ARROW_LYR,      // 5 - arrow overlay on right hand modifiers
 };
 
 // clang-format off
@@ -31,6 +32,30 @@ enum layer_names {
 * └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 */
 // clang-format on
+
+// *****************
+// * Home Row Mods *
+// *****************
+// based on: https://precondition.github.io/home-row-mods#getting-started-with-home-row-mods-on-qmk
+
+// Left-hand home row mods
+#define GUI_A LGUI_T(KC_A)
+#define ALT_S LALT_T(KC_S)
+#define SFT_D LSFT_T(KC_D)
+#define CTL_F LCTL_T(KC_F)
+
+// this was added since I use ctl and shift a lot
+#define CTLS_G C_S_T(KC_G)
+
+// Right-hand home row mods
+#define CTL_J RCTL_T(KC_J)
+#define SFT_K RSFT_T(KC_K)
+#define ALT_L RALT_T(KC_L)
+#define GUI_SCLN RGUI_T(KC_SCLN)
+
+// by default, use a regular key layout without home row mods
+// the KB_CTL_LYR can toggle the home row mod enabled layer
+#define TG_HMM TG(HMM_BASE_LYR)
 
 // ***************
 // * Key Indexes *
