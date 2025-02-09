@@ -35,7 +35,7 @@ static td_state_t td_state[] = {
 // *  https://docs.qmk.fm/features/tap_dance                *
 // * Changed the single tap single hold so that if it's     *
 // * tapped once only look at it's current pressed state    *
-// * to determine if it's a tap or hold.                    * 
+// * to determine if it's a tap or hold.                    *
 // **********************************************************
 
 /* Return an integer that corresponds to what kind of tap dance should be executed.
@@ -155,6 +155,7 @@ void grv_finished(tap_dance_state_t *state, void *user_data) {
             // fall through to single hold
         case TD_SINGLE_HOLD:
             // type 6 ` then 3 lefts to put user in the middle
+            // this is good for code blocks in markdown
             SEND_STRING("``````");
             tap_code(KC_LEFT);
             tap_code(KC_LEFT);
