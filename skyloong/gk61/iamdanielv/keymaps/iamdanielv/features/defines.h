@@ -5,7 +5,7 @@
 
 enum layer_names {
     BASE_LYR,       // 0 - regular qwerty
-    HMM_BASE_LYR,   // 1 - home row mods qwerty
+    HRM_BASE_LYR,   // 1 - home row mods qwerty
     EXT_LYR,        // 2 - similar to extend
     KBCTL_LYR,      // 3 - keyboard control layer
     NUM_LYR,        // 4 - numpad
@@ -55,7 +55,7 @@ enum layer_names {
 
 // by default, use a regular key layout without home row mods
 // the KB_CTL_LYR can toggle the home row mod enabled layer
-#define TG_HMM TG(HMM_BASE_LYR)
+#define TG_HRM TG(HRM_BASE_LYR)
 
 // ***************
 // * Key Indexes *

@@ -132,7 +132,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     rgb_t num_lyr_rgb    = hsv_to_rgb(base_hsv_offset_qrt_cw);
     rgb_t fn_swp_rgb     = hsv_to_rgb(base_hsv_inverse);
 
-    if (IS_LAYER_ON(HMM_BASE_LYR)) {
+    if (IS_LAYER_ON(HRM_BASE_LYR)) {
         // highlight the home row
         RGB_MATRIX_INDICATOR_SET_COLOR(A_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
         RGB_MATRIX_INDICATOR_SET_COLOR(S_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
