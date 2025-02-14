@@ -106,6 +106,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+// **********************************************************************
+// * we want the ability to break out the key handlers but              *
+// * we also want to inline, this will allow us to do that              *
+// * inline void myInlinedFunction() __attribute__((always_inline));    *
+// **********************************************************************
+
+// function definitions for key handlers
+inline bool handle_backspace(keyrecord_t *record) __attribute__((always_inline));
+inline bool handle_my_ent(keyrecord_t *record) __attribute__((always_inline));
+inline bool handle_up_rsft(keyrecord_t *record) __attribute__((always_inline));
+inline bool handle_dn_app(keyrecord_t *record) __attribute__((always_inline));
+inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline));
+inline bool handle_layer_lock(keyrecord_t *record) __attribute__((always_inline));
+
+
+// **************************************************
+// * process_record_user is the main function that  *
+// * handles key presses and is the entry point for *
+// * all key processing                             *
+// **************************************************
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
@@ -121,143 +141,185 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!dv_process_layer_lock(keycode, record, DVLLOCK)) { return false; }
 
     switch (keycode) {
-        case KC_BSPC: {
-            // based on: https://getreuer.info/posts/keyboards/macros3/index.html
-            // shift + backspace is delete
-            // both shift held is shift + delete
-            static uint16_t registered_key = KC_NO;
-            if (record->event.pressed) {  // On key press.
-                const uint8_t mods = get_mods();
-                #ifndef NO_ACTION_ONESHOT
-                uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
-                #else
-                        uint8_t shift_mods = mods & MOD_MASK_SHIFT;
-                #endif  // NO_ACTION_ONESHOT
-                if (shift_mods) {  // At least one shift key is held.
-                    registered_key = KC_DEL;
-                    // If one shift is held, clear it from the mods. But if both
-                    // shifts are held, leave as is to send Shift + Del.
-                    if (shift_mods != MOD_MASK_SHIFT) {
-                    #ifndef NO_ACTION_ONESHOT
-                        del_oneshot_mods(MOD_MASK_SHIFT);
-                    #endif  // NO_ACTION_ONESHOT
-                        unregister_mods(MOD_MASK_SHIFT);
-                    }
-                } else {
-                    registered_key = KC_BSPC;
-                }
-
-                register_code(registered_key);
-                set_mods(mods);
-            } else {  // On key release.
-                wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
-                unregister_code(registered_key);
-            }
-        }
-        return false;
-
+        case KC_BSPC:
+            return handle_backspace(record);
         case MY_ENT:
-            // act as enter on tap, Shift on hold
-            // this is needed because we lose the shift key when
-            // enabling the arrow layer
-            // By doing it this way, we can react immediately on key press
-            if (record->event.pressed) {
-                // we are registering a key
-                if (record->tap.count) {
-                    register_code16(KC_ENT);
-                } else {
-                    register_code16(KC_RSFT);
-                }
-            } else {
-                // we are releasing a key
-                if (record->tap.count) {
-                    wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
-                    unregister_code16(KC_ENT);
-                } else {
-                    unregister_code16(KC_RSFT);
-                }
-            }
-            return false;
+            return handle_my_ent(record);
         case UP_RSFT:
-            // when using the default base layer, have the right shift act
-            // act as a regular shift key, except if it is double tapped
-            // on double tap and above, start acting like an up arrow key
-            // By doing it this way, we can react immediately on key press
-            if (record->event.pressed) {
-                // we are registering a key
-                if (record->tap.count > 1) {
-                    // require at least 2 taps in order to start pushing up arrow
-                    // this will prevent accidental arrow push on shift
-                    // this also handles a double tap and hold which causes the up key to auto repeat
-                    register_code16(KC_UP);
-                } else {
-                    register_code16(KC_RSFT);
-                }
-            } else {
-                // we are releasing a key
-                if (record->tap.count > 1) {
-                    unregister_code16(KC_UP);
-                } else {
-                    unregister_code16(KC_RSFT);
-                }
-            }
-            return false;
+            return handle_up_rsft(record);
         case DN_APP:
-            // act as down arrow on tap, KC_APP on hold
-            // By doing it this way, we can react immediately on key press
-            if (record->event.pressed) {
-                // we are registering a key
-                if (record->tap.count) {
-                    // this also handles a double tap and hold which causes the down key to auto repeat
-                    register_code16(KC_DOWN);
-                } else {
-                    tap_code16(KC_APP);
-                }
-            } else {
-                // we are releasing a key
-                if (record->tap.count) {
-                    wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
-                    unregister_code16(KC_DOWN);
-                } else {
-                    // we switched to a tap code on press to react immediately,
-                    // no need to unregister since the tap will handle it above
-                    // unregister_code16(KC_APP);
-                }
-            }
-            return false;
+            return handle_dn_app(record);
         case QK_MAGIC_TOGGLE_NKRO:
-            if (record->event.pressed) {
-                clear_keyboard(); // clear first buffer to prevent stuck keys
-                wait_ms(50);
-                keymap_config.nkro = !keymap_config.nkro;
-                blink_NKRO(keymap_config.nkro);
-                wait_ms(50);
-                clear_keyboard(); // clear first buffer to prevent stuck keys
-                wait_ms(50);
-            }
-            return false;
+            return handle_nkro_toggle(record);
         case QK_LLCK:
-            // when we lock a layer, flash the space bar area
-            blink_space(false);
-
-            if (IS_LAYER_ON(EXT_LYR)) {
-                indicator_enqueue(LEFT_WIN_KI, 200, 2, INDICATOR_RGB_DARK_RED); // blink left win
-
-                // blink the new arrow keys
-                indicator_enqueue(I_KI, 150, 2, INDICATOR_RGB_DARK_RED); // up - I
-                indicator_enqueue(J_KI, 150, 2, INDICATOR_RGB_DARK_RED); // left - J
-                indicator_enqueue(K_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - K
-                indicator_enqueue(L_KI, 150, 2, INDICATOR_RGB_DARK_RED); // right - L
-            } else if (IS_LAYER_ON(ARROW_LYR)) {
-                indicator_enqueue(FN_KI, 150, 2, INDICATOR_RGB_DARK_RED);         // left - Right Fn
-                indicator_enqueue(RIGHT_MENU_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - Right Menu
-                indicator_enqueue(RIGHT_CTL_KI, 150, 2, INDICATOR_RGB_DARK_RED);  // right - Right Ctl
-                indicator_enqueue(RIGHT_SFT_KI, 150, 2, INDICATOR_RGB_DARK_RED);  // up - right shift
-            }
-            return true;
+            return handle_layer_lock(record);
         default:
+            // everything else should be handled normally
             return true;
     }
 
     return true;
+}
+
+
+bool handle_backspace(keyrecord_t *record) {
+    // based on: https://getreuer.info/posts/keyboards/macros3/index.html
+    // shift + backspace is delete
+    // both shift held is shift + delete
+    static uint16_t registered_key = KC_NO;
+    if (record->event.pressed) {  // On key press.
+        const uint8_t mods = get_mods();
+        #ifndef NO_ACTION_ONESHOT
+        uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
+        #else
+                uint8_t shift_mods = mods & MOD_MASK_SHIFT;
+        #endif  // NO_ACTION_ONESHOT
+        if (shift_mods) {  // At least one shift key is held.
+            registered_key = KC_DEL;
+            // If one shift is held, clear it from the mods. But if both
+            // shifts are held, leave as is to send Shift + Del.
+            if (shift_mods != MOD_MASK_SHIFT) {
+            #ifndef NO_ACTION_ONESHOT
+                del_oneshot_mods(MOD_MASK_SHIFT);
+            #endif  // NO_ACTION_ONESHOT
+                unregister_mods(MOD_MASK_SHIFT);
+            }
+        } else {
+            registered_key = KC_BSPC;
+        }
+
+        register_code(registered_key);
+        set_mods(mods);
+    } else {  // On key release.
+        wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
+        unregister_code(registered_key);
+    }
+    return false;
+}
+
+bool handle_my_ent(keyrecord_t *record) {
+    // act as enter on tap, Shift on hold
+    // this is needed because we lose the shift key when
+    // enabling the arrow layer
+    // By doing it this way, we can react immediately on key press
+    if (record->event.pressed) {
+        // we are registering a key
+        if (record->tap.count) {
+            register_code16(KC_ENT);
+        } else {
+            register_code16(KC_RSFT);
+        }
+    } else {
+        // we are releasing a key
+        if (record->tap.count) {
+            wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
+            unregister_code16(KC_ENT);
+        } else {
+            unregister_code16(KC_RSFT);
+        }
+    }
+    return false;
+}
+
+bool handle_up_rsft(keyrecord_t *record) {
+    // when using the default base layer, have the right shift
+    // act as a regular shift key, except if it is double tapped
+    // on double tap and above, start acting like an up arrow key
+    // By doing it this way, we can react immediately on key press
+    if (record->event.pressed) {
+        // we are registering a key
+        if (record->tap.count > 1) {
+            // require at least 2 taps in order to start pushing up arrow
+            // this will prevent accidental arrow push on shift
+            // this also handles a double tap and hold which causes the up key to auto repeat
+            register_code16(KC_UP);
+        } else {
+            register_code16(KC_RSFT);
+        }
+    } else {
+        // we are releasing a key
+        if (record->tap.count > 1) {
+            unregister_code16(KC_UP);
+        } else {
+            unregister_code16(KC_RSFT);
+        }
+    }
+    return false;
+}
+
+bool handle_dn_app(keyrecord_t *record) {
+    // act as down arrow on tap, KC_APP on hold
+    // By doing it this way, we can react immediately on key press
+    if (record->event.pressed) {
+        // we are registering a key
+        if (record->tap.count) {
+            // this also handles a double tap and hold which causes the down key to auto repeat
+            register_code16(KC_DOWN);
+        } else {
+            tap_code16(KC_APP);
+        }
+    } else {
+        // we are releasing a key
+        if (record->tap.count) {
+            wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
+            unregister_code16(KC_DOWN);
+        } else {
+            // we switched to a tap code on press to react immediately,
+            // no need to unregister since the tap will handle it above
+            // unregister_code16(KC_APP);
+        }
+    }
+    return false;
+}
+
+bool handle_nkro_toggle(keyrecord_t *record) {
+    if (record->event.pressed) {
+        clear_keyboard(); // clear first buffer to prevent stuck keys
+        wait_ms(50);
+        keymap_config.nkro = !keymap_config.nkro;
+        blink_NKRO(keymap_config.nkro);
+        wait_ms(50);
+        clear_keyboard(); // clear first buffer to prevent stuck keys
+        wait_ms(50);
+    }
+    return false;
+}
+
+bool handle_layer_lock(keyrecord_t *record) {
+    // when we lock a layer, flash the space bar area
+    blink_space(false);
+
+    if (IS_LAYER_ON(EXT_LYR)) {
+        indicator_enqueue(LEFT_WIN_KI, 200, 2, INDICATOR_RGB_DARK_RED); // blink left win
+
+        // blink the new arrow keys
+        indicator_enqueue(I_KI, 150, 2, INDICATOR_RGB_DARK_RED); // up - I
+        indicator_enqueue(J_KI, 150, 2, INDICATOR_RGB_DARK_RED); // left - J
+        indicator_enqueue(K_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - K
+        indicator_enqueue(L_KI, 150, 2, INDICATOR_RGB_DARK_RED); // right - L
+    } else if (IS_LAYER_ON(ARROW_LYR)) {
+        indicator_enqueue(FN_KI, 150, 2, INDICATOR_RGB_DARK_RED);         // left - Right Fn
+        indicator_enqueue(RIGHT_MENU_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - Right Menu
+        indicator_enqueue(RIGHT_CTL_KI, 150, 2, INDICATOR_RGB_DARK_RED);  // right - Right Ctl
+        indicator_enqueue(RIGHT_SFT_KI, 150, 2, INDICATOR_RGB_DARK_RED);  // up - right shift
+    }
+    // we still want the logic to happen, we just added light feedback
+
+    if (record->event.pressed) {  // On key press.
+        // we need to determine what layer we are on, and then change current state
+        uint8_t current_layer = layer_switch_get_layer(    record->event.key);
+
+        if (dv_is_layer_locked(current_layer))
+        {
+            // layer is currently locked, unlock it
+            dv_layer_lock_off(current_layer);
+        }
+        else {
+            // layer is not locked, lock it
+            dv_layer_lock_on(current_layer);
+        }
+        //layer_lock_invert(current_layer);
+    }
+
+    return false;
 }
