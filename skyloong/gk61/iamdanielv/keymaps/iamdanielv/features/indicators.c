@@ -171,9 +171,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF, 0x00, 0x00); // left GUI/win
-
-        // turn off the left alt key led to make left win stand out more
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_ALT_KI, 0x00, 0x00, 0x00);
     }
 
     // FN Key mode is done after the base win layer and the win fn layer
@@ -187,9 +184,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(P_KI, 0xFF, 0xFF, 0xFF);  // P for persistent color
         RGB_MATRIX_INDICATOR_SET_COLOR(N_KI, 0xFF, 0xFF, 0xFF);  // N for NKRO
 
-        const uint8_t led_off_indexes[5] = {// turn off some of the LEDS to make it easier to see our indicators
-                                            A_KI, TAB_KI, CAPS_KI, LEFT_SFT_KI, LEFT_WIN_KI};
-        for (int i = 0; i < 5; i++) {
+        const uint8_t led_off_indexes[4] = {// turn off some of the LEDS to make it easier to see our indicators
+                                            A_KI, TAB_KI, CAPS_KI, LEFT_SFT_KI};
+        for (int i = 0; i < 4; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
         }
 
