@@ -146,7 +146,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 register_code(registered_key);
                 set_mods(mods);
             } else {  // On key release.
-                wait_ms(50); // wait a little bit, so programs don't filter the press
+                wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
                 unregister_code(registered_key);
             }
         }
@@ -167,7 +167,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 // we are releasing a key
                 if (record->tap.count) {
-                    wait_ms(50); // wait a little bit, so programs don't filter the press
+                    wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
                     unregister_code16(KC_ENT);
                 } else {
                     unregister_code16(KC_RSFT);
@@ -212,7 +212,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 // we are releasing a key
                 if (record->tap.count) {
-                    wait_ms(50); // wait a little bit, so programs don't filter the press
+                    wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
                     unregister_code16(KC_DOWN);
                 } else {
                     // we switched to a tap code on press to react immediately,

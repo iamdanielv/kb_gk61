@@ -132,7 +132,7 @@ void mo_caps_reset(tap_dance_state_t *state, void *user_data) {
         // case TD_DOUBLE_TAP:
         // case TD_DOUBLE_SINGLE_TAP:
         default:
-            wait_ms(100);
+            wait_ms(TAP_CODE_DELAY);
             unregister_code16(KC_CAPS);
             break;
     }
@@ -172,11 +172,11 @@ void grv_reset(tap_dance_state_t *state, void *user_data) {
             // the tap dance was interrupted,
             // handle it the same as if it was a double tap
         case TD_DOUBLE_TAP:
-            wait_ms(50);
+            wait_ms(TAP_CODE_DELAY);
             unregister_code16(KC_ESC);
             break;
         case TD_SINGLE_TAP:
-            wait_ms(50);
+            wait_ms(TAP_CODE_DELAY);
             unregister_code16(KC_GRV);
             break;
         // case TD_DOUBLE_HOLD:
