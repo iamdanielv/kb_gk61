@@ -1,6 +1,7 @@
 #include "tap_hold.h"
 #include "action_layer.h"
 #include "defines.h"
+#include "dv_layer_lock.h"
 #include "quantum.h"
 
 void safe_reset(tap_dance_state_t *state, void *user_data) {
@@ -99,11 +100,15 @@ void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
         case TD_DOUBLE_HOLD:
             layer_on(NUM_LYR);
             break;
+        case TD_DOUBLE_TAP:
+            //layer_invert(KBCTL_LYR);
+            dv_layer_lock_invert(KBCTL_LYR);
+            break;
         // the default case for the caps lock key should be caps lock
         // we only really modify single and double hold
         // to act as Momentary Layer switch
         // case TD_SINGLE_TAP:
-        // case TD_DOUBLE_TAP:
+
         // case TD_DOUBLE_SINGLE_TAP:
         default:
             register_code16(KC_CAPS);
@@ -114,7 +119,7 @@ void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
 void mo_caps_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state[TD_MO_CAPS]) {
         case TD_SINGLE_HOLD:
-            if(!is_layer_locked(EXT_LYR)) {
+            if(!dv_is_layer_locked(EXT_LYR)) {
                 // only turn off the layer if it hasn't been locked
                 layer_off(EXT_LYR);
             }

@@ -14,10 +14,13 @@
 #include "features/tap_hold.h"
 #include "features/rgb_keys.h"
 
+#include "features/dv_layer_lock.h"
+
 // *****************************
 // * Custom processing of keys *
 // *****************************
-enum custom_keycodes { KC_SWP_FN = SAFE_RANGE };
+enum custom_keycodes { KC_SWP_FN = SAFE_RANGE,
+                    DVLLOCK};
 
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
@@ -25,7 +28,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_RESET]     = ACTION_TAP_DANCE_FN(safe_reset),
     [TD_CLEAR]     = ACTION_TAP_DANCE_FN(safe_clear),
 
-    // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap Hold: MO(NUM_LYR)
+    // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap: Layer Toggle KBCTL_LYR, On Double Tap Hold: MO(NUM_LYR)
     [TD_MO_CAPS]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mo_caps_finished, mo_caps_reset),
     // on Tap: `; on Double Tap: ~; on Hold: ``````
     [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset)
@@ -70,35 +73,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   GUI_A,     ALT_S,     SFT_D,     CTL_F,     CTLS_G,    _______,   CTL_J,     SFT_K,     ALT_L,     GUI_SCLN,  _______,           _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,            _______,
-       _______,   _______,   _______,              _______,   _______,   _______,              _______,   _______,   _______,   _______,           _______
+       _______,   DVLLOCK,   _______,              _______,   _______,   _______,              _______,   _______,   _______,   _______,           _______
     ),
     [EXT_LYR] = LAYOUT_all(
        MY_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,
        _______,   MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_PSCR,  KC_SCRL,  KC_PAUS,  KC_INS,
        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   C(KC_G),   KC_PGDN,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  KC_HOME,  KC_END,             _______,
        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    KC_BSPC,   KC_DEL,    MY_BACK,   MY_FWD,    _______,            _______,
-       KC_SWP_FN, QK_LLCK,   _______,              _______,   KBCTL_SPC, _______,              _______,   _______,   _______,  _______,            _______
+       KC_SWP_FN, DVLLOCK,   _______,              _______,   KBCTL_SPC, _______,              _______,   _______,   _______,  _______,            _______
     ),
     [KBCTL_LYR] = LAYOUT_all(
        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
        _______,   TD_KB_RST, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   RM_HUED,   RM_HUEU,   RGB_M_P,  RM_PREV,  RM_NEXT,  RM_TOGG,
        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   RM_SATD,   RM_SATU,   RM_SPDD,  RM_SPDU,            _______,
-       _______,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   NK_TOGG,   XXXXXXX,   RM_VALD,   RM_VALU,   TG_HMM,             TG_W_FN,
-       KC_SWP_FN, _______,   _______,              _______,   _______,   _______,              _______,   TG_ARWS,   _______,  TG_NUM,             QK_LLCK
+       _______,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   NK_TOGG,   XXXXXXX,   RM_VALD,   RM_VALU,   TG_HRM,             TG_W_FN,
+       KC_SWP_FN, _______,   _______,              _______,   _______,   _______,              _______,   TG_ARWS,   _______,  TG_NUM,             DVLLOCK
     ),
     [NUM_LYR] = LAYOUT_all(
        _______,   _______,   _______,   _______,   _______,   _______,   KC_NUM,    KC_P7,     KC_P8,     KC_P9,     KC_PAST,   _______, _______,  _______,
        _______,   KC_BTN1,   KC_MS_U,   KC_BTN2,   MSW_UP,    XXXXXXX,   XXXXXXX,   KC_P4,     KC_P5,     KC_P6,     KC_PPLS,   _______, _______,  _______,
        _______,   KC_MS_L,   KC_MS_D,   KC_MS_R,   MSW_DN,    XXXXXXX,   XXXXXXX,   KC_P1,     KC_P2,     KC_P3,     KC_PENT,   _______,           _______,
        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   KC_SPC,    XXXXXXX,   KC_P0,     KC_PDOT,   KC_PDOT,   KC_PSLS,            _______,
-       _______,   _______,   _______,              _______,   KBCTL_SPC, _______,              _______,   _______,   _______,   TG_NUM,            _______
+       _______,   _______,   _______,              _______,   KBCTL_SPC, _______,              _______,   _______,   _______,   DVLLOCK,            _______
     ),
     [ARROW_LYR] =  LAYOUT_all(
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   KC_VOLD, KC_VOLU,  KBCTL_BSPC,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,           _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,            KC_UP,
-       _______,   _______,   _______,              _______,   _______,   _______,              _______,   TG_ARWS,   KC_LEFT,   KC_DOWN,           KC_RIGHT
+       _______,   _______,   _______,              _______,   _______,   _______,              _______,   DVLLOCK,   KC_LEFT,   KC_DOWN,           KC_RIGHT
     )
 };
 // clang-format on
@@ -115,6 +118,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     if (!process_fn_mode(keycode, record)) { return false; }
     if (!process_rgb_keys(keycode, record)) { return false; }
+    if (!dv_process_layer_lock(keycode, record, DVLLOCK)) { return false; }
 
     switch (keycode) {
         case KC_BSPC: {
