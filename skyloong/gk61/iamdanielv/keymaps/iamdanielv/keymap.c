@@ -127,6 +127,43 @@ inline bool handle_layer_lock(keyrecord_t *record) __attribute__((always_inline)
 // * all key processing                             *
 // **************************************************
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    //get key position
+    //uint8_t layer = layer_switch_get_layer(record->event.key);
+    //uint8_t led = 0;
+
+    // switch (layer) {
+    //     case BASE_LYR:
+    //         layer = BASE_LYR;
+    //         led = Q_KI;
+    //         break;
+    //     case HMM_BASE_LYR:
+    //         layer = HMM_BASE_LYR;
+    //         led = W_KI;
+    //         break;
+    //     case EXT_LYR:
+    //         layer = EXT_LYR;
+    //         led = E_KI;
+    //         break;
+    //     case KBCTL_LYR:
+    //         layer = KBCTL_LYR;
+    //         led = R_KI;
+    //         break;
+    //     case NUM_LYR:
+    //         layer = NUM_LYR;
+    //         led = T_KI;
+    //         break;
+    //     case ARROW_LYR:
+    //         layer = ARROW_LYR;
+    //         led = Y_KI;
+    //         break;
+    //     default:
+    //         layer = BASE_LYR;
+    //         led = U_KI;
+    //         break;
+    // }
+    // indicator_enqueue(led, 150, layer+1, RGB_RED);
+
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
