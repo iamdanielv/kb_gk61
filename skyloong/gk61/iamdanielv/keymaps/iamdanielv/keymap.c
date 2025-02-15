@@ -353,14 +353,14 @@ bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
                     uint8_t current_layer = layer_switch_get_layer(record->event.key);
                     dv_layer_lock_invert(current_layer);
                 } else {
-                    register_code16(KC_RSFT);
+                    register_code16(KC_LSFT);
                 }
             } else {
                 // we are releasing a key
                 if (record->tap.count > 1) {
                     // nothing to do since the layer lock is handled on press
                 } else {
-                    unregister_code16(KC_RSFT);
+                    unregister_code16(KC_LSFT);
                 }
             }
             return false;
