@@ -101,15 +101,15 @@ void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
             layer_on(NUM_LYR);
             break;
         case TD_DOUBLE_TAP:
+        case TD_DOUBLE_SINGLE_TAP: // dance was interrupted, handle it the same as if it was a double tap
             //layer_invert(KBCTL_LYR);
             dv_layer_lock_invert(KBCTL_LYR);
             break;
         // the default case for the caps lock key should be caps lock
         // we only really modify single and double hold
         // to act as Momentary Layer switch
-        // case TD_SINGLE_TAP:
-
-        // case TD_DOUBLE_SINGLE_TAP:
+        // and double tap to act as layer lock pf kbctl
+        case TD_SINGLE_TAP:
         default:
             register_code16(KC_CAPS);
             break;
@@ -130,12 +130,11 @@ void mo_caps_reset(tap_dance_state_t *state, void *user_data) {
             // so it's ok to turn it off on release
             layer_off(NUM_LYR);
             break;
-        // the default case for the caps lock key should be caps lock
-        // we only really modify single and double hold
-        // to act as Momentary Layer switch
-        // case TD_SINGLE_TAP:
-        // case TD_DOUBLE_TAP:
-        // case TD_DOUBLE_SINGLE_TAP:
+        case TD_DOUBLE_TAP:
+        case TD_DOUBLE_SINGLE_TAP: // dance was interrupted, handle it the same as if it was a double tap
+            //this was handled in the finished function, nothing to do here
+            break;
+        case TD_SINGLE_TAP:
         default:
             wait_ms(TAP_CODE_DELAY);
             unregister_code16(KC_CAPS);
