@@ -349,6 +349,8 @@ bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 // we are registering a key
                 if (record->tap.count > 1) {
+                    blink_space(true);
+                    indicator_enqueue(LEFT_SFT_KI, 150, 2, INDICATOR_RGB_DARK_RED);
                     // require at least 2 taps in order to push layer lock
                     uint8_t current_layer = layer_switch_get_layer(record->event.key);
                     dv_layer_lock_invert(current_layer);
