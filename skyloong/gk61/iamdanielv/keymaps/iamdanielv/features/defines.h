@@ -61,6 +61,8 @@ enum layer_names {
 // * Key Indexes *
 // ***************
 
+#define ESC_KI 0
+
 // Modifiers
 #define TAB_KI 14
 #define CAPS_KI 28
