@@ -139,16 +139,17 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(D_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
         RGB_MATRIX_INDICATOR_SET_COLOR(F_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
 
-        // G is special, it holds both ctl and shift
-        RGB_MATRIX_INDICATOR_SET_COLOR(G_KI, fn_swp_rgb.r, fn_swp_rgb.g, fn_swp_rgb.b);
-
         RGB_MATRIX_INDICATOR_SET_COLOR(J_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
         RGB_MATRIX_INDICATOR_SET_COLOR(K_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
         RGB_MATRIX_INDICATOR_SET_COLOR(L_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(SCLN_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
 
-        // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF, 0x00, 0x00);
+
+        // highlight the dual role keys
+        RGB_MATRIX_INDICATOR_SET_COLOR(ESC_KI, fn_swp_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // MY_GRV
+        RGB_MATRIX_INDICATOR_SET_COLOR(G_KI, fn_swp_rgb.r, fn_swp_rgb.g, fn_swp_rgb.b); //holds both ctl and shift
+        RGB_MATRIX_INDICATOR_SET_COLOR(SCLN_KI, fn_swp_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // home on hold
+        RGB_MATRIX_INDICATOR_SET_COLOR(QUOT_KI, fn_swp_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // end on hold
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI, 0xFF, 0x00, 0x00); // left shift on hold, layer lock on tap
     }
 
     if (IS_LAYER_ON(EXT_LYR)) {

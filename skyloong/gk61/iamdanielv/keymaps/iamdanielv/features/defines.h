@@ -44,14 +44,24 @@ enum layer_names {
 #define SFT_D LSFT_T(KC_D)
 #define CTL_F LCTL_T(KC_F)
 
-// this was added since I use ctl and shift a lot
-#define CTLS_G C_S_T(KC_G)
-
 // Right-hand home row mods
 #define CTL_J RCTL_T(KC_J)
 #define SFT_K RSFT_T(KC_K)
 #define ALT_L RALT_T(KC_L)
 #define GUI_SCLN RGUI_T(KC_SCLN)
+
+// custom keycodes used in the HRM Layer
+#define CTLS_G    C_S_T(KC_G)    // tap: G ; hold: ctl and shift
+#define LSFT_LLCK LT(0, KC_LSFT) // double tap: Layer lock ; hold: left shift
+#define HM_SCLN   LT(0, KC_SCLN) // tap: ; ; hold: Home key
+#define END_QUOT  LT(0, KC_QUOT) // tap: ' ; hold: End key
+// Custom right Shift key:
+// require at least 2 taps in order to start pushing up arrow
+// this will prevent accidental arrow push on shift
+// this also handles a double tap and hold which causes the up key to auto repeat
+#define UP_RSFT LT(0, KC_RSFT)
+#define MY_ENT LT(0, KC_ENT) // tap: Enter ; hold: Shift
+
 
 // by default, use a regular key layout without home row mods
 // the KB_CTL_LYR can toggle the home row mod enabled layer
@@ -136,12 +146,6 @@ enum layer_names {
 #define DN_APP LT(0, KC_APP)
 #define MY_GRV TD(TD_GRV)
 
-// Custom right Shift key:
-// require at least 2 taps in order to start pushing up arrow
-// this will prevent accidental arrow push on shift
-// this also handles a double tap and hold which causes the up key to auto repeat
-#define UP_RSFT LT(0, KC_RSFT)
-
 // Tap: ralt; Hold: enable Arrows layer
 #define ARWS_RALT LT(ARROW_LYR, KC_RALT)
 
@@ -159,7 +163,6 @@ enum layer_names {
 #define TD_KB_CLR TD(TD_CLEAR)
 
 // shortcuts
-#define MY_ENT LT(0, KC_ENT)
 #define MY_UNDO C(KC_Z)
 #define MY_CUT C(KC_X)
 #define MY_COPY C(KC_INS)
