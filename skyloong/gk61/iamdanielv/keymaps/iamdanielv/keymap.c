@@ -71,6 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [HRM_BASE_LYR] =  LAYOUT_all(
        MY_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
+       _______,   _______,   _______,   _______,   CTLR_R,    CTLH_T,    _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   GUI_A,     ALT_S,     SFT_D,     CTL_F,     _______,   _______,   CTL_J,     SFT_K,     ALT_L,     HM_SCLN,   END_QUOT,          _______,
        LSFT_LLCK, _______,   _______,   CTLS_C,    _______,   _______,   _______,   _______,   _______,   _______,   _______,            _______,
        _______,   _______,   _______,              _______,   _______,   _______,              _______,   _______,   _______,   _______,           _______
@@ -290,6 +291,30 @@ bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
                 if (record->event.pressed) {
                     // we react on key press
                     tap_code16(KC_END);
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case CTLH_T:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key press
+                    tap_code16(C(KC_H));
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case CTLR_R:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key press
+                    tap_code16(C(KC_R));
                 }
                 // we handled the key here, so no need for further processing
                 return false;
