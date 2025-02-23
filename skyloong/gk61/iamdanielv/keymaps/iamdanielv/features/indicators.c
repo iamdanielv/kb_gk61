@@ -154,6 +154,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(SCLN_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - home
         RGB_MATRIX_INDICATOR_SET_COLOR(QUOT_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - end
 
+        RGB_MATRIX_INDICATOR_SET_COLOR(COMM_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - alt left
+        RGB_MATRIX_INDICATOR_SET_COLOR(DOT_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - alt right
+
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI, 0x80, 0x00, 0x00); // left shift on hold, layer lock on double tap
     }
 

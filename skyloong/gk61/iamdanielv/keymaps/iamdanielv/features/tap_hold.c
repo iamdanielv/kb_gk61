@@ -4,7 +4,12 @@
 #include "dv_layer_lock.h"
 #include "quantum.h"
 
-void safe_reset(tap_dance_state_t *state, void *user_data) {
+/**
+ * @brief Reset the keyboard if you tap the key more than three times.
+ *
+ * @param state Tap dance state structure.
+ */
+void safe_reset(tap_dance_state_t* state, void* user_data) {
     // from https://thomasbaart.nl/2018/12/13/qmk-basics-tap-dance/
 
     if (state->count >= 3) {
@@ -14,9 +19,13 @@ void safe_reset(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+/**
+ * @brief Clear eprom if you tap the key more than three times
+ *
+ * @param state Tap dance state structure.
+ */
 void safe_clear(tap_dance_state_t *state, void *user_data) {
     if (state->count >= 3) {
-        // clear eprom if you tap the key more than three times
         eeconfig_init();
         soft_reset_keyboard();
         reset_tap_dance(state);
@@ -103,12 +112,12 @@ void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
         case TD_DOUBLE_TAP:
         case TD_DOUBLE_SINGLE_TAP: // dance was interrupted, handle it the same as if it was a double tap
             //layer_invert(KBCTL_LYR);
-            dv_layer_lock_invert(KBCTL_LYR);
+            dv_layer_lock_invert(HRM_BASE_LYR);
             break;
         // the default case for the caps lock key should be caps lock
         // we only really modify single and double hold
         // to act as Momentary Layer switch
-        // and double tap to act as layer lock pf kbctl
+        // and double tap to act as layer lock of HRM
         case TD_SINGLE_TAP:
         default:
             register_code16(KC_CAPS);

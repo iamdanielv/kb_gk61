@@ -58,6 +58,9 @@ enum layer_names {
 #define LSFT_LLCK LT(0, KC_LSFT) // double tap: Layer lock ; hold: left shift
 #define HM_SCLN   LT(0, KC_SCLN) // tap: ; ; hold: Home key
 #define END_QUOT  LT(0, KC_QUOT) // tap: ' ; hold: End key
+#define ALFT_COMM LT(0, KC_COMM) // tap: , ; hold: alt and left arrow
+#define ARGT_DOT  LT(0, KC_DOT) // tap: . ; hold: alt and right arrow
+
 // Custom right Shift key:
 // require at least 2 taps in order to start pushing up arrow
 // this will prevent accidental arrow push on shift

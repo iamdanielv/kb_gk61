@@ -69,16 +69,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    ARWS_RALT, KBCTL_LEFT,DN_APP,            RCTL_RGT
     ),
     [HRM_BASE_LYR] =  LAYOUT_all(
-       MY_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
+       MY_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  KBCTL_BSPC,
        _______,   _______,   _______,   _______,   CTLR_R,    CTLH_T,    _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   GUI_A,     ALT_S,     SFT_D,     CTL_F,     _______,   _______,   CTL_J,     SFT_K,     ALT_L,     HM_SCLN,   END_QUOT,          _______,
-       LSFT_LLCK, _______,   _______,   CTLS_C,    _______,   _______,   _______,   _______,   _______,   _______,   _______,            _______,
+       LSFT_LLCK, _______,   _______,   CTLS_C,    _______,   _______,   _______,   _______,   ALFT_COMM, ARGT_DOT,  _______,            _______,
        _______,   _______,   _______,              _______,   _______,   _______,              _______,   _______,   _______,   _______,           _______
     ),
     [EXT_LYR] = LAYOUT_all(
        KC_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,
        _______,   MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_PSCR,  KC_SCRL,  KC_PAUS,  KC_INS,
-       _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   C(KC_G),   KC_PGDN,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  KC_HOME,  KC_END,             _______,
+       _______,   KC_LGUI,   KC_LALT,   KC_LSFT,   KC_LCTL,   C(KC_G),   KC_PGDN,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  KC_HOME,  KC_END,             _______,
        LSFT_LLCK, MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,    KC_BSPC,   KC_DEL,    MY_BACK,   MY_FWD,    _______,            _______,
        KC_SWP_FN, _______,   _______,              _______,   KBCTL_SPC, _______,              _______,   _______,   _______,  _______,            _______
     ),
@@ -172,7 +172,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     if (!process_fn_mode(keycode, record)) { return false; }
     if (!process_rgb_keys(keycode, record)) { return false; }
-    if (!dv_process_layer_lock(keycode, record, DVLLOCK)) { return false; }
+    if (!dv_process_layer_lock(keycode, record, DVLLOCK)) { blink_space(true); return false; }
     if (!handle_lt_0( keycode,  record)) { return false; }
 
     switch (keycode) {
