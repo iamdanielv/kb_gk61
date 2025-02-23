@@ -30,8 +30,9 @@ tap_dance_action_t tap_dance_actions[] = {
 
     // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap: Layer Toggle KBCTL_LYR, On Double Tap Hold: MO(NUM_LYR)
     [TD_MO_CAPS]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mo_caps_finished, mo_caps_reset),
-    // on Tap: `; on Double Tap: ~; on Hold: ``````
-    [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset)
+    // on Tap: Esc; on Double Tap: `; on Hold: ``````
+    [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset),
+    [TD_RALT]      = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ralt_finished, ralt_reset),
 };
 // clang-format on
 
@@ -66,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,      KC_Y,      KC_U,      KC_I,      KC_O,      KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
        MO_CAPS,   KC_A,      KC_S,      KC_D,      KC_F,      KC_G,      KC_H,      KC_J,      KC_K,      KC_L,      KC_SCLN,  KC_QUOT,            MY_ENT,
        KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,      KC_N,      KC_M,      KC_COMM,   KC_DOT,    KC_SLSH,            UP_RSFT,
-       KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    ARWS_RALT, KBCTL_LEFT,DN_APP,            RCTL_RGT
+       KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    ARWS_TG_RALT, KBCTL_LEFT,DN_APP,            RCTL_RGT
     ),
     [HRM_BASE_LYR] =  LAYOUT_all(
        MY_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  KBCTL_BSPC,
@@ -290,6 +291,30 @@ bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
                 if (record->event.pressed) {
                     // we react on key press
                     tap_code16(KC_END);
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case ALFT_COMM:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key hold
+                    tap_code16(A(KC_LEFT));
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case ARGT_DOT:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key hold
+                    tap_code16(A(KC_RIGHT));
                 }
                 // we handled the key here, so no need for further processing
                 return false;

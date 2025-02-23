@@ -153,14 +153,13 @@ enum layer_names {
 #define DN_APP LT(0, KC_APP)
 #define MY_GRV TD(TD_GRV)
 
-// Tap: ralt; Hold: enable Arrows layer
-#define ARWS_RALT LT(ARROW_LYR, KC_RALT)
-
-#define KBCTL_SPC LT(KBCTL_LYR, KC_SPC)
+// Tap: RALT; double hold: RALT; Hold: MO(ARROW_LYR); double Tap: ARROW_LYR lock
+#define ARWS_RALT  TD(TD_RALT)
+#define KBCTL_SPC  LT(KBCTL_LYR, KC_SPC)
 #define KBCTL_BSPC LT(KBCTL_LYR, KC_BSPC)
-#define KBCTL_LEFT LT(KBCTL_LYR, KC_LEFT)
-#define RCTL_RGT RCTL_T(KC_RIGHT)
-#define RSFT_UP RSFT_T(KC_UP)
+#define KBCTL_LFT  LT(KBCTL_LYR, KC_LEFT)
+#define RCTL_RGT   RCTL_T(KC_RIGHT)
+#define RSFT_UP    RSFT_T(KC_UP)
 
 // toggles
 #define TG_NUM TG(NUM_LYR)
