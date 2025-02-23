@@ -75,6 +75,7 @@ enum layer_names {
 // ***************
 
 #define ESC_KI 0
+#define BSPC_KI 13
 
 // Modifiers
 #define TAB_KI 14
@@ -160,7 +161,7 @@ enum layer_names {
 
 // toggles
 #define TG_NUM TG(NUM_LYR)
-#define TG_W_FN TG(EXT_LYR)
+#define TG_EXT TG(EXT_LYR)
 #define TG_ARWS TG(ARROW_LYR)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
