@@ -51,7 +51,8 @@ enum layer_names {
 #define GUI_SCLN RGUI_T(KC_SCLN)
 
 // custom keycodes used in the HRM Layer
-#define CTLS_G    C_S_T(KC_G)    // tap: G ; hold: ctl and shift
+#define CTLS_C C_S_T(KC_C) // tap: C ; hold: ctl and shift
+
 #define LSFT_LLCK LT(0, KC_LSFT) // double tap: Layer lock ; hold: left shift
 #define HM_SCLN   LT(0, KC_SCLN) // tap: ; ; hold: Home key
 #define END_QUOT  LT(0, KC_QUOT) // tap: ' ; hold: End key
