@@ -33,46 +33,6 @@ enum layer_names {
 */
 // clang-format on
 
-// *****************
-// * Home Row Mods *
-// *****************
-// based on: https://precondition.github.io/home-row-mods#getting-started-with-home-row-mods-on-qmk
-
-// Left-hand home row mods
-#define GUI_A LGUI_T(KC_A)
-#define ALT_S LALT_T(KC_S)
-#define SFT_D LSFT_T(KC_D)
-#define CTL_F LCTL_T(KC_F)
-
-// Right-hand home row mods
-#define CTL_J RCTL_T(KC_J)
-#define SFT_K RSFT_T(KC_K)
-#define ALT_L RALT_T(KC_L)
-#define GUI_SCLN RGUI_T(KC_SCLN)
-
-// custom keycodes used in the HRM Layer
-#define CTLS_C C_S_T(KC_C) // tap: C ; hold: ctl and shift
-
-#define CTLH_T  LT(0, KC_T) // tap: t; hold: ctl and h
-#define CTLR_R  LT(0, KC_R) // tap: r; hold: ctl and r
-#define LSFT_LLCK LT(0, KC_LSFT) // double tap: Layer lock ; hold: left shift
-#define HM_SCLN   LT(0, KC_SCLN) // tap: ; ; hold: Home key
-#define END_QUOT  LT(0, KC_QUOT) // tap: ' ; hold: End key
-#define ALFT_COMM LT(0, KC_COMM) // tap: , ; hold: alt and left arrow
-#define ARGT_DOT  LT(0, KC_DOT) // tap: . ; hold: alt and right arrow
-
-// Custom right Shift key:
-// require at least 2 taps in order to start pushing up arrow
-// this will prevent accidental arrow push on shift
-// this also handles a double tap and hold which causes the up key to auto repeat
-#define UP_RSFT LT(0, KC_RSFT)
-#define MY_ENT LT(0, KC_ENT) // tap: Enter ; hold: Shift
-
-
-// by default, use a regular key layout without home row mods
-// the KB_CTL_LYR can toggle the home row mod enabled layer
-#define TG_HRM TG(HRM_BASE_LYR)
-
 // ***************
 // * Key Indexes *
 // ***************
@@ -148,6 +108,46 @@ enum layer_names {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
+
+// *****************
+// * Home Row Mods *
+// *****************
+// based on: https://precondition.github.io/home-row-mods#getting-started-with-home-row-mods-on-qmk
+
+// Left-hand home row mods
+#define GUI_A LGUI_T(KC_A)
+#define ALT_S LALT_T(KC_S)
+#define SFT_D LSFT_T(KC_D)
+#define CTL_F LCTL_T(KC_F)
+
+// Right-hand home row mods
+#define CTL_J RCTL_T(KC_J)
+#define SFT_K RSFT_T(KC_K)
+#define ALT_L RALT_T(KC_L)
+#define GUI_SCLN RGUI_T(KC_SCLN)
+
+// custom keycodes used in the HRM Layer
+#define CTLS_C C_S_T(KC_C) // tap: C ; hold: ctl and shift
+
+#define CTLH_T  LT(0, KC_T) // tap: t; hold: ctl and h
+#define CTLR_R  LT(0, KC_R) // tap: r; hold: ctl and r
+#define LSFT_LLCK LT(0, KC_LSFT) // double tap: Layer lock ; hold: left shift
+#define HM_SCLN   LT(0, KC_SCLN) // tap: ; ; hold: Home key
+#define END_QUOT  LT(0, KC_QUOT) // tap: ' ; hold: End key
+#define ALFT_COMM LT(0, KC_COMM) // tap: , ; hold: alt and left arrow
+#define ARGT_DOT  LT(0, KC_DOT) // tap: . ; hold: alt and right arrow
+
+// Custom right Shift key:
+// require at least 2 taps in order to start pushing up arrow
+// this will prevent accidental arrow push on shift
+// this also handles a double tap and hold which causes the up key to auto repeat
+#define UP_RSFT LT(0, KC_RSFT)
+#define MY_ENT LT(0, KC_ENT) // tap: Enter ; hold: Shift
+
+
+// by default, use a regular key layout without home row mods
+// the KB_CTL_LYR can toggle the home row mod enabled layer
+#define TG_HRM TG(HRM_BASE_LYR)
 #define MO_CAPS   TD(TD_MO_CAPS)
 // Tap: KC_DOWN; Hold: KC_APP
 #define DN_APP LT(0, KC_APP)
