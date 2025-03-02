@@ -37,7 +37,6 @@
 
 #include "defines.h"
 #include "dv_layer_lock.h"
-#include "indicator_queue.h"
 
 // DV - removed this message, since I am testing some modifications to the original library
 // #pragma message "Layer Lock is now a core QMK feature! To use it, update your QMK set up and see https://docs.qmk.fm/features/layer_lock"
@@ -70,17 +69,13 @@ bool dv_process_layer_lock(uint16_t keycode, keyrecord_t* record, uint16_t lock_
     if (keycode == lock_keycode) {
         if (record->event.pressed) { // The layer lock key was pressed.
 
-            // DV edit
-            //  we need to determine what layer we are on, and then change current state
-            uint8_t current_layer = layer_switch_get_layer(record->event.key);
-
             // original
             // layer_lock_invert(get_highest_layer(layer_state));
 
             // DV edit
+            // we need to determine what layer we are on, and then change current state
+            uint8_t current_layer = layer_switch_get_layer(record->event.key);
             dv_layer_lock_invert(current_layer);
-
-            // indicator_enqueue(LEFT_CTL_KI, 150, 2, RGB_PURPLE);
         }
         return false;
     }

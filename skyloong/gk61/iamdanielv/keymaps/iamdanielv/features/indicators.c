@@ -1,5 +1,6 @@
 #include "defines.h"
 #include "indicators.h"
+#include "dv_layer_lock.h"
 #include "indicator_queue.h"
 #include "fn_mode.h"
 #include "color.h"
@@ -67,10 +68,10 @@ void blink_numbers(bool isEnabling) {
 }
 
 void blink_arrows(void) {
-    indicator_enqueue(FN_KI, 200, 2, RGB_WHITE);         // left
-    indicator_enqueue(RIGHT_MENU_KI, 200, 2, RGB_WHITE); // down
-    indicator_enqueue(RIGHT_SFT_KI, 200, 2, RGB_WHITE);  // up
-    indicator_enqueue(RIGHT_CTL_KI, 200, 2, RGB_WHITE);  // right
+    indicator_enqueue(UP_KI, 200, 2, RGB_WHITE);    // up
+    indicator_enqueue(LEFT_KI, 200, 2, RGB_WHITE);  // left
+    indicator_enqueue(DOWN_KI, 200, 2, RGB_WHITE);  // down
+    indicator_enqueue(RIGHT_KI, 200, 2, RGB_WHITE); // right
 }
 
 void blink_space(bool extended) {
@@ -130,34 +131,29 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     rgb_t ext_lyr_rgb    = hsv_to_rgb(base_hsv_offset);
     rgb_t accent_lyr_rgb = hsv_to_rgb(base_hsv_inverse_shifted);
     rgb_t num_lyr_rgb    = hsv_to_rgb(base_hsv_offset_qrt_cw);
-    rgb_t dual_role_rgb     = hsv_to_rgb(base_hsv_inverse);
+    rgb_t dual_role_rgb  = hsv_to_rgb(base_hsv_inverse);
 
     if (IS_LAYER_ON(HRM_BASE_LYR)) {
         // highlight the home row
-        RGB_MATRIX_INDICATOR_SET_COLOR(A_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(S_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(D_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(F_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-
-        RGB_MATRIX_INDICATOR_SET_COLOR(J_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(K_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(L_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-
+        const uint8_t accent_key_indexes[7] = {
+            A_KI, S_KI, D_KI, F_KI,
+            J_KI, K_KI, L_KI};
+        for (int i = 0; i < 7; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i], accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
+        }
 
         // highlight the dual role keys
-        RGB_MATRIX_INDICATOR_SET_COLOR(ESC_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // MY_GRV
-        RGB_MATRIX_INDICATOR_SET_COLOR(C_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - holds both ctl and shift
-        RGB_MATRIX_INDICATOR_SET_COLOR(R_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - holds ctl and R
-        RGB_MATRIX_INDICATOR_SET_COLOR(T_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - holds ctl and H
-        RGB_MATRIX_INDICATOR_SET_COLOR(BSPC_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - MO(KBCTL_LYR)
+        const uint8_t dual_role_indexes[11] = {
+            ESC_KI, C_KI, R_KI, T_KI, G_KI,
+            SCLN_KI, QUOT_KI, ENTER_KI,COMM_KI, DOT_KI, BSPC_KI};
+        for (int i = 0; i < 11; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(dual_role_indexes[i], dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
+        }
 
-        RGB_MATRIX_INDICATOR_SET_COLOR(SCLN_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - home
-        RGB_MATRIX_INDICATOR_SET_COLOR(QUOT_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - end
-
-        RGB_MATRIX_INDICATOR_SET_COLOR(COMM_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - alt left
-        RGB_MATRIX_INDICATOR_SET_COLOR(DOT_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b); // on hold - alt right
-
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI, 0x80, 0x00, 0x00); // left shift on hold, layer lock on double tap
+        if(dv_is_layer_locked(HRM_BASE_LYR)) {
+            // only highlight the shift key if this layer is locked
+            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        }
     }
 
     if (IS_LAYER_ON(EXT_LYR)) {
@@ -166,22 +162,22 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RGB_MATRIX_INDICATOR_SET_COLOR(i, ext_lyr_rgb.r, ext_lyr_rgb.g, ext_lyr_rgb.b);
         }
 
-        // highlight the arrow keys
-        RGB_MATRIX_INDICATOR_SET_COLOR(I_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // up - I
-        RGB_MATRIX_INDICATOR_SET_COLOR(J_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // left - J
-        RGB_MATRIX_INDICATOR_SET_COLOR(K_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // down - K
-        RGB_MATRIX_INDICATOR_SET_COLOR(L_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // right - L
-
-        // higlight the home row
-        RGB_MATRIX_INDICATOR_SET_COLOR(A_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(S_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(D_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(F_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
+        const uint8_t accent_key_indexes[5] = {
+            // arrow keys
+            I_KI, J_KI, K_KI, L_KI,
+            // home row on left hand
+            F_KI };
+        for (int i = 0; i < 5; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i], accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
+        }
 
         // swap FN key
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
 
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI, 0x80, 0x00, 0x00); // left shift on hold, layer lock on double tap
+        if(dv_is_layer_locked(EXT_LYR)) {
+            // only highlight the shift key if this layer is locked
+            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        }
     }
 
     // FN Key mode is done after the base win layer and the win fn layer
@@ -194,6 +190,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // keys specific to this layer
         RGB_MATRIX_INDICATOR_SET_COLOR(P_KI, 0xFF, 0xFF, 0xFF);  // P for persistent color
         RGB_MATRIX_INDICATOR_SET_COLOR(N_KI, 0xFF, 0xFF, 0xFF);  // N for NKRO
+        RGB_MATRIX_INDICATOR_SET_COLOR(FN_KI, 0xFF, 0xFF, 0xFF); // fn key
 
         const uint8_t led_off_indexes[4] = {// turn off some of the LEDS to make it easier to see our indicators
                                             A_KI, TAB_KI, CAPS_KI, LEFT_SFT_KI};
@@ -204,7 +201,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // swap FN key
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
 
-        // highlight right shift as toggle Win Fn Layer
+        // highlight right shift as toggle HRM Layer
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, ext_lyr_rgb.r, ext_lyr_rgb.g, ext_lyr_rgb.b);
 
         // highlight number layer toggle
@@ -220,10 +217,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(Q_KI, 0xFF, 0x00, 0x00);
 
         // highlight Z as clear eeprom
-        RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x7A, 0x00, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x55, 0x00, 0x55);
 
         // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, 0x80, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, 0xAA, 0x22, 0x00);
+        if(dv_is_layer_locked(KBCTL_LYR)) {
+            // only highlight the shift key if this layer is locked
+            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        }
     }
 
     if (IS_LAYER_ON(NUM_LYR)) {
@@ -248,7 +249,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // check for num lock
         if (host_keyboard_led_state().num_lock) {
             // we can use the LED Indicator for NUM_LOCK as well
-            RGB_MATRIX_INDICATOR_SET_COLOR(N6_KI, 0xFF, 0xFF, 0xFF);
+            RGB_MATRIX_INDICATOR_SET_COLOR(N6_KI, 128, 128, 128);
         }
 
         // highlight the mouse keys
@@ -258,22 +259,26 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(D_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // right - D
 
         // layer toggle
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, 0x80, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, 0xAA, 0x22, 0x00);
+        if(dv_is_layer_locked(NUM_LYR)) {
+            // only highlight the shift key if this layer is locked
+            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        }
     }
 
     if (IS_LAYER_ON(ARROW_LYR)) {
         // highlight the arrow keys
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);  // up (right shift)
-        RGB_MATRIX_INDICATOR_SET_COLOR(FN_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);         // left
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // down
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_CTL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);  // right
+        RGB_MATRIX_INDICATOR_SET_COLOR(UP_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(DOWN_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
 
         // volume up and down
         RGB_MATRIX_INDICATOR_SET_COLOR(EQL_KI, 0xFF, 0xFF, 0xFF);  // volume up - +
         RGB_MATRIX_INDICATOR_SET_COLOR(MINS_KI, 0xFF, 0xFF, 0xFF); // volume down - -
 
         // layer toggle
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 0x80, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 0xAA, 0x22, 0x00);
     }
 
     process_indicator_queue(led_min, led_max);

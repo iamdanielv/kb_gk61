@@ -105,6 +105,12 @@ enum layer_names {
 #define MINS_KI 11 // -
 #define EQL_KI 12  // =
 
+// arrows
+#define UP_KI RIGHT_SFT_KI
+#define LEFT_KI FN_KI
+#define DOWN_KI RIGHT_MENU_KI
+#define RIGHT_KI RIGHT_CTL_KI
+
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
@@ -126,28 +132,28 @@ enum layer_names {
 #define ALT_L RALT_T(KC_L)
 #define GUI_SCLN RGUI_T(KC_SCLN)
 
-// custom keycodes used in the HRM Layer
+// *******************************
+// * More keycodes for HRM Layer *
+// *******************************
 #define CTLS_C C_S_T(KC_C) // tap: C ; hold: ctl and shift
 
-#define CTLH_T  LT(0, KC_T) // tap: t; hold: ctl and h
-#define CTLR_R  LT(0, KC_R) // tap: r; hold: ctl and r
+// Keycodes using the LT(0,KC) trick
+#define CTLH_T    LT(0, KC_T) // tap: t; hold: ctl and h
+#define CTLR_R    LT(0, KC_R) // tap: r; hold: ctl and r
+#define CTLG_G    LT(0, KC_G) // tap: G ; hold: ctl and g
 #define LSFT_LLCK LT(0, KC_LSFT) // double tap: Layer lock ; hold: left shift
 #define HM_SCLN   LT(0, KC_SCLN) // tap: ; ; hold: Home key
 #define END_QUOT  LT(0, KC_QUOT) // tap: ' ; hold: End key
 #define ALFT_COMM LT(0, KC_COMM) // tap: , ; hold: alt and left arrow
 #define ARGT_DOT  LT(0, KC_DOT) // tap: . ; hold: alt and right arrow
+#define MY_ENT    LT(0, KC_ENT) // tap: Enter ; hold: Shift
 
 // Custom right Shift key:
 // require at least 2 taps in order to start pushing up arrow
 // this will prevent accidental arrow push on shift
 // this also handles a double tap and hold which causes the up key to auto repeat
 #define UP_RSFT LT(0, KC_RSFT)
-#define MY_ENT LT(0, KC_ENT) // tap: Enter ; hold: Shift
 
-
-// by default, use a regular key layout without home row mods
-// the KB_CTL_LYR can toggle the home row mod enabled layer
-#define TG_HRM TG(HRM_BASE_LYR)
 #define MO_CAPS   TD(TD_MO_CAPS)
 // Tap: KC_DOWN; Hold: KC_APP
 #define DN_APP LT(0, KC_APP)
@@ -161,21 +167,29 @@ enum layer_names {
 #define RCTL_RGT   RCTL_T(KC_RIGHT)
 #define RSFT_UP    RSFT_T(KC_UP)
 
-// toggles
-#define TG_NUM TG(NUM_LYR)
-#define TG_EXT TG(EXT_LYR)
-#define TG_ARWS TG(ARROW_LYR)
+// *************
+// * Shortcuts *
+// *************
+#define MY_UNDO   C(KC_Z)
+#define MY_CUT    C(KC_X)
+#define MY_COPY   C(KC_INS)
+#define MY_PASTE  S(KC_INS)
+#define MY_TASK   LCTL(LSFT(KC_ESC))
+#define MY_CONS   LCTL(LSFT(KC_GRV))
+#define MY_BACK   A(KC_LEFT)
+#define MY_FWD    A(KC_RIGHT)
+#define MSW_UP    KC_MS_WH_UP
+#define MSW_DN    KC_MS_WH_DOWN
+
+// ***********
+// * Toggles *
+// ***********
+#define TG_NUM    TG(NUM_LYR)
+#define TG_EXT    TG(EXT_LYR)
+#define TG_ARWS   TG(ARROW_LYR)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
 
-// shortcuts
-#define MY_UNDO C(KC_Z)
-#define MY_CUT C(KC_X)
-#define MY_COPY C(KC_INS)
-#define MY_PASTE S(KC_INS)
-#define MY_TASK LCTL(LSFT(KC_ESC))
-#define MY_CONS LCTL(LSFT(KC_GRV))
-#define MY_BACK A(KC_LEFT)
-#define MY_FWD A(KC_RIGHT)
-#define MSW_UP KC_MS_WH_UP
-#define MSW_DN KC_MS_WH_DOWN
+// by default, use a regular key layout without home row mods
+// the KB_CTL_LYR can toggle the home row mod enabled layer
+#define TG_HRM TG(HRM_BASE_LYR)

@@ -7,20 +7,18 @@
 #include "color.h"
 #include "quantum.h"
 
-#include "features/defines.h"
-#include "features/fn_mode.h"
-#include "features/indicator_queue.h"
-#include "features/indicators.h"
-#include "features/tap_hold.h"
-#include "features/rgb_keys.h"
-
 #include "features/dv_layer_lock.h"
+#include "features/defines.h"
+#include "features/indicator_queue.h"
+#include "features/fn_mode.h"
+#include "features/tap_hold.h"
+#include "features/indicators.h"
+#include "features/rgb_keys.h"
 
 // *****************************
 // * Custom processing of keys *
 // *****************************
-enum custom_keycodes { KC_SWP_FN = SAFE_RANGE,
-                    DVLLOCK};
+enum custom_keycodes { KC_SWP_FN = SAFE_RANGE};
 
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
@@ -28,7 +26,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_RESET]     = ACTION_TAP_DANCE_FN(safe_reset),
     [TD_CLEAR]     = ACTION_TAP_DANCE_FN(safe_clear),
 
-    // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap: Layer Toggle KBCTL_LYR, On Double Tap Hold: MO(NUM_LYR)
+    // Tap: CAPS_LOCK; Hold: MO(EXT_LYR); Double Tap: TO(HRM_LYR); Double Hold: MO(NUM_LYR)
     [TD_MO_CAPS]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mo_caps_finished, mo_caps_reset),
     // on Tap: Esc; on Double Tap: `; on Hold: ``````
     [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset),
@@ -70,9 +68,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_LCTL,   KC_LGUI,   KC_LALT,              KC_SPC,    KC_SPC,    KC_MUTE,              KC_SPC,    ARWS_RALT, KBCTL_LFT,DN_APP,             RCTL_RGT
     ),
     [HRM_BASE_LYR] =  LAYOUT_all(
-       MY_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  KBCTL_BSPC,
+       MY_GRV,    _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   _______,   _______,   _______,   CTLR_R,    CTLH_T,    _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
-       _______,   GUI_A,     ALT_S,     SFT_D,     CTL_F,     _______,   _______,   CTL_J,     SFT_K,     ALT_L,     HM_SCLN,   END_QUOT,          _______,
+       _______,   GUI_A,     ALT_S,     SFT_D,     CTL_F,     CTLG_G,    _______,   CTL_J,     SFT_K,     ALT_L,     HM_SCLN,   END_QUOT,          _______,
        LSFT_LLCK, _______,   _______,   CTLS_C,    _______,   _______,   _______,   _______,   ALFT_COMM, ARGT_DOT,  _______,            _______,
        _______,   _______,   _______,              _______,   _______,   _______,              _______,   _______,   _______,   _______,           _______
     ),
@@ -87,81 +85,43 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
        _______,   TD_KB_RST, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   RM_HUED,   RM_HUEU,   RGB_M_P,  RM_PREV,  RM_NEXT,  RM_TOGG,
        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   RM_SATD,   RM_SATU,   RM_SPDD,  RM_SPDU,            _______,
-       _______,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   NK_TOGG,   XXXXXXX,   RM_VALD,   RM_VALU,   TG_HRM,             TG_EXT,
-       KC_SWP_FN, _______,   _______,              _______,   _______,   _______,              _______,   TG_ARWS,   _______,  TG_NUM,             DVLLOCK
+       LSFT_LLCK, TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   NK_TOGG,   XXXXXXX,   RM_VALD,   RM_VALU,   TG_EXT,             TG_HRM,
+       KC_SWP_FN, _______,   _______,              _______,   _______,   _______,              _______,   TG_ARWS,   _______,  TG_NUM,             QK_LLCK
     ),
     [NUM_LYR] = LAYOUT_all(
        _______,   _______,   _______,   _______,   _______,   _______,   KC_NUM,    KC_P7,     KC_P8,     KC_P9,     KC_PAST,   _______, _______,  _______,
        _______,   KC_BTN1,   KC_MS_U,   KC_BTN2,   MSW_UP,    XXXXXXX,   XXXXXXX,   KC_P4,     KC_P5,     KC_P6,     KC_PPLS,   _______, _______,  _______,
        _______,   KC_MS_L,   KC_MS_D,   KC_MS_R,   MSW_DN,    XXXXXXX,   XXXXXXX,   KC_P1,     KC_P2,     KC_P3,     KC_PENT,   _______,           _______,
-       _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   KC_SPC,    XXXXXXX,   KC_P0,     KC_PDOT,   KC_PDOT,   KC_PSLS,            _______,
-       _______,   _______,   _______,              _______,   KBCTL_SPC, _______,              _______,   _______,   _______,   DVLLOCK,            _______
+       LSFT_LLCK, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   KC_SPC,    XXXXXXX,   KC_P0,     KC_PDOT,   KC_PDOT,   KC_PSLS,            _______,
+       _______,   _______,   _______,              _______,   KBCTL_SPC, _______,              _______,   _______,   _______,   QK_LLCK,            _______
     ),
     [ARROW_LYR] =  LAYOUT_all(
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   KC_VOLD, KC_VOLU,  KBCTL_BSPC,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______, _______,  _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,           _______,
        _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,   _______,            KC_UP,
-       _______,   _______,   _______,              _______,   _______,   _______,              _______,   DVLLOCK,   KC_LEFT,   KC_DOWN,           KC_RIGHT
+       _______,   _______,   _______,              _______,   _______,   _______,              _______,   QK_LLCK,   KC_LEFT,   KC_DOWN,           KC_RIGHT
     )
 };
 // clang-format on
 
 // **********************************************************************
-// * we want the ability to break out the key handlers but              *
-// * we also want to inline, this will allow us to do that              *
+// * we want the ability to break out the key handlers but we also want *
+// * to inline, this will allow us to do that                           *
 // * inline void myInlinedFunction() __attribute__((always_inline));    *
 // **********************************************************************
 
 // function definitions for key handlers
 inline bool handle_backspace(keyrecord_t *record) __attribute__((always_inline));
-inline bool handle_dn_app(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_lt_0(uint16_t keycode, keyrecord_t *record) __attribute__((always_inline));
+inline bool handle_dn_app(keyrecord_t *record) __attribute__((always_inline));
 
-// **************************************************
-// * process_record_user is the main function that  *
-// * handles key presses and is the entry point for *
-// * all key processing                             *
-// **************************************************
+// **********************************************************************
+// * process_record_user is the main function that handles key presses  *
+// * and is the entry point for all key processing                      *
+// **********************************************************************
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
-    //get key position
-    //uint8_t layer = layer_switch_get_layer(record->event.key);
-    //uint8_t led = 0;
-
-    // switch (layer) {
-    //     case BASE_LYR:
-    //         layer = BASE_LYR;
-    //         led = Q_KI;
-    //         break;
-    //     case HMM_BASE_LYR:
-    //         layer = HMM_BASE_LYR;
-    //         led = W_KI;
-    //         break;
-    //     case EXT_LYR:
-    //         layer = EXT_LYR;
-    //         led = E_KI;
-    //         break;
-    //     case KBCTL_LYR:
-    //         layer = KBCTL_LYR;
-    //         led = R_KI;
-    //         break;
-    //     case NUM_LYR:
-    //         layer = NUM_LYR;
-    //         led = T_KI;
-    //         break;
-    //     case ARROW_LYR:
-    //         layer = ARROW_LYR;
-    //         led = Y_KI;
-    //         break;
-    //     default:
-    //         layer = BASE_LYR;
-    //         led = U_KI;
-    //         break;
-    // }
-    // indicator_enqueue(led, 150, layer+1, RGB_RED);
-
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
@@ -171,18 +131,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
+    if (keycode == QK_LLCK){
+        // when we lock or unlock a layer, flash the space bar area
+        blink_space(true);
+
+        if (IS_LAYER_ON(EXT_LYR)) {
+            // blink the new arrow keys
+            indicator_enqueue(I_KI, 150, 2, INDICATOR_RGB_DARK_RED); // up - I
+            indicator_enqueue(J_KI, 150, 2, INDICATOR_RGB_DARK_RED); // left - J
+            indicator_enqueue(K_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - K
+            indicator_enqueue(L_KI, 150, 2, INDICATOR_RGB_DARK_RED); // right - L
+        }
+        // we only handled the flashing of the indicators, so keep processing the key code
+    }
+
     if (!process_fn_mode(keycode, record)) { return false; }
     if (!process_rgb_keys(keycode, record)) { return false; }
-    if (!dv_process_layer_lock(keycode, record, DVLLOCK)) { blink_space(true); return false; }
+    if (!dv_process_layer_lock(keycode, record, QK_LLCK)) { return false; }
     if (!handle_lt_0( keycode,  record)) { return false; }
 
     switch (keycode) {
         case KC_BSPC:
             return handle_backspace(record);
-        case DN_APP:
-            return handle_dn_app(record);
         case QK_MAGIC_TOGGLE_NKRO:
             return handle_nkro_toggle(record);
+        case DN_APP:
+            return handle_dn_app(record);
         default:
             // everything else should be handled normally
             return true;
@@ -221,31 +195,6 @@ bool handle_backspace(keyrecord_t *record) {
     } else {  // On key release.
         wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
         unregister_code(registered_key);
-    }
-    return false;
-}
-
-bool handle_dn_app(keyrecord_t *record) {
-    // act as down arrow on tap, KC_APP on hold
-    // By doing it this way, we can react immediately on key press
-    if (record->event.pressed) {
-        // we are registering a key
-        if (record->tap.count) {
-            // this also handles a double tap and hold which causes the down key to auto repeat
-            register_code16(KC_DOWN);
-        } else {
-            tap_code16(KC_APP);
-        }
-    } else {
-        // we are releasing a key
-        if (record->tap.count) {
-            wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
-            unregister_code16(KC_DOWN);
-        } else {
-            // we switched to a tap code on press to react immediately,
-            // no need to unregister since the tap will handle it above
-            // unregister_code16(KC_APP);
-        }
     }
     return false;
 }
@@ -346,10 +295,20 @@ bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
             // else we want processing of the key to continue normally
                 return true;
             break;
+        case CTLG_G:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key press
+                    tap_code16(C(KC_G));
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
         case MY_ENT:
             // act as enter on tap, Shift on hold
-            // this is needed because we lose the shift key when
-            // enabling the arrow layer
             // By doing it this way, we can react immediately on key press
             if (record->event.pressed) {
                 // we are registering a key
@@ -420,4 +379,29 @@ bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
             // we want all other keys to be processed normally
             return true;
     }
+}
+
+bool handle_dn_app(keyrecord_t *record) {
+    // act as down arrow on tap, KC_APP on hold
+    // By doing it this way, we can react immediately on key press
+    if (record->event.pressed) {
+        // we are registering a key
+        if (record->tap.count) {
+            // this also handles a double tap and hold which causes the down key to auto repeat
+            register_code16(KC_DOWN);
+        } else {
+            tap_code16(KC_APP);
+        }
+    } else {
+        // we are releasing a key
+        if (record->tap.count) {
+            wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
+            unregister_code16(KC_DOWN);
+        } else {
+            // we switched to a tap code on press to react immediately,
+            // no need to unregister since the tap will handle it above
+            // unregister_code16(KC_APP);
+        }
+    }
+    return false;
 }
