@@ -1,7 +1,7 @@
 # Skyloong GK61 - 🚧 Custom QMK firmware
 
 I bought this keyboard from amazon:
-[skyloong New GK61](https://www.amazon.ca/dp/B0CQD2YL32?ref=ppx_yo2ov_dt_b_product_details&th=1)
+[skyloong New GK61](https://www.amazon.com/SKYLOONG-Keyboard-Percent-Programmable-Hot-Swappable/dp/B0CQD1Y738)
 
 but when I tried to write a custom firmware I wasn't able to get the provided source to work on my keyboard.
 
