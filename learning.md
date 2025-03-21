@@ -9,7 +9,7 @@ I removed the Mac layers in favor of adding other layers to better suit my needs
 
 This document is out of date as I try new features etc. The source of truth should be the keymap.c file.
 
-I will come back aned edit this to match the keymap once I get a more stable keymap, right now it's changing too much. 😊
+I will come back and edit this to match the keymap once I get a more stable keymap, right now it's changing too much. 😊
 
 ### Default Layer
 
