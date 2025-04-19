@@ -111,6 +111,13 @@ void highlight_fn_keys(rgb_t color, uint8_t led_min, uint8_t led_max) {
     }
 }
 
+void set_keys_color(rgb_t color, uint8_t led_min, uint8_t led_max, const uint8_t key_indexes[], int num_keys)
+{
+    for (int i = 0; i < num_keys; i++) {
+        RGB_MATRIX_INDICATOR_SET_COLOR(key_indexes[i], color.r, color.g, color.b);
+    }
+}
+
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t current_layer = get_highest_layer(layer_state);
     if (current_layer == BASE_LYR) {
@@ -121,34 +128,40 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-    // determine the colors to use for each of the layers
-    // hsv_t base_hsv_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
-    hsv_t base_hsv_offset_qrt_cw   = get_base_hsv_color_shifted_quarter(true);
-    hsv_t base_hsv_offset          = get_base_hsv_color_shifted(false);
-    hsv_t base_hsv_inverse         = get_base_hsv_color_inverse();
-    hsv_t base_hsv_inverse_shifted = get_hsv_color_shifted(base_hsv_inverse, 31, false);
+    static rgb_t ext_lyr_rgb;
+    static rgb_t accent_lyr_rgb;
+    static rgb_t num_lyr_rgb;
+    static rgb_t dual_role_rgb;
 
-    rgb_t ext_lyr_rgb    = hsv_to_rgb(base_hsv_offset);
-    rgb_t accent_lyr_rgb = hsv_to_rgb(base_hsv_inverse_shifted);
-    rgb_t num_lyr_rgb    = hsv_to_rgb(base_hsv_offset_qrt_cw);
-    rgb_t dual_role_rgb  = hsv_to_rgb(base_hsv_inverse);
+    if (recalculate_rgb) {
+        // determine the colors to use for each of the layers
+        // hsv_t base_hsv_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
+        hsv_t base_hsv_offset_qrt_cw   = get_base_hsv_color_shifted_quarter(true);
+        hsv_t base_hsv_offset          = get_base_hsv_color_shifted(false);
+        hsv_t base_hsv_inverse         = get_base_hsv_color_inverse();
+        hsv_t base_hsv_inverse_shifted = get_hsv_color_shifted(base_hsv_inverse, 31, false);
+
+        // recalculate the colors
+        ext_lyr_rgb    = hsv_to_rgb(base_hsv_offset);
+        accent_lyr_rgb = hsv_to_rgb(base_hsv_inverse_shifted);
+        num_lyr_rgb    = hsv_to_rgb(base_hsv_offset_qrt_cw);
+        dual_role_rgb  = hsv_to_rgb(base_hsv_inverse);
+
+        recalculate_rgb = false;
+    }
 
     if (IS_LAYER_ON(HRM_BASE_LYR)) {
         // highlight the home row
         const uint8_t accent_key_indexes[7] = {
             A_KI, S_KI, D_KI, F_KI,
             J_KI, K_KI, L_KI};
-        for (int i = 0; i < 7; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i], accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        }
+        set_keys_color(ext_lyr_rgb, led_min, led_max, accent_key_indexes, 7 );
 
         // highlight the dual role keys
-        const uint8_t dual_role_indexes[11] = {
-            ESC_KI, C_KI, R_KI, T_KI, G_KI,
-            SCLN_KI, QUOT_KI, ENTER_KI,COMM_KI, DOT_KI, BSPC_KI};
-        for (int i = 0; i < 11; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(dual_role_indexes[i], dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
-        }
+        const uint8_t dual_role_indexes[9] = {
+            C_KI, R_KI, T_KI, G_KI,
+            SCLN_KI, QUOT_KI, ENTER_KI,COMM_KI, DOT_KI};
+        set_keys_color(dual_role_rgb, led_min, led_max, dual_role_indexes, 9 );
 
         if(dv_is_layer_locked(HRM_BASE_LYR)) {
             // only highlight the shift key if this layer is locked
@@ -172,9 +185,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             F_KI,
             // arrows now act as volume control and back and forward buttons
             UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI };
-        for (int i = 0; i < 9; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i], accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        }
+        set_keys_color(accent_lyr_rgb, led_min, led_max, accent_key_indexes, 9 );
 
         if(dv_is_layer_locked(EXT_LYR)) {
             // only highlight the shift key if this layer is locked
@@ -190,30 +201,31 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(KBCTL_LYR)) {
         // keys specific to this layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(P_KI, 0xFF, 0xFF, 0xFF);  // P for persistent color
-        RGB_MATRIX_INDICATOR_SET_COLOR(N_KI, 0xFF, 0xFF, 0xFF);  // N for NKRO
-        RGB_MATRIX_INDICATOR_SET_COLOR(FN_KI, 0xFF, 0xFF, 0xFF); // fn key
+        const uint8_t accent_key_indexes[3] = {
+            P_KI, // P for persistent color
+            N_KI, // N for NKRO
+            FN_KI // fn key
+        };
+        set_keys_color((rgb_t){0xFF, 0xFF, 0xFF}, led_min, led_max, accent_key_indexes, 3 );
 
         const uint8_t led_off_indexes[4] = {// turn off some of the LEDS to make it easier to see our indicators
                                             A_KI, TAB_KI, CAPS_KI, LEFT_SFT_KI};
-        for (int i = 0; i < 4; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
-        }
+        set_keys_color((rgb_t){0x00, 0x00, 0x00}, led_min, led_max, led_off_indexes, 4 );
 
         // swap FN key
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
 
         // highlight right shift as toggle HRM Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, ext_lyr_rgb.r, ext_lyr_rgb.g, ext_lyr_rgb.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
+
+        // highlight EXT layer toggle
+        RGB_MATRIX_INDICATOR_SET_COLOR(SLSH_KI, ext_lyr_rgb.r, ext_lyr_rgb.g, ext_lyr_rgb.b);
 
         // highlight number layer toggle
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_MENU_KI, num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
 
         // highlight arrow layer toggle
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-
-        // highlight home row layer toggle
-        RGB_MATRIX_INDICATOR_SET_COLOR(SLSH_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
 
         // highlight Q as reset
         RGB_MATRIX_INDICATOR_SET_COLOR(Q_KI, 0xFF, 0x00, 0x00);
@@ -244,9 +256,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             J_KI,  K_KI,    L_KI,   SCLN_KI,                  // J, K, L, ; = 1, 2, 3, Enter
             M_KI,  COMM_KI, DOT_KI, SLSH_KI                   // M, ,, ., / = 0, dot, dot, slash
         };
-        for (int i = 0; i < 19; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(numpad_keys[i], num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
-        }
+        set_keys_color(num_lyr_rgb, led_min, led_max, numpad_keys, 19);
 
         // check for num lock
         if (host_keyboard_led_state().num_lock) {
@@ -270,10 +280,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(ARROW_LYR)) {
         // highlight the arrow keys
-        RGB_MATRIX_INDICATOR_SET_COLOR(UP_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(DOWN_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
+        const uint8_t arrow_key_indexes[4] = {
+            UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI
+        };
+        set_keys_color(accent_lyr_rgb, led_min, led_max, arrow_key_indexes, 4 );
 
         // volume up and down
         RGB_MATRIX_INDICATOR_SET_COLOR(EQL_KI, 0xFF, 0xFF, 0xFF);  // volume up - +

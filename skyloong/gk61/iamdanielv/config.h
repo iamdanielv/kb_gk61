@@ -1,4 +1,4 @@
-// Copyright 2023 linlin012 (@linlin012)
+// Copyright 2024 DV (@iamdanielv)
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #pragma once
@@ -15,7 +15,7 @@
 
 // Set defaults for LED matrix
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
-#define RGB_MATRIX_DEFAULT_HUE 148
+#define RGB_MATRIX_DEFAULT_HUE 150
 #define RGB_MATRIX_DEFAULT_SAT 255
 #define RGB_MATRIX_DEFAULT_VAL 255
 
