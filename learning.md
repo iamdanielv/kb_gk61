@@ -21,26 +21,35 @@ I have made the following choices:
 The keyboard already came with a clever trick for re-using the
 Fn, Shift, Menu, RightCtl keys as arrows on tap and the modifiers on hold.
 I kept that feature but extended it. I was having problems with the shift key
-not registering properly when typing fast. I added a new arrow layer to mitigate this.
-I kept the left, down, right on the default layer on those keys since I tend to use them the most. 
+not registering properly when typing fast.
+I kept the left, down, right on the default layer on those keys since I tend to use them the most.
+I modified the right shift key to act as regular shift on tap or hold, but on double tap it acts as up arrow,
+on double tap hold it repeats the up arrow key.
+I also added a new arrow layer that can be toggled with double tap of right alt key it can also be temporarily
+enabled with hold of right alt key. This allows me to use my right hand for all of the arrow keys and my left hand for the other keys.
+
 
 #### On Default layer:
 
-**Cap Lock** I don't use Caps Lock key too much, so I re-purposed it to be a temp layer switch
-- Tap = Acts like Cap Lock 
-- Hold = Momentarily switches to the Win Alt Layer (Sometimes called Win_Fn)
+##### Caps Lock Key
+- **Tap**: Caps Lock
+- **Hold**: Temporarily switches to `EXT_LYR`
+- **Double Tap**: Locks the `HRM_BASE_LYR`
+- **Double Hold**: Temporarily switches to `NUM_LYR`
 
-**Right Alt**
-- Tap = Acts like Right Alt
-- Hold = Momentarily enables the arrow layer, turning RSFT, FN, Menu, RCTL to arrow keys
+###### Right Alt Key
+- **Tap**: KC_RALT
+- **Hold**: Temporarily switches to `ARROW_LYR`
+- **Double Tap**: Layer lock 'ARROW_LYR'
+- **Double Hold**: KC_RALT
 
-**Fn Key**
-- Tap = Left Arrow
-- Hold = Momentarily switches to the Control Layer
+###### Fn Key
+- **Tap**: Left Arrow
+- **Hold**: Temporarily switches to 'KBCTL_LYR'
 
-**Right Ctl**
-- Tap = Right Arrow
-- Hold = acts like Right Ctl 
+###### Right Ctl
+- **Tap**: Right Arrow
+- **Hold**: Right Ctl 
 
 ---
 
