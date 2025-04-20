@@ -37,7 +37,7 @@ I have made the following choices:
 - **Double Tap**: toggles the `HRM_BASE_LYR`
 - **Double Hold**: Temporarily switches to `NUM_LYR`
 
-#### Enter Key Key
+#### Enter Key
 
 - **Tap**: Enter
 - **Hold**: Shift
