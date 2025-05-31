@@ -8,11 +8,12 @@ but when I tried to write a custom firmware I wasn't able to get the provided so
 Turns out mine is not exactly a [pro 48](https://github.com/NaturalZh/qmk_firmware07072023/tree/gk61_pro_48_v202/keyboards/skyloong/gk61/pro_48) or a [pro_ds](http://github.com/NaturalZh/qmk_firmware07072023/tree/gk61_pro_ds/keyboards/skyloong/gk61/pro_ds) but something in the middle.
 
 ## ⚠️ Disclaimer
+
 > [!CAUTION]
 > This is a custom firmware that could break your keyboard.
 >
 > 🛑 **Use at your own risk!** 🛑
-> 
+>
 > I have tried my best to make sure everything works, but I may miss something.
 >
 > It works for my keyboard, but there may be revisions in the future that are not compatible. Use at your own risk!
