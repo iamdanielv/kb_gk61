@@ -28,6 +28,15 @@
         .r = (indicator).r, .g = (indicator).g, .b = (indicator).b \
     }
 
+// Blinking constants
+#define INDCTR_INTVL_FAST   150
+#define INDCTR_INTVL_NORMAL 200
+#define INDCTR_FLSH_SINGLE  1
+#define INDCTR_FLSH_DOUBLE  2
+#define INDCTR_FLSH_TRIPLE  3
+#define INDCTR_FLSH_QUAD    4
+
+
 #define INDICATOR_QUEUE_MAX 20
 
 typedef struct {
