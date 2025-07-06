@@ -15,12 +15,25 @@
 bool fn_mode_enabled = false;
 bool recalculate_rgb = true;
 
-// *****************************
-// * Custom processing of keys *
-// *****************************
+/**
+ * @brief Custom processing of keycodes and tap dance actions
+ */
+/**
+ * @brief Defines custom keycode for swapping FN mode.
+ */
 enum custom_keycodes { KC_SWP_FN = SAFE_RANGE };
 
 // clang-format off
+/**
+ * @brief Tap dance actions definitions.
+ *
+ * This array defines various tap dance actions, including:
+ * - `TD_RESET`: Resets the keyboard safely.
+ * - `TD_CLEAR`: Clears the keyboard safely.
+ * - `TD_MO_CAPS`: Tap for CAPS_LOCK, Hold for MO(EXT_LYR), Double Tap for TO(HRM_LYR), Double Hold for MO(NUM_LYR).
+ * - `TD_GRV`: Tap for Esc, Double Tap for `, Hold for ```````.
+ * - `TD_RALT`: Custom tap dance for right alt.
+ */
 tap_dance_action_t tap_dance_actions[] = {
 
     [TD_RESET]     = ACTION_TAP_DANCE_FN(safe_reset),
