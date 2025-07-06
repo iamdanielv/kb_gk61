@@ -11,9 +11,9 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                     case LED_FLAG_ALL: {
                         rgb_matrix_set_flags_noeeprom(LED_FLAG_INDICATOR);
                         // rgb_matrix_set_color_all(0, 0, 0);
-                        indicator_enqueue(SPACE_KI, 200, 3, INDICATOR_RGB_DARK_RED);     // blink space too
-                        indicator_enqueue(LEFT_ALT_KI, 200, 3, INDICATOR_RGB_DARK_RED);  // blink left alt
-                        indicator_enqueue(RIGHT_ALT_KI, 200, 3, INDICATOR_RGB_DARK_RED); // blink right alt
+                        indicator_enqueue(SPACE_KI, 200, 3, RGB_DRK_RED);     // blink space too
+                        indicator_enqueue(LEFT_ALT_KI, 200, 3, RGB_DRK_RED);  // blink left alt
+                        indicator_enqueue(RIGHT_ALT_KI, 200, 3, RGB_DRK_RED); // blink right alt
                     } break;
                     default: {
                         HSV current_hsv = rgb_matrix_get_hsv();
@@ -46,7 +46,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                 if (rgb_matrix_get_speed() >= (255 - RGB_MATRIX_SPD_STEP)) {
                     // this update would put us at max
                     blink_arrows();
-                    indicator_enqueue(QUOT_KI, 200, 4, INDICATOR_RGB_DARK_RED); // ' - UP
+                    indicator_enqueue(QUOT_KI, 200, 4, RGB_DRK_RED); // ' - UP
                     indicator_enqueue(SCLN_KI, 200, 2, RGB_BLACK);              // ; - DOWN
                     blink_space(false);
                 }
@@ -58,7 +58,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                 if (rgb_matrix_get_speed() <= RGB_MATRIX_SPD_STEP) {
                     blink_arrows();
                     indicator_enqueue(QUOT_KI, 200, 2, RGB_BLACK);              // ' - UP
-                    indicator_enqueue(SCLN_KI, 200, 4, INDICATOR_RGB_DARK_RED); // ; - DOWN
+                    indicator_enqueue(SCLN_KI, 200, 4, RGB_DRK_RED); // ; - DOWN
                     blink_space(false);
                     rgb_matrix_set_speed_noeeprom(RGB_MATRIX_SPD_STEP);
                 }
@@ -71,7 +71,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
 
                 if (rgb_matrix_get_hue() >= (255 - RGB_MATRIX_HUE_STEP)) {
                     // this update would put us at max
-                    indicator_enqueue(O_KI, 200, 4, INDICATOR_RGB_DARK_RED); // O - UP
+                    indicator_enqueue(O_KI, 200, 4, RGB_DRK_RED); // O - UP
                     indicator_enqueue(I_KI, 200, 2, RGB_BLACK);              // I - DOWN
                     blink_space(false);
                 } else {
@@ -87,7 +87,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                 if (rgb_matrix_get_hue() <= RGB_MATRIX_HUE_STEP) {
                     // this update would put us at min
                     indicator_enqueue(O_KI, 200, 2, RGB_BLACK);              // O - UP
-                    indicator_enqueue(I_KI, 200, 4, INDICATOR_RGB_DARK_RED); // I - DOWN
+                    indicator_enqueue(I_KI, 200, 4, RGB_DRK_RED); // I - DOWN
                     blink_space(false);
                 } else {
                     indicator_enqueue(I_KI, 150, 1, RGB_WHITE); // I - DOWN
@@ -101,7 +101,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
 
                 if (rgb_matrix_get_sat() >= (255 - RGB_MATRIX_SAT_STEP)) {
                     // this update would put us at max
-                    indicator_enqueue(L_KI, 200, 4, INDICATOR_RGB_DARK_RED); // L - UP
+                    indicator_enqueue(L_KI, 200, 4, RGB_DRK_RED); // L - UP
                     indicator_enqueue(K_KI, 200, 2, RGB_BLACK);              // K - DOWN
                     blink_space(false);
                 } else {
@@ -117,7 +117,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                 if (rgb_matrix_get_sat() <= RGB_MATRIX_SAT_STEP) {
                     // this update would put us at min
                     indicator_enqueue(L_KI, 200, 2, RGB_BLACK);              // L - UP
-                    indicator_enqueue(K_KI, 200, 4, INDICATOR_RGB_DARK_RED); // K - DOWN
+                    indicator_enqueue(K_KI, 200, 4, RGB_DRK_RED); // K - DOWN
                     blink_space(false);
                 } else {
                     indicator_enqueue(K_KI, 150, 1, RGB_WHITE); // K - DOWN
@@ -130,7 +130,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                 recalculate_rgb = true;
 
                 if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
-                    indicator_enqueue(DOT_KI, 200, 4, INDICATOR_RGB_DARK_RED); // . - UP
+                    indicator_enqueue(DOT_KI, 200, 4, RGB_DRK_RED); // . - UP
                     indicator_enqueue(COMM_KI, 200, 2, RGB_BLACK);             // , - DOWN
                     blink_space(false);
                     blink_arrows();
@@ -146,7 +146,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
 
                 if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
                     indicator_enqueue(DOT_KI, 200, 2, RGB_BLACK);               // . - UP
-                    indicator_enqueue(COMM_KI, 200, 4, INDICATOR_RGB_DARK_RED); // , - DOWN
+                    indicator_enqueue(COMM_KI, 200, 4, RGB_DRK_RED); // , - DOWN
                     blink_space(false);
                 } else {
                     indicator_enqueue(COMM_KI, 150, 1, RGB_WHITE); // , - DOWN
