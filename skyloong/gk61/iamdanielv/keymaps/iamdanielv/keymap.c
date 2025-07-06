@@ -58,6 +58,16 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 
 // clang-format off
+/**
+ * @brief Defines the keymaps for different layers of the keyboard
+ *
+ * - `BASE_LYR`: The default QWERTY layer
+ * - `HRM_BASE_LYR`: Home Row Mods base layer
+ * - `EXT_LYR`: Extended layer
+ * - `KBCTL_LYR`: Keyboard control layer
+ * - `NUM_LYR`: Number pad layer
+ * - `MEDIA_LYR`: Media control layer
+ */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
      * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
@@ -117,21 +127,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// **********************************************************************
-// * we want the ability to break out the key handlers but we also want *
-// * to inline, this will allow us to do that                           *
-// * inline void myInlinedFunction() __attribute__((always_inline));    *
-// **********************************************************************
+/**
+ * @brief Inlined function declarations for key handlers.
+ *
+ * These functions are declared as `inline` to allow the compiler to potentially
+ * insert their code directly at the point of call, optimizing performance.
+ * sample: inline void myInlinedFunction() __attribute__((always_inline));
+ */
 
 // function definitions for key handlers
 inline bool handle_backspace(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_dn_app(keyrecord_t *record) __attribute__((always_inline));
 
-// **********************************************************************
-// * process_record_user is the main function that handles key presses  *
-// * and is the entry point for all key processing                      *
-// **********************************************************************
+/**
+ * @brief Main function to process key presses.
+ *
+ * This function is the entry point for all key processing. It handles custom keycodes
+ * like `KC_SWP_FN` and `QK_LLCK`, and then dispatches to other handlers for further processing.
+ *
+ * @param keycode The keycode of the pressed or released key.
+ * @param record Pointer to the keyrecord_t structure containing key event details.
+ * @return True if the key event should be processed by the next handler in the chain, false otherwise.
+ */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
@@ -148,10 +166,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         if (IS_LAYER_ON(EXT_LYR)) {
             // blink the new arrow keys
-            indicator_enqueue(I_KI, 150, 2, RGB_DRK_RED); // up - I
-            indicator_enqueue(J_KI, 150, 2, RGB_DRK_RED); // left - J
-            indicator_enqueue(K_KI, 150, 2, RGB_DRK_RED); // down - K
-            indicator_enqueue(L_KI, 150, 2, RGB_DRK_RED); // right - L
+            indicator_enqueue(I_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // up - I
+            indicator_enqueue(J_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // left - J
+            indicator_enqueue(K_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // down - K
+            indicator_enqueue(L_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // right - L
         }
         // we only handled the flashing of the indicators, so keep processing the key code
     }
@@ -176,8 +194,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
+/**
+ * @brief Handles the backspace key, converting it to Delete when Shift is held.
+ *
+ * This function modifies the behavior of the backspace key. If a single Shift key
+ * is held down, the backspace key sends `KC_DEL`. If both Shift keys are held down,
+ * the backspace key sends `S(KC_DEL)` (Shift + Delete).
+ * This is based on: https://getreuer.info/posts/keyboards/macros3/index.html
+ *
+ * @param record Pointer to the keyrecord_t structure containing key event details.
+ * @return False to indicate that the key event has been fully handled and should not be processed further.
+ */
 bool handle_backspace(keyrecord_t *record) {
-    // based on: https://getreuer.info/posts/keyboards/macros3/index.html
     // shift + backspace is delete
     // both shift held is shift + delete
     static uint16_t registered_key = KC_NO;
@@ -210,14 +238,23 @@ bool handle_backspace(keyrecord_t *record) {
     return false;
 }
 
+/**
+ * @brief Handles the NKRO (N-Key Rollover) toggle.
+ *
+ * This function is called when the NKRO toggle key is pressed. It clears the keyboard buffer,
+ * toggles the `keymap_config.nkro` setting, blinks the NKRO indicator, and clears the buffer again.
+ *
+ * @param record Pointer to the keyrecord_t structure containing key event details.
+ * @return False to indicate that the key event has been fully handled and should not be processed further.
+ */
 bool handle_nkro_toggle(keyrecord_t *record) {
     if (record->event.pressed) {
-        clear_keyboard(); // clear first buffer to prevent stuck keys
+        clear_keyboard(); /**< clear first buffer to prevent stuck keys */
         wait_ms(50);
         keymap_config.nkro = !keymap_config.nkro;
         blink_NKRO(keymap_config.nkro);
         wait_ms(50);
-        clear_keyboard(); // clear first buffer to prevent stuck keys
+        clear_keyboard(); /**< clear first buffer to prevent stuck keys */
         wait_ms(50);
     }
     return false;
