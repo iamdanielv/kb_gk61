@@ -12,7 +12,6 @@
 // I prepended all function names with 'dv' to make sure I am calling the updated
 // functions and not the original ones.
 
-
 // Copyright 2022-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,7 +72,7 @@ bool dv_process_layer_lock(uint16_t keycode, keyrecord_t* record, uint16_t lock_
             // layer_lock_invert(get_highest_layer(layer_state));
 
             // DV edit
-            // we need to determine what layer we are on, and then change current state
+            //  we need to determine what layer we are on, and then change current state
             uint8_t current_layer = layer_switch_get_layer(record->event.key);
             dv_layer_lock_invert(current_layer);
         }
