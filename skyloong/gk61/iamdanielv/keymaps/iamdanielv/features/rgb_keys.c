@@ -11,7 +11,7 @@
  *
  * @param keycode The keycode that was pressed or released.
  * @param record The keyrecord structure containing information about the key event.
- * @return True if processing should continue, false if the keycode was handled here
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -56,7 +56,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                 if (rgb_matrix_get_speed() >= (255 - RGB_MATRIX_SPD_STEP)) {
                     // this update would put us at max
                     blink_arrows();
-                    indicator_enqueue(QUOT_KI, INDCTR_INTVL_NORMAL, INDCTR_FLSH_QUAD, RGB_DRK_RED); // ' - UP
+                    indicator_enqueue(QUOT_KI, INDCTR_INTVL_NORMAL, INDCTR_FLSH_QUAD, RGB_DRK_RED);
                     indicator_enqueue(SCLN_KI, INDCTR_INTVL_NORMAL, INDCTR_FLSH_DOUBLE, RGB_BLACK); // ; - DOWN
                     blink_space(false);
                 }

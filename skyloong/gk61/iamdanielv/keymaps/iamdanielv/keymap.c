@@ -148,9 +148,20 @@ inline bool handle_dn_app(keyrecord_t *record) __attribute__((always_inline));
  *
  * @param keycode The keycode of the pressed or released key.
  * @param record Pointer to the keyrecord_t structure containing key event details.
- * @return True if the key event should be processed by the next handler in the chain, false otherwise.
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    // Check for any layer lock or toggle key press
+    if (keycode == QK_LLCK || IS_QK_TOGGLE_LAYER(keycode))
+    {
+        // we only really care about key presses and ignore key releases
+        if (record->event.pressed) {
+            // When we lock, unlock or toggle a layer, flash the space bar
+            blink_space(true);
+        }
+    }
+
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
@@ -158,20 +169,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             blink_space(true);
         }
         return false;
-    }
-
-    if (keycode == QK_LLCK) {
-        // when we lock or unlock a layer, flash the space bar area
-        blink_space(true);
-
-        if (IS_LAYER_ON(EXT_LYR)) {
-            // blink the new arrow keys
-            indicator_enqueue(I_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // up - I
-            indicator_enqueue(J_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // left - J
-            indicator_enqueue(K_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // down - K
-            indicator_enqueue(L_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // right - L
-        }
-        // we only handled the flashing of the indicators, so keep processing the key code
     }
 
     if (!process_fn_mode(keycode, record)) { return false; }
@@ -192,6 +189,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     return true;
+}
+
+/**
+ * @brief Called whenever the layer lock state changes.
+ *
+ * This function is a callback that gets executed every time the keyboard's
+ * layer lock state is updated.
+ *
+ * @param state The new layer state bitmask.
+ */
+void  dv_layer_lock_set_user(layer_state_t  state) {
+    if (dv_is_layer_locked(EXT_LYR)){
+        indicator_enqueue(I_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // up - I
+        indicator_enqueue(J_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // left - J
+        indicator_enqueue(K_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // down - K
+        indicator_enqueue(L_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // right - L
+    }
 }
 
 /**

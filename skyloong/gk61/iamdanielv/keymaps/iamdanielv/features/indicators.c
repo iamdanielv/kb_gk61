@@ -206,10 +206,11 @@ void set_layer_color_indicator(uint8_t layer, uint8_t led_index, rgb_t color, ui
  * @brief Advanced user function for RGB matrix indicators.
  *
  * This function is called by the RGB matrix code to allow for custom LED indicator behavior.
- *
+ * It handles various layer indicators, caps lock, and NKRO status.
+
  * @param led_min The minimum LED index to consider.
  * @param led_max The maximum LED index to consider.
- * @return True if the indicators were processed, false otherwise.
+ * @return True if the pipeline should continue processing, false if processing should stop.
  */
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t current_layer = get_highest_layer(layer_state);
@@ -283,10 +284,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(KBCTL_LYR)) {
         // keys specific to this layer
-        const uint8_t accent_key_indexes[3] = {
-            P_KI, // P for persistent color
-            N_KI, // N for NKRO
-            FN_KI // fn key
+        const uint8_t accent_key_indexes[3] = {P_KI,  // P for persistent color
+                                               N_KI,  // N for NKRO
+                                               FN_KI, // fn key
         };
         set_keys_color((rgb_t){RGB_WHITE}, led_min, led_max, accent_key_indexes, 3 );
 
